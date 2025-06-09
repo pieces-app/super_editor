@@ -12,8 +12,13 @@ dependencies:
   follow_the_leader: ^0.0.4+7
   overlord: ^0.0.3+5
   super_editor:
-    path: ../super_editor
-  super_text_layout: ^0.1.0
+    git:
+      url: git@github.com:pieces-app/super_editor.git
+      path: super_editor
+  super_text_layout:
+    git:
+      url: git@github.com:pieces-app/super_editor.git
+      path: super_text_layout
   url_launcher:
 
 dependency_overrides:
