@@ -34,6 +34,12 @@ class TapSequenceGestureRecognizer extends GestureRecognizer {
   /// but not the single-tap that preceded it.
   final bool reportPrecedingGestures;
 
+  /// If provided, this predicate is consulted for each pointer down event.
+  /// When it returns false, this recognizer will not participate in the
+  /// gesture arena for that pointer sequence, allowing other gesture handlers
+  /// (e.g., child widgets) to receive the tap.
+  bool Function(PointerDownEvent event)? isPointerAllowedPredicate;
+
   GestureTapDownCallback? onTapDown;
   GestureTapUpCallback? onTapUp;
   GestureDoubleTapCallback? onTap;
@@ -77,6 +83,9 @@ class TapSequenceGestureRecognizer extends GestureRecognizer {
 
   @override
   bool isPointerAllowed(PointerDownEvent event) {
+    if (isPointerAllowedPredicate != null && !isPointerAllowedPredicate!(event)) {
+      return false;
+    }
     if (_firstTap == null) {
       if (event.buttons != kPrimaryButton) {
         return false;

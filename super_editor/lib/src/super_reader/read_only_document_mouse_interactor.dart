@@ -4,6 +4,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:super_editor/src/core/document.dart';
+import 'package:super_editor/src/default_editor/text.dart';
+// no import of runtime_client placeholder types
 import 'package:super_editor/src/core/document_layout.dart';
 import 'package:super_editor/src/core/document_selection.dart';
 import 'package:super_editor/src/default_editor/document_scrollable.dart';
@@ -574,6 +576,7 @@ Updating drag selection:
               ..onDoubleTap = _onDoubleTap
               ..onTripleTapDown = _onTripleTapDown
               ..onTripleTap = _onTripleTap
+              ..isPointerAllowedPredicate = _isPointerAllowedForTap
               ..gestureSettings = gestureSettings;
           },
         ),
@@ -594,6 +597,28 @@ Updating drag selection:
       },
       child: child,
     );
+  }
+
+  bool _isPointerAllowedForTap(PointerDownEvent event) {
+    // If the pointer is over an inline URL placeholder, allow the inline widget to handle the tap.
+    final docOffset = _getDocOffsetFromGlobalOffset(event.position);
+    final docPosition = _docLayout.getDocumentPositionNearestToOffset(docOffset);
+    if (docPosition == null) {
+      return true;
+    }
+    if (docPosition.nodePosition is! TextNodePosition) {
+      return true;
+    }
+    final node = widget.readerContext.document.getNodeById(docPosition.nodeId);
+    if (node is! TextNode) {
+      return true;
+    }
+    final offset = (docPosition.nodePosition as TextPosition).offset;
+    final placeholder = node.text.placeholders[offset];
+    if (placeholder != null) {
+      return false;
+    }
+    return true;
   }
 
   Widget _buildDocumentContainer({

@@ -124,6 +124,7 @@ class _RenderSliverHybridStack extends RenderSliver
     required double mainAxisPosition,
     required double crossAxisPosition,
   }) {
+    bool didHit = false;
     var child = lastChild;
     while (child != null) {
       if (child is RenderSliver) {
@@ -132,9 +133,7 @@ class _RenderSliverHybridStack extends RenderSliver
           mainAxisPosition: mainAxisPosition,
           crossAxisPosition: crossAxisPosition,
         );
-        if (isHit) {
-          return true;
-        }
+        didHit = didHit || isHit;
       } else if (child is RenderBox) {
         final boxResult = BoxHitTestResult.wrap(result);
         final isHit = hitTestBoxChild(
@@ -143,13 +142,11 @@ class _RenderSliverHybridStack extends RenderSliver
           mainAxisPosition: mainAxisPosition,
           crossAxisPosition: crossAxisPosition,
         );
-        if (isHit) {
-          return true;
-        }
+        didHit = didHit || isHit;
       }
       child = childBefore(child);
     }
-    return false;
+    return didHit;
   }
 
   @override

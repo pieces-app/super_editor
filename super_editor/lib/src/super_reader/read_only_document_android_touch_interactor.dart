@@ -38,7 +38,8 @@ import 'package:super_editor/src/super_reader/reader_context.dart';
 import 'package:super_editor/src/super_textfield/metrics.dart';
 import 'package:super_text_layout/super_text_layout.dart';
 
-import '../core/editor.dart';
+import 'package:super_editor/src/default_editor/text.dart';
+// no import of runtime_client placeholder types
 import '../default_editor/text_tools.dart';
 
 /// Read-only document gesture interactor that's designed for Android touch input, e.g.,
@@ -1052,6 +1053,7 @@ class _ReadOnlyAndroidDocumentTouchInteractorState extends State<ReadOnlyAndroid
                   ..onTapUp = _onTapUp
                   ..onDoubleTapDown = _onDoubleTapDown
                   ..onTripleTapDown = _onTripleTapDown
+                  ..isPointerAllowedPredicate = _isPointerAllowedForTap
                   ..gestureSettings = gestureSettings;
               },
             ),
@@ -1089,6 +1091,27 @@ class _ReadOnlyAndroidDocumentTouchInteractorState extends State<ReadOnlyAndroid
         ),
       ],
     );
+  }
+
+  bool _isPointerAllowedForTap(PointerDownEvent event) {
+    final docOffset = _getDocumentOffsetFromGlobalOffset(event.position);
+    final docPosition = _docLayout.getDocumentPositionNearestToOffset(docOffset);
+    if (docPosition == null) {
+      return true;
+    }
+    if (docPosition.nodePosition is! TextPosition) {
+      return true;
+    }
+    final node = widget.readerContext.document.getNodeById(docPosition.nodeId);
+    if (node is! TextNode) {
+      return true;
+    }
+    final offset = (docPosition.nodePosition as TextPosition).offset;
+    final placeholder = node.text.placeholders[offset];
+    if (placeholder != null) {
+      return false;
+    }
+    return true;
   }
 
   Widget _buildControlsOverlay(BuildContext context) {
