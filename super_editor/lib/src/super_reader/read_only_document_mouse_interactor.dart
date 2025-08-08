@@ -4,8 +4,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:super_editor/src/core/document.dart';
-import 'package:super_editor/src/default_editor/text.dart';
-// no import of runtime_client placeholder types
 import 'package:super_editor/src/core/document_layout.dart';
 import 'package:super_editor/src/core/document_selection.dart';
 import 'package:super_editor/src/default_editor/document_scrollable.dart';
@@ -16,10 +14,10 @@ import 'package:super_editor/src/infrastructure/document_gestures_interaction_ov
 import 'package:super_editor/src/infrastructure/flutter/flutter_scheduler.dart';
 import 'package:super_editor/src/infrastructure/multi_tap_gesture.dart';
 import 'package:super_editor/src/infrastructure/sliver_hybrid_stack.dart';
-
-import '../core/document_composer.dart';
-import '../core/editor.dart';
-import 'reader_context.dart';
+import 'package:super_editor/src/core/document_composer.dart';
+import 'package:super_editor/src/core/editor.dart';
+import 'package:super_editor/src/super_reader/reader_context.dart';
+import 'package:super_editor/src/infrastructure/content_tap_exclusion.dart';
 
 /// Governs mouse gesture interaction with a read-only document, such as scrolling
 /// a document with a scroll wheel and tap-and-dragging to create an expanded selection.
@@ -603,22 +601,10 @@ Updating drag selection:
     // If the pointer is over an inline URL placeholder, allow the inline widget to handle the tap.
     final docOffset = _getDocOffsetFromGlobalOffset(event.position);
     final docPosition = _docLayout.getDocumentPositionNearestToOffset(docOffset);
-    if (docPosition == null) {
-      return true;
-    }
-    if (docPosition.nodePosition is! TextNodePosition) {
-      return true;
-    }
-    final node = widget.readerContext.document.getNodeById(docPosition.nodeId);
-    if (node is! TextNode) {
-      return true;
-    }
-    final offset = (docPosition.nodePosition as TextPosition).offset;
-    final placeholder = node.text.placeholders[offset];
-    if (placeholder != null) {
-      return false;
-    }
-    return true;
+    return isTapAllowedAtDocumentPosition(
+      document: widget.readerContext.document,
+      docPosition: docPosition,
+    );
   }
 
   Widget _buildDocumentContainer({

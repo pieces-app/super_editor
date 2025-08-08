@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -23,6 +22,7 @@ import 'package:super_editor/src/infrastructure/flutter/eager_pan_gesture_recogn
 import 'package:super_editor/src/infrastructure/flutter/flutter_scheduler.dart';
 import 'package:super_editor/src/infrastructure/flutter/overlay_with_groups.dart';
 import 'package:super_editor/src/infrastructure/multi_tap_gesture.dart';
+import 'package:super_editor/src/infrastructure/content_tap_exclusion.dart';
 import 'package:super_editor/src/infrastructure/platforms/android/android_document_controls.dart';
 import 'package:super_editor/src/infrastructure/platforms/android/long_press_selection.dart';
 import 'package:super_editor/src/infrastructure/platforms/android/magnifier.dart';
@@ -37,10 +37,7 @@ import 'package:super_editor/src/infrastructure/touch_controls.dart';
 import 'package:super_editor/src/super_reader/reader_context.dart';
 import 'package:super_editor/src/super_textfield/metrics.dart';
 import 'package:super_text_layout/super_text_layout.dart';
-
-import 'package:super_editor/src/default_editor/text.dart';
-// no import of runtime_client placeholder types
-import '../default_editor/text_tools.dart';
+import 'package:super_editor/src/default_editor/text_tools.dart';
 
 /// Read-only document gesture interactor that's designed for Android touch input, e.g.,
 /// drag to scroll, and handles to control selection.
@@ -1096,22 +1093,10 @@ class _ReadOnlyAndroidDocumentTouchInteractorState extends State<ReadOnlyAndroid
   bool _isPointerAllowedForTap(PointerDownEvent event) {
     final docOffset = _getDocumentOffsetFromGlobalOffset(event.position);
     final docPosition = _docLayout.getDocumentPositionNearestToOffset(docOffset);
-    if (docPosition == null) {
-      return true;
-    }
-    if (docPosition.nodePosition is! TextPosition) {
-      return true;
-    }
-    final node = widget.readerContext.document.getNodeById(docPosition.nodeId);
-    if (node is! TextNode) {
-      return true;
-    }
-    final offset = (docPosition.nodePosition as TextPosition).offset;
-    final placeholder = node.text.placeholders[offset];
-    if (placeholder != null) {
-      return false;
-    }
-    return true;
+    return isTapAllowedAtDocumentPosition(
+      document: widget.readerContext.document,
+      docPosition: docPosition,
+    );
   }
 
   Widget _buildControlsOverlay(BuildContext context) {
