@@ -25,10 +25,10 @@ import 'package:super_editor/src/infrastructure/platforms/mobile_documents.dart'
 import 'package:super_editor/src/infrastructure/platforms/platform.dart';
 import 'package:super_editor/src/infrastructure/sliver_hybrid_stack.dart';
 import 'package:super_editor/src/infrastructure/touch_controls.dart';
+import 'package:super_editor/src/infrastructure/content_tap_exclusion.dart';
 import 'package:super_editor/src/super_reader/reader_context.dart';
 import 'package:super_editor/src/super_reader/super_reader.dart';
-
-import '../core/document_composer.dart';
+import 'package:super_editor/src/core/document_composer.dart';
 
 /// An [InheritedWidget] that provides shared access to a [SuperReaderIosControlsController],
 /// which coordinates the state of iOS controls like drag handles, magnifier, and toolbar.
@@ -976,6 +976,7 @@ class _SuperReaderIosDocumentTouchInteractorState extends State<SuperReaderIosDo
                   ..onTapUp = _onTapUp
                   ..onDoubleTapUp = _onDoubleTapUp
                   ..onTripleTapUp = _onTripleTapUp
+                  ..isPointerAllowedPredicate = _isPointerAllowedForTap
                   ..gestureSettings = gestureSettings;
               },
             ),
@@ -1016,6 +1017,15 @@ class _SuperReaderIosDocumentTouchInteractorState extends State<SuperReaderIosDo
           ),
         ),
       ],
+    );
+  }
+
+  bool _isPointerAllowedForTap(PointerDownEvent event) {
+    final docOffset = _interactorOffsetToDocumentOffset(interactorBox.globalToLocal(event.position));
+    final docPosition = _docLayout.getDocumentPositionNearestToOffset(docOffset);
+    return isTapAllowedAtDocumentPosition(
+      document: widget.readerContext.document,
+      docPosition: docPosition,
     );
   }
 

@@ -15,8 +15,8 @@ import 'package:super_editor/src/core/edit_context.dart';
 import 'package:super_editor/src/core/editor.dart';
 import 'package:super_editor/src/core/styles.dart';
 import 'package:super_editor/src/default_editor/attributions.dart';
-import 'package:super_editor/src/default_editor/text_ai.dart';
 import 'package:super_editor/src/default_editor/text/custom_underlines.dart';
+import 'package:super_editor/src/default_editor/text_ai.dart';
 import 'package:super_editor/src/infrastructure/_logging.dart';
 import 'package:super_editor/src/infrastructure/attributed_text_styles.dart';
 import 'package:super_editor/src/infrastructure/composable_text.dart';
@@ -503,27 +503,35 @@ class TextNodePosition extends TextPosition implements NodePosition {
 /// view models that add this mixin.
 mixin TextComponentViewModel on SingleColumnLayoutComponentViewModel {
   AttributedText get text;
+
   set text(AttributedText text);
 
   AttributionStyleBuilder get textStyleBuilder;
+
   set textStyleBuilder(AttributionStyleBuilder styleBuilder);
 
   InlineWidgetBuilderChain get inlineWidgetBuilders;
+
   set inlineWidgetBuilders(InlineWidgetBuilderChain inlineWidgetBuildChain);
 
   TextDirection get textDirection;
+
   set textDirection(TextDirection direction);
 
   TextAlign get textAlignment;
+
   set textAlignment(TextAlign alignment);
 
   TextSelection? get selection;
+
   set selection(TextSelection? selection);
 
   Color get selectionColor;
+
   set selectionColor(Color color);
 
   bool get highlightWhenEmpty;
+
   set highlightWhenEmpty(bool highlight);
 
   /// The span of text that's currently sitting in the IME's composing region,
@@ -3026,6 +3034,7 @@ class InsertCharacterAtCaretRequest implements EditRequest {
   }
 
   final String character;
+
   // FIXME: Document why we made this configurable, given that we're inserting
   //        at the caret. Maybe this was for undo/redo? If so, we probably need
   //        the composer styles to also activate/deactivate with history. It's

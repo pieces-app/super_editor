@@ -14,10 +14,10 @@ import 'package:super_editor/src/infrastructure/document_gestures_interaction_ov
 import 'package:super_editor/src/infrastructure/flutter/flutter_scheduler.dart';
 import 'package:super_editor/src/infrastructure/multi_tap_gesture.dart';
 import 'package:super_editor/src/infrastructure/sliver_hybrid_stack.dart';
-
-import '../core/document_composer.dart';
-import '../core/editor.dart';
-import 'reader_context.dart';
+import 'package:super_editor/src/core/document_composer.dart';
+import 'package:super_editor/src/core/editor.dart';
+import 'package:super_editor/src/super_reader/reader_context.dart';
+import 'package:super_editor/src/infrastructure/content_tap_exclusion.dart';
 
 /// Governs mouse gesture interaction with a read-only document, such as scrolling
 /// a document with a scroll wheel and tap-and-dragging to create an expanded selection.
@@ -574,6 +574,7 @@ Updating drag selection:
               ..onDoubleTap = _onDoubleTap
               ..onTripleTapDown = _onTripleTapDown
               ..onTripleTap = _onTripleTap
+              ..isPointerAllowedPredicate = _isPointerAllowedForTap
               ..gestureSettings = gestureSettings;
           },
         ),
@@ -593,6 +594,16 @@ Updating drag selection:
         ),
       },
       child: child,
+    );
+  }
+
+  bool _isPointerAllowedForTap(PointerDownEvent event) {
+    // If the pointer is over an inline URL placeholder, allow the inline widget to handle the tap.
+    final docOffset = _getDocOffsetFromGlobalOffset(event.position);
+    final docPosition = _docLayout.getDocumentPositionNearestToOffset(docOffset);
+    return isTapAllowedAtDocumentPosition(
+      document: widget.readerContext.document,
+      docPosition: docPosition,
     );
   }
 
