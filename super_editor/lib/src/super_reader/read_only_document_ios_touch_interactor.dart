@@ -200,6 +200,7 @@ class SuperReaderIosDocumentTouchInteractor extends StatefulWidget {
     this.dragAutoScrollBoundary = const AxisOffset.symmetric(54),
     this.showDebugPaint = false,
     required this.child,
+    this.scrollingEnabled = true,
   }) : super(key: key);
 
   final FocusNode focusNode;
@@ -229,6 +230,9 @@ class SuperReaderIosDocumentTouchInteractor extends StatefulWidget {
   final bool showDebugPaint;
 
   final Widget child;
+
+  /// Whether user scrolling/auto-scrolling is enabled.
+  final bool scrollingEnabled;
 
   @override
   State createState() => _SuperReaderIosDocumentTouchInteractorState();
@@ -272,6 +276,7 @@ class _SuperReaderIosDocumentTouchInteractorState extends State<SuperReaderIosDo
       dragAutoScrollBoundary: widget.dragAutoScrollBoundary,
       getScrollPosition: () => scrollPosition,
       getViewportBox: () => viewportBox,
+      enabled: widget.scrollingEnabled,
     );
 
     widget.readerContext.document.addListener(_onDocumentChange);

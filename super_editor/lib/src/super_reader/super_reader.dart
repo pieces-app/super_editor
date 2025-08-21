@@ -72,6 +72,7 @@ class SuperReader extends StatefulWidget {
     this.createOverlayControlsClipper,
     this.debugPaint = const DebugPaintConfig(),
     this.shrinkWrap = false,
+    this.scrollingEnabled = true,
   })  : stylesheet = stylesheet ?? readOnlyDefaultStylesheet,
         selectionStyles = selectionStyle ?? readOnlyDefaultSelectionStyle,
         keyboardActions = keyboardActions ?? readOnlyDefaultKeyboardActions,
@@ -212,6 +213,9 @@ class SuperReader extends StatefulWidget {
   /// Whether the scroll view used by the reader should shrink-wrap its contents.
   /// Only used when reader is not inside an scrollable.
   final bool shrinkWrap;
+
+  /// Whether user scrolling and selection auto-scrolling are enabled.
+  final bool scrollingEnabled;
 
   @override
   State<SuperReader> createState() => SuperReaderState();
@@ -402,6 +406,7 @@ class SuperReaderState extends State<SuperReader> {
             presenter: _docLayoutPresenter!,
             componentBuilders: widget.componentBuilders,
             shrinkWrap: widget.shrinkWrap,
+            scrollingEnabled: widget.scrollingEnabled,
             underlays: [
               // Add any underlays that were provided by the client.
               for (final underlayBuilder in widget.documentUnderlayBuilders) //
@@ -492,6 +497,7 @@ class SuperReaderState extends State<SuperReader> {
           fillViewport: fillViewport,
           showDebugPaint: widget.debugPaint.gestures,
           child: child,
+          scrollingEnabled: widget.scrollingEnabled,
         );
       case DocumentGestureMode.android:
         return ReadOnlyAndroidDocumentTouchInteractor(
@@ -510,6 +516,7 @@ class SuperReaderState extends State<SuperReader> {
           overlayController: widget.overlayController,
           fillViewport: fillViewport,
           child: child,
+          scrollingEnabled: widget.scrollingEnabled,
         );
       case DocumentGestureMode.iOS:
         return SuperReaderIosDocumentTouchInteractor(
@@ -522,6 +529,7 @@ class SuperReaderState extends State<SuperReader> {
           fillViewport: fillViewport,
           showDebugPaint: widget.debugPaint.gestures,
           child: child,
+          scrollingEnabled: widget.scrollingEnabled,
         );
     }
   }
