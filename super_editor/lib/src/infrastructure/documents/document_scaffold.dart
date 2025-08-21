@@ -5,8 +5,6 @@ import 'package:super_editor/src/default_editor/layout_single_column/_layout.dar
 import 'package:super_editor/src/default_editor/layout_single_column/_presenter.dart';
 import 'package:super_editor/src/infrastructure/content_layers.dart';
 import 'package:super_editor/src/infrastructure/documents/document_scroller.dart';
-import 'package:super_editor/src/infrastructure/flutter/build_context.dart';
-import 'package:super_editor/src/infrastructure/sliver_hybrid_stack.dart';
 
 /// A scaffold that combines pieces to create a scrolling single-column document, with
 /// gestures placed beneath the document.
@@ -30,6 +28,7 @@ class DocumentScaffold<ContextType> extends StatefulWidget {
     this.underlays = const [],
     this.overlays = const [],
     this.debugPaint = const DebugPaintConfig(),
+    this.scrollingEnabled = true,
   });
 
   /// [LayerLink] that's is attached to the document layout.
@@ -86,6 +85,9 @@ class DocumentScaffold<ContextType> extends StatefulWidget {
   /// Only used when the document is not inside a scrollable.
   final bool shrinkWrap;
 
+  /// Whether user scrolling/auto-scrolling is enabled.
+  final bool scrollingEnabled;
+
   @override
   State<DocumentScaffold> createState() => _DocumentScaffoldState();
 }
@@ -120,6 +122,7 @@ class _DocumentScaffoldState extends State<DocumentScaffold> {
       scroller: widget.scroller,
       shrinkWrap: widget.shrinkWrap,
       showDebugPaint: widget.debugPaint.scrolling,
+      scrollEnabled: widget.scrollingEnabled,
       child: child,
     );
   }

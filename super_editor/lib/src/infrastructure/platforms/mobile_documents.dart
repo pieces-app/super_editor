@@ -487,6 +487,7 @@ class DragHandleAutoScroller {
     required AxisOffset dragAutoScrollBoundary,
     required ScrollPosition Function() getScrollPosition,
     required RenderBox Function() getViewportBox,
+    this.enabled = true,
   })  : _autoScroller = AutoScroller(vsync: vsync),
         _dragAutoScrollBoundary = dragAutoScrollBoundary,
         _getScrollPosition = getScrollPosition,
@@ -506,11 +507,17 @@ class DragHandleAutoScroller {
   /// that this auto-scroller controls.
   final RenderBox Function() _getViewportBox;
 
+  /// Whether this auto-scroller should perform any scrolling action.
+  bool enabled;
+
   /// Jumps to a scroll offset so that the given [offsetInViewport] is
   /// visible within the viewport boundary.
   ///
   /// Does nothing, if the given [offsetInViewport] is already visible within the viewport boundary.
   void ensureOffsetIsVisible(Offset offsetInViewport) {
+    if (!enabled) {
+      return;
+    }
     editorGesturesLog.fine("Ensuring content offset is visible in scrollable: $offsetInViewport");
 
     final scrollPosition = _getScrollPosition();
@@ -548,6 +555,9 @@ class DragHandleAutoScroller {
   /// Prepares this auto-scroller to automatically scroll its `ScrollPosition`
   /// based on calls to [updateAutoScrollHandleMonitoring].
   void startAutoScrollHandleMonitoring() {
+    if (!enabled) {
+      return;
+    }
     _autoScroller.scrollPosition = _getScrollPosition();
   }
 
@@ -562,6 +572,9 @@ class DragHandleAutoScroller {
   void updateAutoScrollHandleMonitoring({
     required Offset dragEndInViewport,
   }) {
+    if (!enabled) {
+      return;
+    }
     if (dragEndInViewport.dy < _dragAutoScrollBoundary.leading &&
         _getScrollPosition().pixels > _getScrollPosition().minScrollExtent) {
       editorGesturesLog.finest('Metrics say we should try to scroll up');
@@ -592,6 +605,9 @@ class DragHandleAutoScroller {
   /// Stops any on-going auto-scrolling and removes references there were
   /// setup in [startAutoScrollHandleMonitoring].
   void stopAutoScrollHandleMonitoring() {
+    if (!enabled) {
+      return;
+    }
     _autoScroller.stopScrolling();
     _autoScroller.scrollPosition = null;
   }
