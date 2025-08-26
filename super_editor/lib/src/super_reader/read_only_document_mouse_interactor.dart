@@ -46,6 +46,7 @@ class ReadOnlyDocumentMouseInteractor extends StatefulWidget {
     required this.fillViewport,
     this.showDebugPaint = false,
     required this.child,
+    this.scrollingEnabled = true,
   }) : super(key: key);
 
   final FocusNode? focusNode;
@@ -70,6 +71,9 @@ class ReadOnlyDocumentMouseInteractor extends StatefulWidget {
 
   /// The document to display within this [ReadOnlyDocumentMouseInteractor].
   final Widget child;
+
+  /// Whether user scrolling and selection auto-scrolling are enabled.
+  final bool scrollingEnabled;
 
   @override
   State createState() => _ReadOnlyDocumentMouseInteractorState();
@@ -155,6 +159,9 @@ class _ReadOnlyDocumentMouseInteractorState extends State<ReadOnlyDocumentMouseI
 
   void _onSelectionChange() {
     if (mounted) {
+      if (!widget.scrollingEnabled) {
+        return;
+      }
       // Use a post-frame callback to "ensure selection extent is visible"
       // so that any pending visual document changes can happen before
       // attempting to calculate the visual position of the selection extent.
@@ -412,7 +419,9 @@ class _ReadOnlyDocumentMouseInteractorState extends State<ReadOnlyDocumentMouseI
 
     _dragStartGlobal = details.globalPosition;
 
-    widget.autoScroller.enableAutoScrolling();
+    if (widget.scrollingEnabled) {
+      widget.autoScroller.enableAutoScrolling();
+    }
 
     if (_isShiftPressed) {
       _expandSelectionDuringDrag = true;
@@ -437,9 +446,11 @@ class _ReadOnlyDocumentMouseInteractorState extends State<ReadOnlyDocumentMouseI
 
       _updateDragSelection();
 
-      widget.autoScroller.setGlobalAutoScrollRegion(
-        Rect.fromLTWH(_dragEndGlobal!.dx, _dragEndGlobal!.dy, 1, 1),
-      );
+      if (widget.scrollingEnabled) {
+        widget.autoScroller.setGlobalAutoScrollRegion(
+          Rect.fromLTWH(_dragEndGlobal!.dx, _dragEndGlobal!.dy, 1, 1),
+        );
+      }
     });
   }
 
@@ -449,7 +460,9 @@ class _ReadOnlyDocumentMouseInteractorState extends State<ReadOnlyDocumentMouseI
     if (_panGestureDevice == PointerDeviceKind.trackpad) {
       // The user ended a pan gesture with two fingers on a trackpad.
       // We already scrolled the document.
-      widget.autoScroller.goBallistic(-details.velocity.pixelsPerSecond.dy);
+      if (widget.scrollingEnabled) {
+        widget.autoScroller.goBallistic(-details.velocity.pixelsPerSecond.dy);
+      }
       return;
     }
     _onDragEnd();

@@ -66,6 +66,7 @@ class ReadOnlyAndroidDocumentTouchInteractor extends StatefulWidget {
     this.showDebugPaint = false,
     this.overlayController,
     required this.child,
+    this.scrollingEnabled = true,
   }) : super(key: key);
 
   final FocusNode focusNode;
@@ -118,6 +119,9 @@ class ReadOnlyAndroidDocumentTouchInteractor extends StatefulWidget {
 
   final Widget child;
 
+  /// Whether user scrolling/auto-scrolling is enabled.
+  final bool scrollingEnabled;
+
   @override
   State createState() => _ReadOnlyAndroidDocumentTouchInteractorState();
 }
@@ -168,6 +172,7 @@ class _ReadOnlyAndroidDocumentTouchInteractorState extends State<ReadOnlyAndroid
       dragAutoScrollBoundary: widget.dragAutoScrollBoundary,
       getScrollPosition: () => scrollPosition,
       getViewportBox: () => viewportBox,
+      enabled: widget.scrollingEnabled,
     );
 
     widget.focusNode.addListener(_onFocusChange);
