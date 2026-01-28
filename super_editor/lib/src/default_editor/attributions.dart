@@ -53,7 +53,8 @@ const spellingErrorAttribution = NamedAttribution('spelling-error');
 /// Grammar error attribution.
 const grammarErrorAttribution = NamedAttribution('grammar-error');
 
-const displayLatextAttribution = NamedAttribution('display-latex');
+/// Display LaTeX style attribution.
+const displayLatexAttribution = NamedAttribution('display-latex');
 
 /// An attribution for superscript and subscript text.
 class ScriptAttribution implements Attribution {
