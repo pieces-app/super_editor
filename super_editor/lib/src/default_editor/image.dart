@@ -1,11 +1,10 @@
 import 'package:attributed_text/attributed_text.dart';
 import 'package:flutter/material.dart';
+import 'package:super_editor/src/core/document.dart';
+import 'package:super_editor/src/default_editor/box_component.dart';
+import 'package:super_editor/src/default_editor/layout_single_column/layout_single_column.dart';
 import 'package:super_editor/src/default_editor/layout_single_column/selection_aware_viewmodel.dart';
 import 'package:super_editor/src/default_editor/selection_upstream_downstream.dart';
-
-import '../core/document.dart';
-import 'box_component.dart';
-import 'layout_single_column/layout_single_column.dart';
 
 /// [DocumentNode] that represents an image at a URL.
 @immutable
@@ -105,7 +104,11 @@ class ImageNode extends BlockNode {
 }
 
 class ImageComponentBuilder implements ComponentBuilder {
-  const ImageComponentBuilder();
+  const ImageComponentBuilder({
+    this.imageBuilder,
+  });
+
+  final Widget Function(BuildContext, String)? imageBuilder;
 
   @override
   SingleColumnLayoutComponentViewModel? createViewModel(Document document, DocumentNode node) {
@@ -136,6 +139,7 @@ class ImageComponentBuilder implements ComponentBuilder {
       selection: componentViewModel.selection?.nodeSelection as UpstreamDownstreamNodeSelection?,
       selectionColor: componentViewModel.selectionColor,
       opacity: componentViewModel.opacity,
+      imageBuilder: imageBuilder,
     );
   }
 }
@@ -226,51 +230,41 @@ class ImageComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MouseRegion(
-      cursor: SystemMouseCursors.basic,
-      hitTestBehavior: HitTestBehavior.translucent,
-      child: IgnorePointer(
-        child: Center(
-          child: SelectableBox(
-            selection: selection,
-            selectionColor: selectionColor,
-            child: BoxComponent(
-              key: componentKey,
-              opacity: opacity,
-              child: imageBuilder != null
-                  ? imageBuilder!(context, imageUrl)
-                  : Image.network(
-                      imageUrl,
-                      fit: BoxFit.contain,
-                      frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
-                        if (frame != null) {
-                          // The image is already loaded. Use the image as is.
-                          return child;
-                        }
+    return Center(
+      child: BoxComponent(
+        key: componentKey,
+        opacity: opacity,
+        child: imageBuilder != null
+            ? imageBuilder!(context, imageUrl)
+            : Image.network(
+                imageUrl,
+                fit: BoxFit.contain,
+                frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
+                  if (frame != null) {
+                    // The image is already loaded. Use the image as is.
+                    return child;
+                  }
 
-                        if (expectedSize != null && expectedSize!.width != null && expectedSize!.height != null) {
-                          // Both width and height were provide.
-                          // Preserve the aspect ratio of the original image.
-                          return AspectRatio(
-                            aspectRatio: expectedSize!.aspectRatio,
-                            child: SizedBox(
-                              width: expectedSize!.width!.toDouble(),
-                              height: expectedSize!.height!.toDouble(),
-                            ),
-                          );
-                        }
+                  if (expectedSize != null && expectedSize!.width != null && expectedSize!.height != null) {
+                    // Both width and height were provide.
+                    // Preserve the aspect ratio of the original image.
+                    return AspectRatio(
+                      aspectRatio: expectedSize!.aspectRatio,
+                      child: SizedBox(
+                        width: expectedSize!.width!.toDouble(),
+                        height: expectedSize!.height!.toDouble(),
+                      ),
+                    );
+                  }
 
-                        // The image is still loading and only one dimension was provided.
-                        // Use the given dimension.
-                        return SizedBox(
-                          width: expectedSize?.width?.toDouble(),
-                          height: expectedSize?.height?.toDouble(),
-                        );
-                      },
-                    ),
-            ),
-          ),
-        ),
+                  // The image is still loading and only one dimension was provided.
+                  // Use the given dimension.
+                  return SizedBox(
+                    width: expectedSize?.width?.toDouble(),
+                    height: expectedSize?.height?.toDouble(),
+                  );
+                },
+              ),
       ),
     );
   }
