@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:super_editor/src/core/document.dart';
 import 'package:super_editor/src/core/document_composer.dart';
+import 'package:super_editor/src/core/document_layout.dart';
 import 'package:super_editor/src/core/document_selection.dart';
 import 'package:super_editor/src/core/editor.dart';
 import 'package:super_editor/src/default_editor/multi_node_editing.dart';
@@ -8,8 +9,6 @@ import 'package:super_editor/src/default_editor/selection_upstream_downstream.da
 import 'package:super_editor/src/default_editor/text.dart';
 import 'package:super_editor/src/infrastructure/_logging.dart';
 import 'package:super_editor/src/infrastructure/flutter/geometry.dart';
-
-import '../core/document_layout.dart';
 
 // ignore: unused_element
 final _log = Logger(scope: 'box_component.dart');
@@ -298,11 +297,13 @@ class SelectableBox extends StatelessWidget {
     this.selection,
     required this.selectionColor,
     required this.child,
+    this.enableIgnorePointer = true,
   }) : super(key: key);
 
   final UpstreamDownstreamNodeSelection? selection;
   final Color selectionColor;
   final Widget child;
+  final bool enableIgnorePointer;
 
   @override
   Widget build(BuildContext context) {
@@ -311,6 +312,7 @@ class SelectableBox extends StatelessWidget {
     return MouseRegion(
       cursor: SystemMouseCursors.basic,
       child: IgnorePointer(
+        ignoring: enableIgnorePointer,
         child: DecoratedBox(
           decoration: BoxDecoration(
             color: isSelected ? selectionColor.withValues(alpha: 0.5) : Colors.transparent,
