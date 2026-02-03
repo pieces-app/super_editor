@@ -108,7 +108,7 @@ class ImageComponentBuilder implements ComponentBuilder {
     this.imageBuilder,
   });
 
-  final Widget Function(BuildContext, String)? imageBuilder;
+  final Widget Function(BuildContext context, {required String imageUrl, String altText})? imageBuilder;
 
   @override
   SingleColumnLayoutComponentViewModel? createViewModel(Document document, DocumentNode node) {
@@ -122,6 +122,7 @@ class ImageComponentBuilder implements ComponentBuilder {
       imageUrl: node.imageUrl,
       expectedSize: node.expectedBitmapSize,
       selectionColor: const Color(0x00000000),
+      altText: node.altText,
     );
   }
 
@@ -139,6 +140,7 @@ class ImageComponentBuilder implements ComponentBuilder {
       selection: componentViewModel.selection?.nodeSelection as UpstreamDownstreamNodeSelection?,
       selectionColor: componentViewModel.selectionColor,
       opacity: componentViewModel.opacity,
+      altText: componentViewModel.altText,
       imageBuilder: imageBuilder,
     );
   }
@@ -147,6 +149,7 @@ class ImageComponentBuilder implements ComponentBuilder {
 class ImageComponentViewModel extends SingleColumnLayoutComponentViewModel with SelectionAwareViewModelMixin {
   ImageComponentViewModel({
     required super.nodeId,
+    required this.altText,
     super.createdAt,
     super.maxWidth,
     super.padding = EdgeInsets.zero,
@@ -162,6 +165,7 @@ class ImageComponentViewModel extends SingleColumnLayoutComponentViewModel with 
 
   String imageUrl;
   ExpectedSize? expectedSize;
+  String altText;
 
   @override
   ImageComponentViewModel copy() {
@@ -175,6 +179,7 @@ class ImageComponentViewModel extends SingleColumnLayoutComponentViewModel with 
       expectedSize: expectedSize,
       selection: selection,
       selectionColor: selectionColor,
+      altText: altText,
     );
   }
 
@@ -188,7 +193,8 @@ class ImageComponentViewModel extends SingleColumnLayoutComponentViewModel with 
           createdAt == other.createdAt &&
           imageUrl == other.imageUrl &&
           selection == other.selection &&
-          selectionColor == other.selectionColor;
+          selectionColor == other.selectionColor &&
+          altText == other.altText;
 
   @override
   int get hashCode =>
@@ -197,7 +203,8 @@ class ImageComponentViewModel extends SingleColumnLayoutComponentViewModel with 
       createdAt.hashCode ^
       imageUrl.hashCode ^
       selection.hashCode ^
-      selectionColor.hashCode;
+      selectionColor.hashCode ^
+      altText.hashCode;
 }
 
 /// Displays an image in a document.
@@ -206,6 +213,7 @@ class ImageComponent extends StatelessWidget {
     Key? key,
     required this.componentKey,
     required this.imageUrl,
+    this.altText = '',
     this.expectedSize,
     this.selectionColor = Colors.blue,
     this.selection,
@@ -213,6 +221,7 @@ class ImageComponent extends StatelessWidget {
     this.imageBuilder,
   }) : super(key: key);
 
+  final String altText;
   final GlobalKey componentKey;
   final String imageUrl;
   final ExpectedSize? expectedSize;
@@ -226,7 +235,7 @@ class ImageComponent extends StatelessWidget {
   /// This builder is used in tests to 'mock' an [Image], avoiding accessing the network.
   ///
   /// If [imageBuilder] is `null` an [Image] is used.
-  final Widget Function(BuildContext context, String imageUrl)? imageBuilder;
+  final Widget Function(BuildContext context, {required String imageUrl, String altText})? imageBuilder;
 
   @override
   Widget build(BuildContext context) {
@@ -235,7 +244,7 @@ class ImageComponent extends StatelessWidget {
         key: componentKey,
         opacity: opacity,
         child: imageBuilder != null
-            ? imageBuilder!(context, imageUrl)
+            ? imageBuilder!(context, imageUrl: imageUrl, altText: altText)
             : Image.network(
                 imageUrl,
                 fit: BoxFit.contain,
