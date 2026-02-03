@@ -21,6 +21,7 @@ String serializeDocumentToMarkdown(
     // specialized cases of traditional nodes, such as serializing a
     // `ParagraphNode` with a special `"blockType"`.
     ...customNodeSerializers,
+    const MermaidNodeSerializer(),
     ImageNodeSerializer(useSizeNotation: syntax == MarkdownSyntax.superEditor),
     const HorizontalRuleNodeSerializer(),
     const ListItemNodeSerializer(),
@@ -75,6 +76,17 @@ abstract class NodeTypedDocumentNodeMarkdownSerializer<NodeType> implements Docu
 
   @protected
   String doSerialization(Document document, NodeType node);
+}
+
+/// [DocumentNodeMarkdownSerializer] for serializing [MermaidNode]s as Markdown
+/// code blocks with the mermaid language identifier.
+class MermaidNodeSerializer extends NodeTypedDocumentNodeMarkdownSerializer<MermaidNode> {
+  const MermaidNodeSerializer();
+
+  @override
+  String doSerialization(Document document, MermaidNode node) {
+    return '```mermaid\n${node.mermaidCode}\n```';
+  }
 }
 
 /// [DocumentNodeMarkdownSerializer] for serializing [ImageNode]s as standard Markdown
