@@ -259,7 +259,7 @@ class ImageComponent extends StatelessWidget {
                     }
 
                     if (expectedSize != null && expectedSize!.width != null && expectedSize!.height != null) {
-                      // Both width and height were provide.
+                      // Both width and height were provided.
                       // Preserve the aspect ratio of the original image.
                       return AspectRatio(
                         aspectRatio: expectedSize!.aspectRatio,
