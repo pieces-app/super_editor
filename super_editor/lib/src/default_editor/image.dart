@@ -1,11 +1,10 @@
 import 'package:attributed_text/attributed_text.dart';
 import 'package:flutter/material.dart';
+import 'package:super_editor/src/core/document.dart';
+import 'package:super_editor/src/default_editor/box_component.dart';
+import 'package:super_editor/src/default_editor/layout_single_column/layout_single_column.dart';
 import 'package:super_editor/src/default_editor/layout_single_column/selection_aware_viewmodel.dart';
 import 'package:super_editor/src/default_editor/selection_upstream_downstream.dart';
-
-import '../core/document.dart';
-import 'box_component.dart';
-import 'layout_single_column/layout_single_column.dart';
 
 /// [DocumentNode] that represents an image at a URL.
 @immutable
@@ -105,7 +104,11 @@ class ImageNode extends BlockNode {
 }
 
 class ImageComponentBuilder implements ComponentBuilder {
-  const ImageComponentBuilder();
+  const ImageComponentBuilder({
+    this.imageBuilder,
+  });
+
+  final Widget Function(BuildContext context, {required String imageUrl, String altText})? imageBuilder;
 
   @override
   SingleColumnLayoutComponentViewModel? createViewModel(Document document, DocumentNode node) {
@@ -119,6 +122,7 @@ class ImageComponentBuilder implements ComponentBuilder {
       imageUrl: node.imageUrl,
       expectedSize: node.expectedBitmapSize,
       selectionColor: const Color(0x00000000),
+      altText: node.altText,
     );
   }
 
@@ -136,6 +140,8 @@ class ImageComponentBuilder implements ComponentBuilder {
       selection: componentViewModel.selection?.nodeSelection as UpstreamDownstreamNodeSelection?,
       selectionColor: componentViewModel.selectionColor,
       opacity: componentViewModel.opacity,
+      altText: componentViewModel.altText,
+      imageBuilder: imageBuilder,
     );
   }
 }
@@ -143,6 +149,7 @@ class ImageComponentBuilder implements ComponentBuilder {
 class ImageComponentViewModel extends SingleColumnLayoutComponentViewModel with SelectionAwareViewModelMixin {
   ImageComponentViewModel({
     required super.nodeId,
+    required this.altText,
     super.createdAt,
     super.maxWidth,
     super.padding = EdgeInsets.zero,
@@ -158,6 +165,7 @@ class ImageComponentViewModel extends SingleColumnLayoutComponentViewModel with 
 
   String imageUrl;
   ExpectedSize? expectedSize;
+  String altText;
 
   @override
   ImageComponentViewModel copy() {
@@ -171,6 +179,7 @@ class ImageComponentViewModel extends SingleColumnLayoutComponentViewModel with 
       expectedSize: expectedSize,
       selection: selection,
       selectionColor: selectionColor,
+      altText: altText,
     );
   }
 
@@ -184,7 +193,8 @@ class ImageComponentViewModel extends SingleColumnLayoutComponentViewModel with 
           createdAt == other.createdAt &&
           imageUrl == other.imageUrl &&
           selection == other.selection &&
-          selectionColor == other.selectionColor;
+          selectionColor == other.selectionColor &&
+          altText == other.altText;
 
   @override
   int get hashCode =>
@@ -193,7 +203,8 @@ class ImageComponentViewModel extends SingleColumnLayoutComponentViewModel with 
       createdAt.hashCode ^
       imageUrl.hashCode ^
       selection.hashCode ^
-      selectionColor.hashCode;
+      selectionColor.hashCode ^
+      altText.hashCode;
 }
 
 /// Displays an image in a document.
@@ -202,6 +213,7 @@ class ImageComponent extends StatelessWidget {
     Key? key,
     required this.componentKey,
     required this.imageUrl,
+    this.altText = '',
     this.expectedSize,
     this.selectionColor = Colors.blue,
     this.selection,
@@ -209,6 +221,7 @@ class ImageComponent extends StatelessWidget {
     this.imageBuilder,
   }) : super(key: key);
 
+  final String altText;
   final GlobalKey componentKey;
   final String imageUrl;
   final ExpectedSize? expectedSize;
@@ -222,54 +235,49 @@ class ImageComponent extends StatelessWidget {
   /// This builder is used in tests to 'mock' an [Image], avoiding accessing the network.
   ///
   /// If [imageBuilder] is `null` an [Image] is used.
-  final Widget Function(BuildContext context, String imageUrl)? imageBuilder;
+  final Widget Function(BuildContext context, {required String imageUrl, String altText})? imageBuilder;
 
   @override
   Widget build(BuildContext context) {
-    return MouseRegion(
-      cursor: SystemMouseCursors.basic,
-      hitTestBehavior: HitTestBehavior.translucent,
-      child: IgnorePointer(
-        child: Center(
-          child: SelectableBox(
-            selection: selection,
-            selectionColor: selectionColor,
-            child: BoxComponent(
-              key: componentKey,
-              opacity: opacity,
-              child: imageBuilder != null
-                  ? imageBuilder!(context, imageUrl)
-                  : Image.network(
-                      imageUrl,
-                      fit: BoxFit.contain,
-                      frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
-                        if (frame != null) {
-                          // The image is already loaded. Use the image as is.
-                          return child;
-                        }
+    return Center(
+      child: BoxComponent(
+        key: componentKey,
+        opacity: opacity,
+        child: SelectableBox(
+          selectionColor: selectionColor,
+          selection: selection,
+          enableIgnorePointer: selection != null,
+          child: imageBuilder != null
+              ? imageBuilder!(context, imageUrl: imageUrl, altText: altText)
+              : Image.network(
+                  imageUrl,
+                  fit: BoxFit.contain,
+                  frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
+                    if (frame != null) {
+                      // The image is already loaded. Use the image as is.
+                      return child;
+                    }
 
-                        if (expectedSize != null && expectedSize!.width != null && expectedSize!.height != null) {
-                          // Both width and height were provide.
-                          // Preserve the aspect ratio of the original image.
-                          return AspectRatio(
-                            aspectRatio: expectedSize!.aspectRatio,
-                            child: SizedBox(
-                              width: expectedSize!.width!.toDouble(),
-                              height: expectedSize!.height!.toDouble(),
-                            ),
-                          );
-                        }
+                    if (expectedSize != null && expectedSize!.width != null && expectedSize!.height != null) {
+                      // Both width and height were provided.
+                      // Preserve the aspect ratio of the original image.
+                      return AspectRatio(
+                        aspectRatio: expectedSize!.aspectRatio,
+                        child: SizedBox(
+                          width: expectedSize!.width!.toDouble(),
+                          height: expectedSize!.height!.toDouble(),
+                        ),
+                      );
+                    }
 
-                        // The image is still loading and only one dimension was provided.
-                        // Use the given dimension.
-                        return SizedBox(
-                          width: expectedSize?.width?.toDouble(),
-                          height: expectedSize?.height?.toDouble(),
-                        );
-                      },
-                    ),
-            ),
-          ),
+                    // The image is still loading and only one dimension was provided.
+                    // Use the given dimension.
+                    return SizedBox(
+                      width: expectedSize?.width?.toDouble(),
+                      height: expectedSize?.height?.toDouble(),
+                    );
+                  },
+                ),
         ),
       ),
     );
