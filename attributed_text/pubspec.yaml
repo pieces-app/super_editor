@@ -13,7 +13,9 @@ topics:
   - super-editor
 
 environment:
-  sdk: ">=3.0.0 <4.0.0"
+  sdk: ">=3.6.0 <4.0.0"
+
+resolution: workspace
 
 dependencies:
   characters: ^1.2.0
@@ -23,5 +25,5 @@ dependencies:
   test: ^1.19.4
 
 dev_dependencies:
-  flutter_lints: ^2.0.1
+  flutter_lints: ^6.0.0
   mockito: ^5.0.4

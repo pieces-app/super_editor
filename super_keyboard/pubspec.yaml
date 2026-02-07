@@ -12,8 +12,10 @@ topics:
   - editor
 
 environment:
-  sdk: ^3.5.0
+  sdk: ">=3.6.0 <4.0.0"
   flutter: '>=3.3.0'
+
+resolution: workspace
 
 dependencies:
   flutter:
@@ -34,7 +36,7 @@ dependencies:
   flutter_test_runners: ^0.0.4
 
 dev_dependencies:
-  flutter_lints: ^4.0.0
+  flutter_lints: ^6.0.0
 
   flutter_test_goldens: 0.0.5
 

@@ -12,8 +12,10 @@ topics:
   - super-editor
 
 environment:
-  sdk: ">=3.0.0 <4.0.0"
+  sdk: ">=3.6.0 <4.0.0"
   flutter: ">=1.17.0"
+
+resolution: workspace
 
 dependencies:
   flutter:
@@ -34,7 +36,7 @@ dependencies:
 #    path: ../attributed_text
 
 dev_dependencies:
-  flutter_lints: ^2.0.1
+  flutter_lints: ^6.0.0
   flutter_test:
     sdk: flutter
   flutter_test_robots: ^0.0.22

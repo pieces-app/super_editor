@@ -4,8 +4,10 @@ version: 0.0.1
 homepage:
 
 environment:
-  sdk: ">=3.0.0 <4.0.0"
+  sdk: ">=3.6.0 <4.0.0"
   flutter: ">=3.3.0"
+
+resolution: workspace
 
 dependencies:
   clock: ^1.1.2
@@ -28,12 +30,9 @@ dependency_overrides:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^3.0.0
+  flutter_lints: ^6.0.0
   pigeon: ^21.1.0
-  flutter_test_goldens:
-    git:
-      url: https://github.com/flutter-bounty-hunters/flutter_test_goldens
-      ref: e35c5d0ebb0cbf24bf33090199ec576671ebed26
+  flutter_test_goldens: 0.0.5
   flutter_test_runners: ^0.0.4
   flutter_test_robots: ^0.0.24
   golden_bricks: ^1.0.0

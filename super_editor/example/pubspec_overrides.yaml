@@ -1,0 +1,3 @@
+# Workspace override: dependency_overrides stripped — handled by workspace resolution.
+# When cloned standalone, this file won't exist and pubspec.yaml works as-is.
+dependency_overrides: {}
