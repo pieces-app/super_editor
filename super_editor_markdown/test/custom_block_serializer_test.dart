@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:super_editor/super_editor.dart';
-import 'package:super_editor_markdown/super_editor_markdown.dart';
 
 import 'custom_parsers/callout_block.dart';
 import 'custom_parsers/upsell_block.dart';

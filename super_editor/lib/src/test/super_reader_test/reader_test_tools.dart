@@ -99,7 +99,6 @@ class TestDocumentConfigurator {
   FocusNode? _focusNode;
   bool _autoFocus = false;
   String? _tapRegionGroupId;
-  DocumentSelection? _selection;
   WidgetBuilder? _androidToolbarBuilder;
   DocumentFloatingToolbarBuilder? _iOSToolbarBuilder;
 
@@ -163,8 +162,10 @@ class TestDocumentConfigurator {
   }
 
   /// Configures the [SuperReader] to use the given [selection] as its initial selection.
+  ///
+  /// Note: Initial selection is not currently wired up to [SuperReader].
   TestDocumentConfigurator withSelection(DocumentSelection? selection) {
-    _selection = selection;
+    // TODO: Wire up initial selection to SuperReader when it supports it.
     return this;
   }
 

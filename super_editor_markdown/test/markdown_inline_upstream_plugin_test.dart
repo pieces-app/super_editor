@@ -4,8 +4,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_test_robots/flutter_test_robots.dart';
 import 'package:super_editor/super_editor.dart';
 import 'package:super_editor/super_editor_test.dart';
-import 'package:super_editor_markdown/src/markdown_inline_upstream_plugin.dart';
-import 'package:super_editor_markdown/src/markdown_to_document_parsing.dart';
 
 void main() {
   group("Super Editor upstream Markdown reaction >", () {

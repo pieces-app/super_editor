@@ -7,7 +7,7 @@ version: 1.0.0+1
 environment:
   sdk: ^3.6.0
 
-# resolution: workspace  # Removed — depends on super_editor_markdown which was consolidated into core
+resolution: workspace
 
 dependencies:
   flutter:

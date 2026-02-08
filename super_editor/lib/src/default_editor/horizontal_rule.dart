@@ -51,7 +51,6 @@ class HorizontalRuleNode extends BlockNode {
     return HorizontalRuleNode(id: id, metadata: newMetadata);
   }
 
-  @override
   HorizontalRuleNode copy() {
     return HorizontalRuleNode(id: id);
   }

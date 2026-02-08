@@ -21,7 +21,7 @@ version: 1.0.0+1
 environment:
   sdk: ">=3.6.0 <4.0.0"
 
-# resolution: workspace  # Removed — depends on super_editor_markdown which was consolidated into core
+resolution: workspace
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -48,8 +48,6 @@ dependency_overrides:
   # against changes that they're making to other mono-repo packages
   super_editor:
     path: ../
-  super_editor_markdown:
-    path: ../../super_editor_markdown
   super_text_layout:
     path: ../../super_text_layout
   attributed_text:

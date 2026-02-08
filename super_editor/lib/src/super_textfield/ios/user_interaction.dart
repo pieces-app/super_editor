@@ -574,23 +574,6 @@ class IOSTextFieldTouchInteractorState extends State<IOSTextFieldTouchInteractor
     return _textLayout.getPositionNearestToOffset(textOffset);
   }
 
-  /// Returns the [TextPosition] that's at the given [localOffset] within
-  /// this [IOSTextFieldInteractor], or `null` if no text exists at the given
-  /// offset.
-  TextPosition? _getTextPositionAtOffset(Offset localOffset) {
-    // We show placeholder text when there is no text content. We don't want
-    // to place the caret in the placeholder text, so when _currentText is
-    // empty, explicitly set the text position to an offset of -1.
-    if (widget.textController.text.isEmpty) {
-      return const TextPosition(offset: -1);
-    }
-
-    final globalOffset = (context.findRenderObject() as RenderBox).localToGlobal(localOffset);
-    final textOffset =
-        (widget.selectableTextKey.currentContext!.findRenderObject() as RenderBox).globalToLocal(globalOffset);
-    return _textLayout.getPositionAtOffset(textOffset);
-  }
-
   /// Returns a [TextSelection] that selects the word surrounding the given
   /// [position].
   TextSelection _getWordSelectionAt(TextPosition position) {

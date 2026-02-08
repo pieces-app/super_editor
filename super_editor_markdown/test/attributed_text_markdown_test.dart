@@ -1,7 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:super_editor/super_editor.dart';
-import 'package:super_editor_markdown/src/document_to_markdown_serializer.dart';
-import 'package:super_editor_markdown/src/markdown_to_attributed_text_parsing.dart';
 
 void main() {
   group("AttributedText markdown serializes", () {

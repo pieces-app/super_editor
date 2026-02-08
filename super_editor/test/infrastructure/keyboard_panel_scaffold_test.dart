@@ -1219,6 +1219,5 @@ const _aboveKeyboardToolbarKey = ValueKey('toolbar');
 const _keyboardPanelKey = ValueKey('keyboardPanel');
 
 enum _Panel {
-  panel1,
-  panel2;
+  panel1;
 }

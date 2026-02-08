@@ -1,7 +1,7 @@
 import 'package:dart_quill_delta/dart_quill_delta.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:super_editor/super_editor.dart';
-import 'package:super_editor_quill/super_editor_quill_test.dart';
+import 'package:super_editor/super_editor_test.dart';
 
 import 'test_documents.dart';
 
