@@ -34,9 +34,9 @@ import 'package:super_editor/src/infrastructure/sliver_hybrid_stack.dart';
 import 'package:super_editor/src/infrastructure/touch_controls.dart';
 import 'package:super_keyboard/super_keyboard.dart';
 
-import '../infrastructure/document_gestures.dart';
-import '../infrastructure/document_gestures_interaction_overrides.dart';
-import 'selection_upstream_downstream.dart';
+import 'package:super_editor/src/infrastructure/document_gestures.dart';
+import 'package:super_editor/src/infrastructure/document_gestures_interaction_overrides.dart';
+import 'package:super_editor/src/default_editor/selection_upstream_downstream.dart';
 
 /// An [InheritedWidget] that provides shared access to a [SuperEditorIosControlsController],
 /// which coordinates the state of iOS controls like the caret, handles, magnifier, etc.
@@ -260,7 +260,7 @@ class SuperEditorIosControlsController {
 /// other widgets.
 class IosDocumentTouchInteractor extends StatefulWidget {
   const IosDocumentTouchInteractor({
-    Key? key,
+    super.key,
     required this.focusNode,
     required this.editor,
     required this.document,
@@ -276,7 +276,7 @@ class IosDocumentTouchInteractor extends StatefulWidget {
     this.dragAutoScrollBoundary = const AxisOffset.symmetric(54),
     this.showDebugPaint = false,
     required this.child,
-  }) : super(key: key);
+  });
 
   final FocusNode focusNode;
 

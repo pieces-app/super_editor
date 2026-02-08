@@ -367,7 +367,7 @@ class _EditorToolbarState extends State<EditorToolbar> {
   /// Takes the text from the [urlController] and applies it as a link
   /// attribution to the currently selected text.
   void _applyLink() {
-    final url = _urlController!.text.text;
+    final url = _urlController!.text.toPlainText(includePlaceholders: false);
 
     final selection = widget.composer.selection!;
     final baseOffset = (selection.base.nodePosition as TextPosition).offset;
@@ -381,7 +381,7 @@ class _EditorToolbarState extends State<EditorToolbar> {
 
     final trimmedRange = _trimTextRangeWhitespace(text, selectionRange);
 
-    final linkAttribution = LinkAttribution(url);
+    final linkAttribution = LinkAttribution.fromUri(Uri.parse(url));
 
     widget.editor!.execute([
       AddTextAttributionsRequest(

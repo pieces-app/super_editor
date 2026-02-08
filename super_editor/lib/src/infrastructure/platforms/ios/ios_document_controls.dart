@@ -23,13 +23,13 @@ import 'package:super_text_layout/super_text_layout.dart';
 /// An application overlay that displays an iOS-style toolbar.
 class IosFloatingToolbarOverlay extends StatefulWidget {
   const IosFloatingToolbarOverlay({
-    Key? key,
+    super.key,
     required this.shouldShowToolbar,
     required this.toolbarFocalPoint,
     required this.floatingToolbarBuilder,
     this.createOverlayControlsClipper,
     this.showDebugPaint = false,
-  }) : super(key: key);
+  });
 
   final ValueListenable<bool> shouldShowToolbar;
 
@@ -361,12 +361,12 @@ class FloatingCursorListener {
 /// [SuperEditorIosControlsScope].
 class IosToolbarFocalPointDocumentLayer extends DocumentLayoutLayerStatefulWidget {
   const IosToolbarFocalPointDocumentLayer({
-    Key? key,
+    super.key,
     required this.document,
     required this.selection,
     required this.toolbarFocalPointLink,
     this.showDebugLeaderBounds = false,
-  }) : super(key: key);
+  });
 
   /// The editor's [Document], which is used to find the start and end of
   /// the user's expanded selection.
@@ -705,11 +705,7 @@ class IosControlsDocumentLayerState extends DocumentLayoutLayerState<IosHandlesD
     NodePosition? extentNodePosition = component.movePositionRight(position.nodePosition);
     bool isExtentDownstream = extentNodePosition != null;
 
-    if (extentNodePosition == null) {
-      // Couldn't find a valid position to the right. Look for a position to the left
-      // of the current position within the same node.
-      extentNodePosition = component.movePositionLeft(position.nodePosition);
-    }
+    extentNodePosition ??= component.movePositionLeft(position.nodePosition);
 
     if (extentNodePosition == null) {
       // We couldn't expand the selection neither to the left of the right. Fallback

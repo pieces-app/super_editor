@@ -980,9 +980,7 @@ Widget _buildScaffold({
 /// Used to modify the text when we receive deltas from the IME, causing us to send the editing value
 /// back to the IME.
 class _ObscuringTextController extends AttributedTextEditingController {
-  _ObscuringTextController({
-    AttributedText? text,
-  }) : super(text: text);
+  _ObscuringTextController();
 
   @override
   void insertAtCaret({

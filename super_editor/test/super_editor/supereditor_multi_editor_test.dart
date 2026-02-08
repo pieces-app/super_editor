@@ -238,10 +238,9 @@ Future<void> _buildTextScaleScaffold(
 /// when its content is replaced.
 class _SwitchEditorsDemo extends StatefulWidget {
   const _SwitchEditorsDemo({
-    Key? key,
     this.composer1,
     this.composer2,
-  }) : super(key: key);
+  });
 
   final MutableDocumentComposer? composer1;
   final MutableDocumentComposer? composer2;

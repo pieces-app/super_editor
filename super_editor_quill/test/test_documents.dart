@@ -1,6 +1,5 @@
 import 'package:flutter/painting.dart';
 import 'package:super_editor/super_editor.dart';
-import 'package:super_editor_quill/src/content/formatting.dart';
 
 /// A Quill Delta document that uses every type of standard editor styles.
 ///

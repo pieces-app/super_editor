@@ -16,8 +16,8 @@ import 'package:super_editor/src/infrastructure/multi_tap_gesture.dart';
 import 'package:super_editor/src/infrastructure/document_context.dart';
 import 'package:super_editor/src/infrastructure/sliver_hybrid_stack.dart';
 
-import '../core/document_composer.dart';
-import '../core/editor.dart';
+import 'package:super_editor/src/core/document_composer.dart';
+import 'package:super_editor/src/core/editor.dart';
 import 'package:super_editor/src/infrastructure/content_tap_exclusion.dart';
 
 /// Governs mouse gesture interaction with a read-only document, such as scrolling
@@ -39,7 +39,7 @@ import 'package:super_editor/src/infrastructure/content_tap_exclusion.dart';
 /// selection, or double/triple tap to select content.
 class ReadOnlyDocumentMouseInteractor extends StatefulWidget {
   const ReadOnlyDocumentMouseInteractor({
-    Key? key,
+    super.key,
     this.focusNode,
     required this.readerContext,
     this.contentTapHandler,
@@ -48,7 +48,7 @@ class ReadOnlyDocumentMouseInteractor extends StatefulWidget {
     this.showDebugPaint = false,
     required this.child,
     this.scrollingEnabled = true,
-  }) : super(key: key);
+  });
 
   final FocusNode? focusNode;
 

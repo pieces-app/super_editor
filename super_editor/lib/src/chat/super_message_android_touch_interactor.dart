@@ -233,14 +233,14 @@ class SuperMessageAndroidControlsController {
 /// drag to scroll, and handles to control selection.
 class SuperMessageAndroidTouchInteractor extends StatefulWidget {
   const SuperMessageAndroidTouchInteractor({
-    Key? key,
+    super.key,
     required this.focusNode,
     required this.editor,
     required this.getDocumentLayout,
     this.contentTapHandlers,
     this.showDebugPaint = false,
     required this.child,
-  }) : super(key: key);
+  });
 
   final FocusNode focusNode;
 

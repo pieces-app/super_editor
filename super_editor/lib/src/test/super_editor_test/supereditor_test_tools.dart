@@ -641,14 +641,14 @@ class _TestSuperEditorState extends State<_TestSuperEditor> {
 
     if (_iOsControlsController != null) {
       testSuperEditor = SuperEditorIosControlsScope(
-        controller: _iOsControlsController!,
+        controller: _iOsControlsController,
         child: testSuperEditor,
       );
     }
 
     if (_androidControlsController != null) {
       testSuperEditor = SuperEditorAndroidControlsScope(
-        controller: _androidControlsController!,
+        controller: _androidControlsController,
         child: testSuperEditor,
       );
     }

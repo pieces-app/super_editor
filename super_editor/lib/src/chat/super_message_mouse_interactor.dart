@@ -15,7 +15,7 @@ import 'package:super_editor/src/infrastructure/document_context.dart';
 import 'package:super_editor/src/super_reader/read_only_document_mouse_interactor.dart'
     show moveToNearestSelectableComponent, selectRegion;
 
-import '../core/document_composer.dart';
+import 'package:super_editor/src/core/document_composer.dart';
 
 /// Governs mouse gesture interaction with a read-only document, such as scrolling
 /// a document with a scroll wheel and tap-and-dragging to create an expanded selection.
@@ -36,13 +36,13 @@ import '../core/document_composer.dart';
 /// selection, or double/triple tap to select content.
 class SuperMessageMouseInteractor extends StatefulWidget {
   const SuperMessageMouseInteractor({
-    Key? key,
+    super.key,
     this.focusNode,
     required this.messageContext,
     this.contentTapHandler,
     this.showDebugPaint = false,
     required this.child,
-  }) : super(key: key);
+  });
 
   final FocusNode? focusNode;
 

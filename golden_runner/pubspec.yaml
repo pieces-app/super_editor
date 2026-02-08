@@ -1,6 +1,6 @@
 name: golden_runner
 description: Commands to test and update goldens in a Docker container
-version: 0.0.1
+version: 0.2.0
 homepage:
 
 executables:

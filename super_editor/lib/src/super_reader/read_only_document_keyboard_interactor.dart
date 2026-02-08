@@ -8,8 +8,8 @@ import 'package:super_editor/src/infrastructure/keyboard.dart';
 import 'package:super_editor/src/infrastructure/platforms/platform.dart';
 import 'package:super_editor/src/infrastructure/document_context.dart';
 
-import '../core/document_composer.dart';
-import 'reader_context.dart';
+import 'package:super_editor/src/core/document_composer.dart';
+import 'package:super_editor/src/super_reader/reader_context.dart';
 
 /// Governs document input that comes from a physical keyboard.
 ///
@@ -31,13 +31,13 @@ import 'reader_context.dart';
 /// the keyboard handlers, because read-only documents don't support edits.
 class ReadOnlyDocumentKeyboardInteractor extends StatelessWidget {
   const ReadOnlyDocumentKeyboardInteractor({
-    Key? key,
+    super.key,
     required this.focusNode,
     required this.readerContext,
     required this.keyboardActions,
     required this.child,
     this.autofocus = false,
-  }) : super(key: key);
+  });
 
   /// The source of all key events.
   final FocusNode focusNode;

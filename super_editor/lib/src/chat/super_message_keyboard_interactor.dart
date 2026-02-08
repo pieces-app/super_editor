@@ -16,13 +16,13 @@ import 'package:super_editor/src/infrastructure/document_context.dart';
 /// the keyboard handlers, because read-only documents don't support edits.
 class SuperMessageKeyboardInteractor extends StatelessWidget {
   const SuperMessageKeyboardInteractor({
-    Key? key,
+    super.key,
     required this.focusNode,
     required this.messageContext,
     required this.keyboardActions,
     required this.child,
     this.autofocus = false,
-  }) : super(key: key);
+  });
 
   /// The source of all key events.
   final FocusNode focusNode;

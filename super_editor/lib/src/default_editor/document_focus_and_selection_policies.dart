@@ -7,7 +7,7 @@ import 'package:super_editor/super_editor.dart';
 /// selection when the editor loses focus.
 class EditorSelectionAndFocusPolicy extends StatefulWidget {
   const EditorSelectionAndFocusPolicy({
-    Key? key,
+    super.key,
     required this.focusNode,
     required this.editor,
     required this.document,
@@ -18,7 +18,7 @@ class EditorSelectionAndFocusPolicy extends StatefulWidget {
     this.restorePreviousSelectionOnGainFocus = true,
     this.clearSelectionWhenEditorLosesFocus = true,
     required this.child,
-  }) : super(key: key);
+  });
 
   /// Returns whether or not we can access the document layout, which is needed for [placeCaretAtEndOfDocumentOnGainFocus].
   ///

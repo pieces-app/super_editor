@@ -11,7 +11,7 @@ import 'package:super_text_layout/super_text_layout.dart';
 /// Document overlay that paints a caret with the given [caretStyle].
 class CaretDocumentOverlay extends DocumentLayoutLayerStatefulWidget {
   const CaretDocumentOverlay({
-    Key? key,
+    super.key,
     required this.composer,
     required this.documentLayoutResolver,
     this.caretStyle = const CaretStyle(
@@ -22,7 +22,7 @@ class CaretDocumentOverlay extends DocumentLayoutLayerStatefulWidget {
     this.displayOnAllPlatforms = false,
     this.displayCaretWithExpandedSelection = true,
     this.blinkTimingMode = BlinkTimingMode.ticker,
-  }) : super(key: key);
+  });
 
   /// The editor's [DocumentComposer], which reports the current selection.
   final DocumentComposer composer;

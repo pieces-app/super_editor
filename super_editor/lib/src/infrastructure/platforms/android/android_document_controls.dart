@@ -25,12 +25,12 @@ import 'package:super_text_layout/super_text_layout.dart';
 /// [SuperEditorAndroidControlsScope].
 class AndroidToolbarFocalPointDocumentLayer extends DocumentLayoutLayerStatefulWidget {
   const AndroidToolbarFocalPointDocumentLayer({
-    Key? key,
+    super.key,
     required this.document,
     required this.selection,
     required this.toolbarFocalPointLink,
     this.showDebugLeaderBounds = false,
-  }) : super(key: key);
+  });
 
   /// The editor's [Document], which is used to find the start and end of
   /// the user's expanded selection.

@@ -38,7 +38,7 @@ import 'package:super_editor/src/infrastructure/touch_controls.dart';
 import 'package:super_editor/src/super_textfield/metrics.dart';
 import 'package:super_text_layout/super_text_layout.dart';
 
-import '../default_editor/text_tools.dart';
+import 'package:super_editor/src/default_editor/text_tools.dart';
 
 /// Read-only document gesture interactor that's designed for Android touch input, e.g.,
 /// drag to scroll, and handles to control selection.
@@ -50,7 +50,7 @@ import '../default_editor/text_tools.dart';
 /// selection, or double/triple tap to select content.
 class ReadOnlyAndroidDocumentTouchInteractor extends StatefulWidget {
   const ReadOnlyAndroidDocumentTouchInteractor({
-    Key? key,
+    super.key,
     required this.focusNode,
     this.tapRegionGroupId,
     required this.readerContext,
@@ -68,7 +68,7 @@ class ReadOnlyAndroidDocumentTouchInteractor extends StatefulWidget {
     this.overlayController,
     required this.child,
     this.scrollingEnabled = true,
-  }) : super(key: key);
+  });
 
   final FocusNode focusNode;
 
@@ -464,7 +464,7 @@ class _ReadOnlyAndroidDocumentTouchInteractorState extends State<ReadOnlyAndroid
     );
   }
 
-  bool _wasScrollingOnTapDown = false;
+  final bool _wasScrollingOnTapDown = false;
   void _onTapDown(TapDownDetails details) {
     final position = scrollPosition;
     if (position is ScrollPositionWithSingleContext) {
@@ -1135,7 +1135,7 @@ typedef SelectionChanger = void Function(DocumentSelection? newSelection);
 // TODO: This was moved here from the SuperEditor side. We've removed the need for this from SuperEditor, remove it from SuperReader, too.
 class AndroidDocumentTouchEditingControls extends StatefulWidget {
   const AndroidDocumentTouchEditingControls({
-    Key? key,
+    super.key,
     required this.editingController,
     required this.documentKey,
     required this.documentLayout,
@@ -1147,7 +1147,7 @@ class AndroidDocumentTouchEditingControls extends StatefulWidget {
     this.createOverlayControlsClipper,
     required this.longPressMagnifierGlobalOffset,
     this.showDebugPaint = false,
-  }) : super(key: key);
+  });
 
   final AndroidDocumentGestureEditingController editingController;
 

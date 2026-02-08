@@ -19,8 +19,8 @@ import 'package:super_editor/src/infrastructure/composable_text.dart';
 import 'package:super_editor/src/infrastructure/keyboard.dart';
 import 'package:super_text_layout/super_text_layout.dart';
 
-import 'attributions.dart';
-import 'layout_single_column/layout_single_column.dart';
+import 'package:super_editor/src/default_editor/attributions.dart';
+import 'package:super_editor/src/default_editor/layout_single_column/layout_single_column.dart';
 
 /// This file includes everything needed to add the concept of a task
 /// to Super Editor. This includes:
@@ -325,10 +325,10 @@ double defaultTaskIndentCalculator(TextStyle textStyle, int indent) {
 /// [viewModel].
 class TaskComponent extends StatefulWidget {
   const TaskComponent({
-    Key? key,
+    super.key,
     required this.viewModel,
     this.showDebugPaint = false,
-  }) : super(key: key);
+  });
 
   final TaskComponentViewModel viewModel;
   final bool showDebugPaint;

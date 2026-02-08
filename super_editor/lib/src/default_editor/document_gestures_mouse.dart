@@ -20,7 +20,7 @@ import 'package:super_editor/src/infrastructure/flutter/flutter_scheduler.dart';
 import 'package:super_editor/src/infrastructure/multi_tap_gesture.dart';
 import 'package:super_editor/src/infrastructure/sliver_hybrid_stack.dart';
 
-import '../infrastructure/document_gestures_interaction_overrides.dart';
+import 'package:super_editor/src/infrastructure/document_gestures_interaction_overrides.dart';
 
 /// Governs mouse gesture interaction with a document, such as scrolling
 /// a document with a scroll wheel, tapping to place a caret, and
@@ -43,7 +43,7 @@ import '../infrastructure/document_gestures_interaction_overrides.dart';
 /// [DocumentMouseInteractor] auto-scrolls the editor to make the selection region visible.
 class DocumentMouseInteractor extends StatefulWidget {
   const DocumentMouseInteractor({
-    Key? key,
+    super.key,
     this.focusNode,
     required this.editor,
     required this.document,
@@ -55,7 +55,7 @@ class DocumentMouseInteractor extends StatefulWidget {
     required this.fillViewport,
     this.showDebugPaint = false,
     required this.child,
-  }) : super(key: key);
+  });
 
   final FocusNode? focusNode;
 
@@ -859,8 +859,8 @@ Updating drag selection:
 class DragRectanglePainter extends CustomPainter {
   DragRectanglePainter({
     this.selectionRect,
-    Listenable? repaint,
-  }) : super(repaint: repaint);
+    super.repaint,
+  });
 
   final Rect? selectionRect;
   final Paint _selectionPaint = Paint()

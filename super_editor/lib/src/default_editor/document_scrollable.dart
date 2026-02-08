@@ -10,7 +10,7 @@ import 'package:super_editor/src/infrastructure/flutter/flutter_scheduler.dart';
 import 'package:super_editor/src/infrastructure/flutter/material_scrollbar.dart';
 import 'package:super_editor/src/infrastructure/scrolling_diagnostics/_scrolling_minimap.dart';
 
-import '../infrastructure/document_gestures.dart';
+import 'package:super_editor/src/infrastructure/document_gestures.dart';
 
 /// Scroller for a document.
 ///
@@ -27,7 +27,7 @@ import '../infrastructure/document_gestures.dart';
 /// scroll.
 class DocumentScrollable extends StatefulWidget {
   const DocumentScrollable({
-    Key? key,
+    super.key,
     required this.autoScroller,
     this.scrollController,
     this.scroller,
@@ -36,7 +36,7 @@ class DocumentScrollable extends StatefulWidget {
     required this.shrinkWrap,
     required this.child,
     this.scrollEnabled = true,
-  }) : super(key: key);
+  });
 
   /// Controller that adjusts the scroll offset of this [DocumentScrollable].
   final AutoScrollController autoScroller;

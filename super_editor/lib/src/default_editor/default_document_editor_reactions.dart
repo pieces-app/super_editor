@@ -20,7 +20,7 @@ import 'package:super_editor/src/default_editor/text.dart';
 import 'package:super_editor/src/infrastructure/_logging.dart';
 import 'package:super_editor/src/infrastructure/strings.dart';
 
-import 'multi_node_editing.dart';
+import 'package:super_editor/src/default_editor/multi_node_editing.dart';
 
 /// Converts a [ParagraphNode] from a regular paragraph to a header when the
 /// user types "# " (or similar) at the start of the paragraph.

@@ -190,7 +190,7 @@ class SuperReaderIosControlsController {
 /// selection, or double/triple tap to select content.
 class SuperReaderIosDocumentTouchInteractor extends StatefulWidget {
   const SuperReaderIosDocumentTouchInteractor({
-    Key? key,
+    super.key,
     required this.focusNode,
     required this.readerContext,
     required this.documentKey,
@@ -202,7 +202,7 @@ class SuperReaderIosDocumentTouchInteractor extends StatefulWidget {
     this.showDebugPaint = false,
     required this.child,
     this.scrollingEnabled = true,
-  }) : super(key: key);
+  });
 
   final FocusNode focusNode;
 

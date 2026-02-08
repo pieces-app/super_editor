@@ -1,9 +1,6 @@
 import 'package:dart_quill_delta/dart_quill_delta.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:super_editor/super_editor.dart';
-import 'package:super_editor_quill/src/parsing/parser.dart';
-import 'package:super_editor_quill/src/serializing/serializers.dart';
-import 'package:super_editor_quill/src/serializing/serializing.dart';
 import 'package:super_editor_quill/super_editor_quill_test.dart';
 
 import 'test_documents.dart';

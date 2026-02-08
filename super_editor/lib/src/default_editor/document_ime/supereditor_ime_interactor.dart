@@ -18,12 +18,12 @@ import 'package:super_editor/src/infrastructure/platforms/ios/ios_document_contr
 import 'package:super_editor/src/infrastructure/platforms/platform.dart';
 import 'package:super_editor/src/infrastructure/render_sliver_ext.dart';
 
-import '../document_hardware_keyboard/document_input_keyboard.dart';
-import 'document_delta_editing.dart';
-import 'document_ime_communication.dart';
-import 'document_ime_interaction_policies.dart';
-import 'ime_decoration.dart';
-import 'ime_keyboard_control.dart';
+import 'package:super_editor/src/default_editor/document_hardware_keyboard/document_input_keyboard.dart';
+import 'package:super_editor/src/default_editor/document_ime/document_delta_editing.dart';
+import 'package:super_editor/src/default_editor/document_ime/document_ime_communication.dart';
+import 'package:super_editor/src/default_editor/document_ime/document_ime_interaction_policies.dart';
+import 'package:super_editor/src/default_editor/document_ime/ime_decoration.dart';
+import 'package:super_editor/src/default_editor/document_ime/ime_keyboard_control.dart';
 
 /// [SuperEditor] interactor that edits a document based on IME input
 /// from the operating system.
@@ -36,7 +36,7 @@ import 'ime_keyboard_control.dart';
 //       proxyInputClient.addClient(myFocusedClient).
 class SuperEditorImeInteractor extends StatefulWidget {
   const SuperEditorImeInteractor({
-    Key? key,
+    super.key,
     this.focusNode,
     this.autofocus = false,
     required this.editContext,
@@ -52,7 +52,7 @@ class SuperEditorImeInteractor extends StatefulWidget {
     required this.selectorHandlers,
     this.floatingCursorController,
     required this.child,
-  }) : super(key: key);
+  });
 
   final FocusNode? focusNode;
 
@@ -166,7 +166,7 @@ class SuperEditorImeInteractorState extends State<SuperEditorImeInteractor> impl
   /// At the end of the frame, if 2+ inputs registered with the same [SuperImeInputId.role],
   /// an exception is thrown, which includes the stack traces for each of those registrations,
   /// so that developers can debug why it happened.
-  static _registerInput(SuperImeInputId inputId) {
+  static void _registerInput(SuperImeInputId inputId) {
     if (!kDebugMode) {
       return;
     }

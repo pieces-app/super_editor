@@ -740,10 +740,9 @@ MutableDocument _createSingleParagraphDoc() {
 
 class _DragLinePaint extends StatelessWidget {
   const _DragLinePaint({
-    Key? key,
     required this.line,
     required this.child,
-  }) : super(key: key);
+  });
 
   final ValueNotifier<_Line?> line;
   final Widget child;

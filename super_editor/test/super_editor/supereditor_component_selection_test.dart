@@ -617,9 +617,8 @@ class _UnselectableHrComponentBuilder implements ComponentBuilder {
 
 class _UnselectableHorizontalRuleComponent extends StatelessWidget {
   const _UnselectableHorizontalRuleComponent({
-    Key? key,
     required this.componentKey,
-  }) : super(key: key);
+  });
 
   final GlobalKey componentKey;
 
@@ -679,12 +678,12 @@ class _ButtonNode extends BlockNode {
 
 class _ButtonViewModel extends SingleColumnLayoutComponentViewModel with SelectionAwareViewModelMixin {
   _ButtonViewModel({
-    required String nodeId,
-    double? maxWidth,
-    EdgeInsetsGeometry padding = EdgeInsets.zero,
+    required super.nodeId,
+    super.maxWidth,
+    super.padding = EdgeInsets.zero,
     DocumentNodeSelection? selection,
     Color selectionColor = Colors.transparent,
-  }) : super(nodeId: nodeId, createdAt: null, maxWidth: maxWidth, padding: padding) {
+  }) : super(createdAt: null) {
     this.selection = selection;
     this.selectionColor = selectionColor;
   }
@@ -716,11 +715,10 @@ class _ButtonViewModel extends SingleColumnLayoutComponentViewModel with Selecti
 
 class _ButtonComponent extends StatelessWidget {
   const _ButtonComponent({
-    Key? key,
     required this.componentKey,
     this.selectionColor = Colors.blue,
     this.selection,
-  }) : super(key: key);
+  });
 
   final GlobalKey componentKey;
   final Color selectionColor;

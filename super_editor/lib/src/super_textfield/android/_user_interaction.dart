@@ -6,11 +6,10 @@ import 'package:super_editor/src/infrastructure/_logging.dart';
 import 'package:super_editor/src/infrastructure/document_gestures_interaction_overrides.dart';
 import 'package:super_editor/src/infrastructure/flutter/flutter_scheduler.dart';
 import 'package:super_editor/src/infrastructure/multi_tap_gesture.dart';
-import 'package:super_editor/src/super_textfield/infrastructure/text_field_gestures_interaction_overrides.dart';
 import 'package:super_editor/src/super_textfield/super_textfield.dart';
 import 'package:super_text_layout/super_text_layout.dart';
 
-import '_editing_controls.dart';
+import 'package:super_editor/src/super_textfield/android/_editing_controls.dart';
 
 final _log = androidTextFieldLog;
 
@@ -44,7 +43,7 @@ final _log = androidTextFieldLog;
 /// Selection changes are made via the given [textController].
 class AndroidTextFieldTouchInteractor extends StatefulWidget {
   const AndroidTextFieldTouchInteractor({
-    Key? key,
+    super.key,
     required this.focusNode,
     required this.textFieldLayerLink,
     required this.textController,
@@ -57,7 +56,7 @@ class AndroidTextFieldTouchInteractor extends StatefulWidget {
     this.tapHandlers = const [],
     this.showDebugPaint = false,
     required this.child,
-  }) : super(key: key);
+  });
 
   /// [FocusNode] for the text field that contains this [AndroidTextFieldInteractor].
   ///

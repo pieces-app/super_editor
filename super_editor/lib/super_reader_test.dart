@@ -1,4 +1,4 @@
-library super_document_test;
+library;
 
 export 'src/test/ime.dart';
 export 'src/test/super_reader_test/reader_test_tools.dart';

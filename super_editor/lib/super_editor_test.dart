@@ -1,4 +1,4 @@
-library super_editor_test;
+library;
 
 export 'src/infrastructure/platforms/platform.dart';
 export 'src/test/ime.dart';

@@ -754,7 +754,7 @@ class _EmptyLinePreservingParagraphSyntax extends md.BlockSyntax {
 ///
 /// The default [Element] implementation ignores all line breaks.
 class _LineBreakSeparatedElement extends md.Element {
-  _LineBreakSeparatedElement(String tag, List<md.Node>? children) : super(tag, children);
+  _LineBreakSeparatedElement(super.tag, super.children);
 
   @override
   String get textContent {

@@ -264,7 +264,7 @@ class TestDocumentConfigurator {
     );
     final testContext = TestDocumentContext._(
       focusNode: _focusNode ?? FocusNode(),
-      document: _document!,
+      document: _document,
       layoutKey: layoutKey,
       documentContext: documentContext,
     );

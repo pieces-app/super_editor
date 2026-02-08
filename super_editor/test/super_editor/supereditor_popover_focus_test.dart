@@ -126,10 +126,9 @@ Future<void> _hidePopover(WidgetTester tester) async {
 
 class _Popover extends StatefulWidget {
   const _Popover({
-    Key? key,
     required this.editorFocusNode,
     required this.textFieldFocusNode,
-  }) : super(key: key);
+  });
 
   final FocusNode editorFocusNode;
   final FocusNode textFieldFocusNode;

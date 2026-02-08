@@ -17,12 +17,12 @@ import 'package:super_editor/src/infrastructure/content_layers.dart';
 /// bounding box which includes all lines of that text.
 class AttributionBounds extends ContentLayerStatefulWidget {
   const AttributionBounds({
-    Key? key,
+    super.key,
     required this.document,
     required this.layout,
     required this.selector,
     required this.builder,
-  }) : super(key: key);
+  });
 
   final Document document;
   final DocumentLayout layout;

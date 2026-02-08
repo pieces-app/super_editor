@@ -61,11 +61,10 @@ void main() {
 /// on the value of [isEditable].
 class _EditorReaderSwitchDemo extends StatefulWidget {
   const _EditorReaderSwitchDemo({
-    Key? key,
     required this.isEditable,
     required this.document,
     required this.scrollController,
-  }) : super(key: key);
+  });
 
   final MutableDocument document;
 

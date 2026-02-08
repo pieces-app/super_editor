@@ -291,7 +291,7 @@ class DeferToTrackpadsAndMouseWheelsScrollBehavior extends ScrollBehavior {
 }
 
 class _DeferToTrackpadsAndMouseWheelsScrollPhysics extends ScrollPhysics {
-  const _DeferToTrackpadsAndMouseWheelsScrollPhysics({ScrollPhysics? parent}) : super(parent: parent);
+  const _DeferToTrackpadsAndMouseWheelsScrollPhysics({super.parent});
 
   @override
   _DeferToTrackpadsAndMouseWheelsScrollPhysics applyTo(ScrollPhysics? ancestor) {

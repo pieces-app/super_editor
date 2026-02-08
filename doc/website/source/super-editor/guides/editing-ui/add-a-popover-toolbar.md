@@ -144,7 +144,6 @@ class MyAppState extends State<MyApp> {
     // to the _viewportKey.
     _screenBoundary = WidgetFollowerBoundary(
       boundaryKey: _viewportKey,
-      devicePixelRatio: MediaQuery.devicePixelRatioOf(context),
     );
   }
 }
@@ -162,7 +161,7 @@ class MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     // Place the toolbar above the content by default.
-    _toolbarAligner = CupertinoPopoverToolbarAligner(_viewportKey);
+    _toolbarAligner = CupertinoPopoverToolbarAligner();
   };
 
   // ...

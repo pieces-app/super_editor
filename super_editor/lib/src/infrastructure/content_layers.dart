@@ -105,7 +105,7 @@ class ContentLayersElement extends RenderObjectElement {
     }
   }
 
-  ContentLayersElement(ContentLayers widget) : super(widget);
+  ContentLayersElement(ContentLayers super.widget);
 
   List<Element> _underlays = <Element>[];
   Element? _content;
@@ -484,14 +484,14 @@ bool isContentLayersSlot(Object slot) => slot == contentSlot || slot is Underlay
 const contentSlot = "content";
 
 class UnderlaySlot extends _IndexedSlot {
-  const UnderlaySlot(int index) : super(index);
+  const UnderlaySlot(super.index);
 
   @override
   String toString() => "[$UnderlaySlot] - underlay index: $index";
 }
 
 class OverlaySlot extends _IndexedSlot {
-  const OverlaySlot(int index) : super(index);
+  const OverlaySlot(super.index);
 
   @override
   String toString() => "[$OverlaySlot] - overlay index: $index";

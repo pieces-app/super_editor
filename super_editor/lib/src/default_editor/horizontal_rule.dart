@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:super_editor/src/default_editor/layout_single_column/selection_aware_viewmodel.dart';
 import 'package:super_editor/src/default_editor/selection_upstream_downstream.dart';
 
-import '../core/document.dart';
-import 'box_component.dart';
-import 'layout_single_column/layout_single_column.dart';
+import 'package:super_editor/src/core/document.dart';
+import 'package:super_editor/src/default_editor/box_component.dart';
+import 'package:super_editor/src/default_editor/layout_single_column/layout_single_column.dart';
 
 /// [DocumentNode] for a horizontal rule, which represents a full-width
 /// horizontal separation in a document.
@@ -160,7 +160,7 @@ class HorizontalRuleComponentViewModel extends SingleColumnLayoutComponentViewMo
 /// Displays a horizontal rule in a document.
 class HorizontalRuleComponent extends StatelessWidget {
   const HorizontalRuleComponent({
-    Key? key,
+    super.key,
     required this.componentKey,
     this.color = Colors.grey,
     this.thickness = 1,
@@ -169,7 +169,7 @@ class HorizontalRuleComponent extends StatelessWidget {
     required this.caretColor,
     this.showCaret = false,
     this.opacity = 1.0,
-  }) : super(key: key);
+  });
 
   final GlobalKey componentKey;
   final Color color;

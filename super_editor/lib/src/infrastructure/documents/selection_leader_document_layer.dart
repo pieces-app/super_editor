@@ -18,12 +18,12 @@ import 'package:super_editor/src/infrastructure/documents/document_layers.dart';
 /// When no selection exists, no leaders are built in the layer's widget tree.
 class SelectionLeadersDocumentLayer extends DocumentLayoutLayerStatefulWidget {
   const SelectionLeadersDocumentLayer({
-    Key? key,
+    super.key,
     required this.document,
     required this.selection,
     required this.links,
     this.showDebugLeaderBounds = false,
-  }) : super(key: key);
+  });
 
   /// The editor's [Document], which is used to find the start and end of
   /// the user's expanded selection.

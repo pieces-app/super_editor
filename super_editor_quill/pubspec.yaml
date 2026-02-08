@@ -19,13 +19,13 @@ environment:
   sdk: ">=3.6.0 <4.0.0"
   flutter: ">=1.17.0"
 
-resolution: workspace
+# resolution: workspace  # Removed — quill serialization consolidated into super_editor core (v0.3.0-dev.41)
 
 dependencies:
   flutter:
     sdk: flutter
 
-  super_editor: ">=0.3.0-dev.18 <0.3.0-dev.41"
+  super_editor: ">=0.3.0-dev.18 <0.3.0-dev.49"
   logging: ^1.3.0
   dart_quill_delta: ^10.8.3
   collection: ^1.18.0

@@ -34,9 +34,9 @@ import 'package:super_editor/src/infrastructure/sliver_hybrid_stack.dart';
 import 'package:super_editor/src/infrastructure/touch_controls.dart';
 import 'package:super_keyboard/super_keyboard.dart';
 
-import '../infrastructure/document_gestures.dart';
-import '../infrastructure/document_gestures_interaction_overrides.dart';
-import 'selection_upstream_downstream.dart';
+import 'package:super_editor/src/infrastructure/document_gestures.dart';
+import 'package:super_editor/src/infrastructure/document_gestures_interaction_overrides.dart';
+import 'package:super_editor/src/default_editor/selection_upstream_downstream.dart';
 
 /// An [InheritedWidget] that provides shared access to a [SuperEditorAndroidControlsController],
 /// which coordinates the state of Android controls like the caret, handles, magnifier, etc.
@@ -424,7 +424,7 @@ class SuperEditorAndroidHandlesDocumentLayerBuilder implements SuperEditorLayerB
 /// drag to scroll, and handles to control selection.
 class AndroidDocumentTouchInteractor extends StatefulWidget {
   const AndroidDocumentTouchInteractor({
-    Key? key,
+    super.key,
     required this.focusNode,
     required this.editor,
     required this.document,
@@ -440,7 +440,7 @@ class AndroidDocumentTouchInteractor extends StatefulWidget {
     required this.dragHandleAutoScroller,
     this.showDebugPaint = false,
     required this.child,
-  }) : super(key: key);
+  });
 
   final FocusNode focusNode;
 

@@ -12,7 +12,7 @@ import 'package:super_editor/src/default_editor/text.dart';
 import 'package:super_editor/src/infrastructure/_logging.dart';
 import 'package:super_editor/src/infrastructure/platforms/platform.dart';
 
-import 'document_serialization.dart';
+import 'package:super_editor/src/default_editor/document_ime/document_serialization.dart';
 
 /// Applies software keyboard text deltas to a document.
 class TextDeltasDocumentEditor {

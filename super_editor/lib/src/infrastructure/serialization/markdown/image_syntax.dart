@@ -16,9 +16,8 @@ import 'package:super_editor/src/default_editor/image.dart';
 class SuperEditorImageSyntax extends md.LinkSyntax {
   static final _entirelyWhitespacePattern = RegExp(r'^\s*$.');
 
-  SuperEditorImageSyntax({md.Resolver? linkResolver})
+  SuperEditorImageSyntax({super.linkResolver})
       : super(
-          linkResolver: linkResolver,
           pattern: r'!\[',
           startCharacter: AsciiTable.exclamation,
         );

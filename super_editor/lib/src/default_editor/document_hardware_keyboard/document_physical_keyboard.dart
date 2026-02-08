@@ -17,13 +17,13 @@ import 'package:super_editor/src/infrastructure/keyboard.dart';
 /// Chain of Responsibility.
 class SuperEditorHardwareKeyHandler extends StatefulWidget {
   const SuperEditorHardwareKeyHandler({
-    Key? key,
+    super.key,
     this.focusNode,
     required this.editContext,
     this.keyboardActions = const [],
     this.autofocus = false,
     required this.child,
-  }) : super(key: key);
+  });
 
   /// The source of all key events.
   final FocusNode? focusNode;

@@ -836,9 +836,8 @@ void _expectLayerConstraintsThatMatchContent(BoxConstraints constraints) {
 /// rebuilds, and that descendant isn't the top-level widget in a subtree.
 class _NoRebuildWidget extends StatefulWidget {
   const _NoRebuildWidget({
-    Key? key,
     required this.child,
-  }) : super(key: key);
+  });
 
   final Widget child;
 
@@ -856,7 +855,7 @@ class _NoRebuildWidgetState extends State<_NoRebuildWidget> {
 /// Widget that can be told to rebuild from the outside, and also tracks its build count.
 class _RebuildableWidget extends StatefulWidget {
   const _RebuildableWidget({
-    Key? key,
+    super.key,
     this.rebuildSignal,
     this.buildTracker,
     // TODO(srawlins): `unused_element`, when reporting a parameter, is being
@@ -873,8 +872,7 @@ class _RebuildableWidget extends StatefulWidget {
     this.builder,
     this.child,
   })  : assert(child != null || builder != null, "Must provide either a child OR a builder."),
-        assert(child == null || builder == null, "Can't provide a child AND a builder. Choose one."),
-        super(key: key);
+        assert(child == null || builder == null, "Can't provide a child AND a builder. Choose one.");
 
   /// Signal that instructs this widget to call `setState()`.
   final Listenable? rebuildSignal;
@@ -959,7 +957,6 @@ class _RebuildableWidgetState extends State<_RebuildableWidget> {
 /// Content layer that can be told to rebuild from the outside, and also tracks its build count.
 class _RebuildableContentLayerWidget extends ContentLayerStatefulWidget {
   const _RebuildableContentLayerWidget({
-    Key? key,
     this.rebuildSignal,
     this.buildTracker,
     this.elementTracker,
@@ -972,8 +969,7 @@ class _RebuildableContentLayerWidget extends ContentLayerStatefulWidget {
     this.builder,
     this.child,
   })  : assert(child != null || builder != null, "Must provide either a child OR a builder."),
-        assert(child == null || builder == null, "Can't provide a child AND a builder. Choose one."),
-        super(key: key);
+        assert(child == null || builder == null, "Can't provide a child AND a builder. Choose one.");
 
   /// Signal that instructs this widget to call `setState()`.
   final Listenable? rebuildSignal;

@@ -7,12 +7,9 @@ import 'package:super_editor/src/infrastructure/flutter/flutter_scheduler.dart';
 import 'package:super_editor/src/infrastructure/flutter/text_selection.dart';
 import 'package:super_editor/src/infrastructure/multi_tap_gesture.dart';
 import 'package:super_editor/src/infrastructure/platforms/ios/selection_heuristics.dart';
-import 'package:super_editor/src/super_textfield/infrastructure/text_field_gestures_interaction_overrides.dart';
 import 'package:super_editor/src/super_textfield/super_textfield.dart';
-import 'package:super_editor/src/test/test_globals.dart';
 import 'package:super_text_layout/super_text_layout.dart';
 
-import 'editing_controls.dart';
 
 final _log = iosTextFieldLog;
 
@@ -44,7 +41,7 @@ class IOSTextFieldTouchInteractor extends StatefulWidget {
   static bool useIosSelectionHeuristics = true;
 
   const IOSTextFieldTouchInteractor({
-    Key? key,
+    super.key,
     required this.focusNode,
     this.tapHandlers = const [],
     required this.textFieldLayerLink,
@@ -57,7 +54,7 @@ class IOSTextFieldTouchInteractor extends StatefulWidget {
     required this.handleColor,
     this.showDebugPaint = false,
     required this.child,
-  }) : super(key: key);
+  });
 
   /// [FocusNode] for the text field that contains this [IOSTextFieldInteractor].
   ///

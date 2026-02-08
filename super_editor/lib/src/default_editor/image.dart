@@ -211,7 +211,7 @@ class ImageComponentViewModel extends SingleColumnLayoutComponentViewModel with 
 /// Displays an image in a document.
 class ImageComponent extends StatelessWidget {
   const ImageComponent({
-    Key? key,
+    super.key,
     required this.componentKey,
     required this.imageUrl,
     this.altText = '',
@@ -220,7 +220,7 @@ class ImageComponent extends StatelessWidget {
     this.selection,
     this.opacity = 1.0,
     this.imageBuilder,
-  }) : super(key: key);
+  });
 
   final String altText;
   final GlobalKey componentKey;
@@ -567,7 +567,7 @@ extension on Uint8List {
       return true;
     }
 
-    if (this.lengthInBytes != other.lengthInBytes) {
+    if (lengthInBytes != other.lengthInBytes) {
       return false;
     }
 

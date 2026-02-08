@@ -18,13 +18,13 @@ class AndroidSelectionHandle extends StatelessWidget {
   static const defaultTouchRegionExpansion = EdgeInsets.only(left: 16, right: 16, bottom: 16);
 
   const AndroidSelectionHandle({
-    Key? key,
+    super.key,
     required this.handleType,
     required this.color,
     this.radius = 10,
     this.touchRegionExpansion = defaultTouchRegionExpansion,
     this.showDebugTouchRegion = false,
-  }) : super(key: key);
+  });
 
   /// The type of handle, e.g., collapsed, upstream, downstream.
   final HandleType handleType;

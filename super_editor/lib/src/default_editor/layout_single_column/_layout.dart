@@ -7,7 +7,7 @@ import 'package:super_editor/src/core/document_layout.dart';
 import 'package:super_editor/src/core/document_selection.dart';
 import 'package:super_editor/src/infrastructure/_logging.dart';
 
-import '_presenter.dart';
+import 'package:super_editor/src/default_editor/layout_single_column/_presenter.dart';
 
 /// Displays a document in a single-column layout.
 ///
@@ -26,13 +26,13 @@ import '_presenter.dart';
 /// cast that `State` object to a [DocumentLayout].
 class SingleColumnDocumentLayout extends StatefulWidget {
   const SingleColumnDocumentLayout({
-    Key? key,
+    super.key,
     required this.presenter,
     required this.componentBuilders,
     this.onBuildScheduled,
     this.wrapWithSliverAdapter = true,
     this.showDebugPaint = false,
-  }) : super(key: key);
+  });
 
   /// Presenter that provides a view model for a complete single-column
   /// document layout.
@@ -872,11 +872,10 @@ class _SingleColumnDocumentLayoutState extends State<SingleColumnDocumentLayout>
 
 class _PresenterComponentBuilder extends StatefulWidget {
   const _PresenterComponentBuilder({
-    Key? key,
     required this.presenter,
     required this.watchNode,
     required this.builder,
-  }) : super(key: key);
+  });
 
   final SingleColumnLayoutPresenter presenter;
   final String watchNode;
@@ -949,7 +948,6 @@ class _PresenterComponentBuilderState extends State<_PresenterComponentBuilder> 
 /// given [presenter] reports that the
 class _Component extends StatelessWidget {
   const _Component({
-    Key? key,
     required this.componentBuilders,
     required this.componentViewModel,
     required this.componentKey,
@@ -958,7 +956,7 @@ class _Component extends StatelessWidget {
     // constraint is >= 3.6.0, just ignore `unused_element_parameter`.
     // ignore: unused_element, unused_element_parameter
     this.showDebugPaint = false,
-  }) : super(key: key);
+  });
 
   /// Builders for every type of component that this layout displays.
   ///

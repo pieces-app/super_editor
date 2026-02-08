@@ -26,11 +26,11 @@ import 'package:super_editor/src/infrastructure/keyboard.dart';
 import 'package:super_editor/src/infrastructure/strings.dart';
 import 'package:super_text_layout/super_text_layout.dart';
 
-import 'layout_single_column/layout_single_column.dart';
-import 'multi_node_editing.dart';
-import 'paragraph.dart';
-import 'selection_upstream_downstream.dart';
-import 'text_tools.dart';
+import 'package:super_editor/src/default_editor/layout_single_column/layout_single_column.dart';
+import 'package:super_editor/src/default_editor/multi_node_editing.dart';
+import 'package:super_editor/src/default_editor/paragraph.dart';
+import 'package:super_editor/src/default_editor/selection_upstream_downstream.dart';
+import 'package:super_editor/src/default_editor/text_tools.dart';
 
 @immutable
 class TextNode extends DocumentNode {
@@ -426,24 +426,18 @@ class TextNodeSelection extends TextSelection implements NodeSelection {
 
   const TextNodeSelection.collapsed({
     required int offset,
-    TextAffinity affinity = TextAffinity.downstream,
+    super.affinity,
   }) : super(
           baseOffset: offset,
           extentOffset: offset,
-          affinity: affinity,
         );
 
   const TextNodeSelection({
-    required int baseOffset,
-    required int extentOffset,
-    TextAffinity affinity = TextAffinity.downstream,
-    bool isDirectional = false,
-  }) : super(
-          baseOffset: baseOffset,
-          extentOffset: extentOffset,
-          affinity: affinity,
-          isDirectional: isDirectional,
-        );
+    required super.baseOffset,
+    required super.extentOffset,
+    super.affinity,
+    super.isDirectional,
+  });
 
   @override
   TextNodePosition get base => TextNodePosition(offset: baseOffset, affinity: affinity);
@@ -458,9 +452,9 @@ class TextNodePosition extends TextPosition implements NodePosition {
       : super(offset: position.offset, affinity: position.affinity);
 
   const TextNodePosition({
-    required int offset,
-    TextAffinity affinity = TextAffinity.downstream,
-  }) : super(offset: offset, affinity: affinity);
+    required super.offset,
+    super.affinity,
+  });
 
   @override
   bool isEquivalentTo(NodePosition other) {
@@ -697,7 +691,7 @@ class TextNodeMetadata {
 /// Internally uses a [TextComponent] to display the content text.
 class TextWithHintComponent extends StatefulWidget {
   const TextWithHintComponent({
-    Key? key,
+    super.key,
     required this.text,
     this.inlineWidgetBuilders = const [],
     this.hintText,
@@ -711,7 +705,7 @@ class TextWithHintComponent extends StatefulWidget {
     this.highlightWhenEmpty = false,
     this.underlines = const [],
     this.showDebugPaint = false,
-  }) : super(key: key);
+  });
 
   final AttributedText text;
 
@@ -791,7 +785,7 @@ class _TextWithHintComponentState extends State<TextWithHintComponent>
 /// This is the standard component for text display.
 class TextComponent extends StatefulWidget {
   const TextComponent({
-    Key? key,
+    super.key,
     required this.text,
     this.textAlign,
     this.textDirection,
@@ -804,7 +798,7 @@ class TextComponent extends StatefulWidget {
     this.highlightWhenEmpty = false,
     this.underlines = const [],
     this.showDebugPaint = false,
-  }) : super(key: key);
+  });
 
   final AttributedText text;
 
@@ -2242,10 +2236,10 @@ class TextInsertionEvent extends NodeChangeEvent {
 
 class TextDeletedEvent extends NodeChangeEvent {
   const TextDeletedEvent(
-    String nodeId, {
+    super.nodeId, {
     required this.offset,
     required this.deletedText,
-  }) : super(nodeId);
+  });
 
   final int offset;
   final AttributedText deletedText;

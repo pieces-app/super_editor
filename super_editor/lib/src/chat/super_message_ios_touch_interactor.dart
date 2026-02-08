@@ -180,7 +180,7 @@ class SuperMessageIosControlsController {
 /// selection, or double/triple tap to select content.
 class SuperMessageIosTouchInteractor extends StatefulWidget {
   const SuperMessageIosTouchInteractor({
-    Key? key,
+    super.key,
     required this.focusNode,
     required this.messageContext,
     required this.documentKey,
@@ -188,7 +188,7 @@ class SuperMessageIosTouchInteractor extends StatefulWidget {
     this.contentTapHandler,
     this.showDebugPaint = false,
     required this.child,
-  }) : super(key: key);
+  });
 
   final FocusNode focusNode;
 

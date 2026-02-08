@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_test_robots/flutter_test_robots.dart';
 import 'package:flutter_test_runners/flutter_test_runners.dart';
 import 'package:super_editor/super_editor.dart';
-import 'package:super_editor/super_editor_test.dart';
+import 'package:super_editor/super_editor_test.dart' hide FakeImageComponentBuilder;
 import 'package:super_editor_markdown/src/document_to_markdown_serializer.dart';
 import 'package:super_editor_markdown/src/markdown_to_document_parsing.dart';
 import 'package:super_editor_markdown/src/super_editor_paste_markdown.dart';
