@@ -1032,7 +1032,7 @@ class FakeImageComponentBuilder implements ComponentBuilder {
       imageUrl: componentViewModel.imageUrl,
       selection: componentViewModel.selection?.nodeSelection as UpstreamDownstreamNodeSelection?,
       selectionColor: componentViewModel.selectionColor,
-      imageBuilder: (context, imageUrl) => ColoredBox(
+      imageBuilder: (context, {required String imageUrl, String altText = ''}) => ColoredBox(
         color: fillColor ?? Colors.transparent,
         child: SizedBox(
           height: size.height,
