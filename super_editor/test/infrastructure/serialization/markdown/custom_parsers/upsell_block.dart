@@ -42,6 +42,7 @@ class UpsellNode extends BlockNode {
 /// This [BlockSyntax] produces an [md.Element] with the name "upsell".
 class UpsellBlockSyntax extends md.BlockSyntax {
   @override
+  // ignore: deprecated_member_use
   RegExp get pattern => RegExp(r'^@@@\s*upsell\s*$');
 
   const UpsellBlockSyntax();

@@ -29,10 +29,10 @@ class AndroidPopoverToolbar extends StatefulWidget {
   final ToolbarBuilder toolbarBuilder;
 
   @override
-  _AndroidPopoverToolbarState createState() => _AndroidPopoverToolbarState();
+  AndroidPopoverToolbarState createState() => AndroidPopoverToolbarState();
 }
 
-class _AndroidPopoverToolbarState extends State<AndroidPopoverToolbar> with TickerProviderStateMixin {
+class AndroidPopoverToolbarState extends State<AndroidPopoverToolbar> with TickerProviderStateMixin {
   // Whether or not the overflow menu is open. When it is closed, the menu
   // items that don't overflow are shown. When it is open, only the overflowing
   // menu items are shown.

@@ -49,6 +49,7 @@ class HeaderConversionReaction extends ParagraphPrefixConversionReaction {
     this.maxLevel = 6,
     this.mapping = _getHeaderAttributionForLevel,
   ]) {
+    // ignore: deprecated_member_use
     _headerRegExp = RegExp("^#{1,$maxLevel}\\s+\$");
   }
 
@@ -59,7 +60,9 @@ class HeaderConversionReaction extends ParagraphPrefixConversionReaction {
   final HeaderAttributionMapping mapping;
 
   @override
+  // ignore: deprecated_member_use
   RegExp get pattern => _headerRegExp;
+  // ignore: deprecated_member_use
   late final RegExp _headerRegExp;
 
   @override
@@ -118,11 +121,13 @@ typedef HeaderAttributionMapping = Attribution Function(int level);
 /// Converts a [ParagraphNode] to an [UnorderedListItemNode] when the
 /// user types "* " (or similar) at the start of the paragraph.
 class UnorderedListItemConversionReaction extends ParagraphPrefixConversionReaction {
+  // ignore: deprecated_member_use
   static final _unorderedListItemPattern = RegExp(r'^\s*[*-]\s+$');
 
   const UnorderedListItemConversionReaction();
 
   @override
+  // ignore: deprecated_member_use
   RegExp get pattern => _unorderedListItemPattern;
 
   @override
@@ -161,14 +166,17 @@ class UnorderedListItemConversionReaction extends ParagraphPrefixConversionReact
 /// user types " 1. " (or similar) at the start of the paragraph.
 class OrderedListItemConversionReaction extends ParagraphPrefixConversionReaction {
   /// Matches strings like ` 1. `, ` 2. `, ` 1) `, ` 2) `, etc.
+  // ignore: deprecated_member_use
   static final _orderedListPattern = RegExp(r'^\s*\d+[.)]\s+$');
 
   /// Matches one or more numbers.
+  // ignore: deprecated_member_use
   static final _numberRegex = RegExp(r'\d+');
 
   const OrderedListItemConversionReaction();
 
   @override
+  // ignore: deprecated_member_use
   RegExp get pattern => _orderedListPattern;
 
   @override
@@ -232,11 +240,13 @@ class OrderedListItemConversionReaction extends ParagraphPrefixConversionReactio
 /// Adjusts a [ParagraphNode] to use a blockquote block attribution when a
 /// user types " > " (or similar) at the start of the paragraph.
 class BlockquoteConversionReaction extends ParagraphPrefixConversionReaction {
+  // ignore: deprecated_member_use
   static final _blockquotePattern = RegExp(r'^>\s$');
 
   const BlockquoteConversionReaction();
 
   @override
+  // ignore: deprecated_member_use
   RegExp get pattern => _blockquotePattern;
 
   @override
@@ -284,6 +294,7 @@ class BlockquoteConversionReaction extends ParagraphPrefixConversionReaction {
 class HorizontalRuleConversionReaction extends EditReaction {
   // Matches "---" or "—-" (an em-dash followed by a regular dash) at the beginning of a line,
   // followed by a space.
+  // ignore: deprecated_member_use
   static final _hrPattern = RegExp(r'^(---|—-)\s');
 
   const HorizontalRuleConversionReaction();
@@ -352,7 +363,7 @@ class HorizontalRuleConversionReaction extends EditReaction {
 }
 
 /// Base class for [EditReaction]s that want to take action when the user types text at
-/// the beginning of a paragraph, which matches a given [RegExp].
+/// the beginning of a paragraph, which matches a given [Pattern].
 abstract class ParagraphPrefixConversionReaction extends EditReaction {
   const ParagraphPrefixConversionReaction({
     bool requireSpaceInsertion = true,
@@ -367,6 +378,7 @@ abstract class ParagraphPrefixConversionReaction extends EditReaction {
 
   /// Pattern that is matched at the beginning of a paragraph and then passed to
   /// sub-classes for processing.
+  // ignore: deprecated_member_use
   RegExp get pattern;
 
   @override

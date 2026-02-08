@@ -468,7 +468,7 @@ class _IosDocumentTouchInteractorState extends State<IosDocumentTouchInteractor>
     widget.dragHandleAutoScroller.value?.ensureOffsetIsVisible(extentOffsetInViewport);
   }
 
-  void _onDocumentChange(_) {
+  void _onDocumentChange(Object _) {
     _controlsController!.hideToolbar();
 
     onNextFrame((_) {
@@ -539,6 +539,7 @@ class _IosDocumentTouchInteractorState extends State<IosDocumentTouchInteractor>
   void _onTapDown(TapDownDetails details) {
     _globalTapDownOffset = details.globalPosition;
     _tapDownLongPressTimer?.cancel();
+    // ignore: deprecated_member_use_from_same_package
     if (!disableLongPressSelectionForSuperlist) {
       _tapDownLongPressTimer = Timer(kLongPressTimeout, _onLongPressDown);
     }

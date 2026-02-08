@@ -1371,8 +1371,8 @@ class MutableDocument with Iterable<DocumentNode> implements Document, Editable 
         return false;
       }
 
-      thisDocNode = getNodeAfter(thisDocNode);
-      otherDocNode = other.getNodeAfter(otherDocNode);
+      thisDocNode = getNodeAfterById(thisDocNode.id);
+      otherDocNode = other.getNodeAfterById(otherDocNode.id);
     }
 
     return true;

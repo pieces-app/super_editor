@@ -118,7 +118,7 @@ Future<void> _runLongPressTimeline(WidgetTester tester, Timeline timeline) async
       .run(tester);
 }
 
-Widget _chatItemScaffold(tester, content) {
+Widget _chatItemScaffold(WidgetTester tester, Widget content) {
   return GoldenSceneBounds(
     child: MaterialApp(
       theme: ThemeData(

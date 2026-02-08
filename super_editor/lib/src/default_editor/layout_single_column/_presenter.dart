@@ -85,7 +85,7 @@ class SingleColumnLayoutPresenter {
     _listeners.remove(listener);
   }
 
-  void _onDocumentChange(_) {
+  void _onDocumentChange(Object _) {
     editorLayoutLog.info("The document changed. Marking the presenter dirty.");
     final wasDirty = isDirty;
 

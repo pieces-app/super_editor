@@ -1,4 +1,4 @@
-library super_editor_quill;
+library;
 
 // Re-exports of quill serialization from super_editor core.
 // These were consolidated into core as of the upstream merge.

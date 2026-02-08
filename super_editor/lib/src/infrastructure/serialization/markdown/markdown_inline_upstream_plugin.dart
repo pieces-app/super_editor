@@ -338,6 +338,7 @@ class _UpstreamInlineMarkdownParser {
       return null;
     }
 
+    // ignore: deprecated_member_use
     final markdownLinkRegex = RegExp(r'\[([\w\s\d]+)]\(((?:|https?://)[\w\d./?=#]+)\)');
     final matches = markdownLinkRegex.allMatches(attributedText.toPlainText());
     if (matches.isEmpty) {

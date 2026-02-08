@@ -758,6 +758,7 @@ class _TextWithHintComponentState extends State<TextWithHintComponent>
         if (widget.text.isEmpty)
           IgnorePointer(
             child: Text.rich(
+              // ignore: deprecated_member_use_from_same_package
               widget.hintText?.computeTextSpan(_styleBuilder) ?? const TextSpan(text: ''),
             ),
           ),

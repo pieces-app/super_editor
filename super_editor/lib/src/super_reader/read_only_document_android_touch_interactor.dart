@@ -359,7 +359,7 @@ class _ReadOnlyAndroidDocumentTouchInteractorState extends State<ReadOnlyAndroid
     }
   }
 
-  void _onDocumentChange(_) {
+  void _onDocumentChange(Object _) {
     _editingController.hideToolbar();
 
     onNextFrame((_) {

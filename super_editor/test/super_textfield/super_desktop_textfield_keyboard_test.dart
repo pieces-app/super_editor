@@ -640,7 +640,7 @@ void main() {
           // of #549 - update the start offset when that bug is fixed.
           await tester.selectSuperTextFieldText(4, 12);
 
-          await tester.pressCtlC();
+          await tester.pressCtrlC();
 
           // Ensure that a copy didn't happen.
           expect(tester.getSimulatedClipboardContent(), null);
@@ -711,7 +711,7 @@ void main() {
           );
           await tester.placeCaretInSuperTextField(16);
 
-          await tester.pressCtlV();
+          await tester.pressCtrlV();
 
           // Ensure that the clipboard text was NOT pasted into the SuperTextField.
           expect(SuperTextFieldInspector.findText().toPlainText(), 'Pasted content: ');
@@ -782,7 +782,7 @@ void main() {
           );
           await tester.placeCaretInSuperTextField(0);
 
-          await tester.pressCtlA();
+          await tester.pressCtrlA();
 
           // Ensure that SuperTextField text wasn't selected.
           expect(
@@ -818,7 +818,7 @@ void main() {
           );
           await tester.placeCaretInSuperTextField(0);
 
-          await tester.pressCtlA();
+          await tester.pressCtrlA();
 
           // Ensure that SuperTextField text wasn't selected.
           expect(
@@ -905,7 +905,7 @@ void main() {
           );
           await tester.placeCaretInSuperTextField(5);
 
-          await tester.pressCtlA();
+          await tester.pressCtrlA();
 
           expect(SuperTextFieldInspector.findSelection(), const TextSelection.collapsed(offset: 0));
         });
@@ -919,7 +919,7 @@ void main() {
           );
           await tester.placeCaretInSuperTextField(0);
 
-          await tester.pressCtlA();
+          await tester.pressCtrlA();
 
           expect(SuperTextFieldInspector.findSelection(), const TextSelection.collapsed(offset: 0));
         });
@@ -1007,7 +1007,7 @@ void main() {
           );
           await tester.placeCaretInSuperTextField(5);
 
-          await tester.pressCtlE();
+          await tester.pressCtrlE();
 
           expect(SuperTextFieldInspector.findSelection(), const TextSelection.collapsed(offset: 17));
         });
@@ -1021,7 +1021,7 @@ void main() {
           );
           await tester.placeCaretInSuperTextField(17);
 
-          await tester.pressCtlE();
+          await tester.pressCtrlE();
 
           expect(SuperTextFieldInspector.findSelection(), const TextSelection.collapsed(offset: 17));
         });
@@ -1232,7 +1232,7 @@ void main() {
           );
           await tester.placeCaretInSuperTextField(5);
 
-          await tester.pressCtlLeftArrow();
+          await tester.pressCtrlLeftArrow();
 
           expect(SuperTextFieldInspector.findSelection(), const TextSelection.collapsed(offset: 4));
         });
@@ -1246,7 +1246,7 @@ void main() {
           );
           await tester.placeCaretInSuperTextField(5);
 
-          await tester.pressCtlRightArrow();
+          await tester.pressCtrlRightArrow();
 
           expect(SuperTextFieldInspector.findSelection(), const TextSelection.collapsed(offset: 6));
         });
@@ -1340,7 +1340,7 @@ void main() {
           // of #549 - update the start offset when that bug is fixed.
           await tester.selectSuperTextFieldText(4, 12);
 
-          await tester.pressCtlC();
+          await tester.pressCtrlC();
 
           // Ensure that the expected text was copied to the clipboard.
           expect(tester.getSimulatedClipboardContent(), 'is some');
@@ -1414,7 +1414,7 @@ void main() {
           );
           await tester.placeCaretInSuperTextField(16);
 
-          await tester.pressCtlV();
+          await tester.pressCtrlV();
 
           // Ensure that the clipboard text was pasted into the SuperTextField
           expect(SuperTextFieldInspector.findText().toPlainText(), 'Pasted content: this is clipboard text');
@@ -1480,7 +1480,7 @@ void main() {
           );
           await tester.placeCaretInSuperTextField(0);
 
-          await tester.pressCtlA();
+          await tester.pressCtrlA();
 
           // Ensure that all text in the SuperTextField is selected.
           expect(
@@ -1557,7 +1557,7 @@ void main() {
           );
           await tester.placeCaretInSuperTextField(10);
 
-          await tester.pressCtlLeftArrow();
+          await tester.pressCtrlLeftArrow();
 
           expect(SuperTextFieldInspector.findSelection(), const TextSelection.collapsed(offset: 6));
         });
@@ -1571,7 +1571,7 @@ void main() {
           );
           await tester.placeCaretInSuperTextField(10);
 
-          await tester.pressShiftCtlLeftArrow();
+          await tester.pressShiftCtrlLeftArrow();
 
           expect(SuperTextFieldInspector.findSelection(), const TextSelection(baseOffset: 10, extentOffset: 6));
         });
@@ -1623,7 +1623,7 @@ void main() {
           );
           await tester.placeCaretInSuperTextField(6);
 
-          await tester.pressCtlRightArrow();
+          await tester.pressCtrlRightArrow();
 
           expect(SuperTextFieldInspector.findSelection(), const TextSelection.collapsed(offset: 10));
         });
@@ -1637,7 +1637,7 @@ void main() {
           );
           await tester.placeCaretInSuperTextField(6);
 
-          await tester.pressShiftCtlRightArrow();
+          await tester.pressShiftCtrlRightArrow();
 
           expect(SuperTextFieldInspector.findSelection(), const TextSelection(baseOffset: 6, extentOffset: 10));
         });
@@ -1689,7 +1689,7 @@ void main() {
           );
           await tester.placeCaretInSuperTextField(4);
 
-          await tester.pressCtlBackspace();
+          await tester.pressCtrlBackspace();
 
           expect(SuperTextFieldInspector.findSelection(), const TextSelection.collapsed(offset: 0));
           expect(SuperTextFieldInspector.findText().toPlainText(), " is some text");
@@ -1704,7 +1704,7 @@ void main() {
           );
           await tester.placeCaretInSuperTextField(2);
 
-          await tester.pressCtlBackspace();
+          await tester.pressCtrlBackspace();
 
           expect(SuperTextFieldInspector.findSelection(), const TextSelection.collapsed(offset: 0));
           expect(SuperTextFieldInspector.findText().toPlainText(), "is is some text");
@@ -1720,7 +1720,7 @@ void main() {
           );
           await tester.placeCaretInSuperTextField(8);
 
-          await tester.pressCtlBackspace();
+          await tester.pressCtrlBackspace();
 
           expect(SuperTextFieldInspector.findSelection(), const TextSelection.collapsed(offset: 5));
           expect(SuperTextFieldInspector.findText().toPlainText(), "this some text");
@@ -1735,7 +1735,7 @@ void main() {
           );
           await tester.selectSuperTextFieldText(0, 10);
 
-          await tester.pressCtlBackspace();
+          await tester.pressCtrlBackspace();
 
           // TODO: When #549 is fixed, I expect the selection offset to change to 0, and the
           // first letter of the final text to be deleted.
@@ -1755,7 +1755,7 @@ void main() {
           );
           await tester.placeCaretInSuperTextField(5);
 
-          await tester.pressCtlE();
+          await tester.pressCtrlE();
 
           expect(SuperTextFieldInspector.findSelection(), const TextSelection.collapsed(offset: 5));
         });

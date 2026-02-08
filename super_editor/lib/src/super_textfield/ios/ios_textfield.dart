@@ -453,6 +453,7 @@ class SuperIOSTextFieldState extends State<SuperIOSTextField>
             } else {
               _textEditingController.attachToIme(
                 viewId: View.of(context).viewId,
+                // ignore: deprecated_member_use_from_same_package
                 textInputAction: widget.textInputAction ?? TextInputAction.done,
                 textInputType: _isMultiline ? TextInputType.multiline : TextInputType.text,
               );
@@ -851,7 +852,15 @@ class _IOSSuperTextFieldSystemContextMenuState extends State<IOSSuperTextFieldSy
       return;
     }
 
-    _systemContextMenuController.show(Rect.fromLTRB(topAnchor.dx, topAnchor.dy, bottomAnchor.dx, bottomAnchor.dy));
+    _systemContextMenuController.showWithItems(
+      Rect.fromLTRB(topAnchor.dx, topAnchor.dy, bottomAnchor.dx, bottomAnchor.dy),
+      const <IOSSystemContextMenuItemData>[
+        IOSSystemContextMenuItemDataCut(),
+        IOSSystemContextMenuItemDataCopy(),
+        IOSSystemContextMenuItemDataPaste(),
+        IOSSystemContextMenuItemDataSelectAll(),
+      ],
+    );
   }
 
   @override

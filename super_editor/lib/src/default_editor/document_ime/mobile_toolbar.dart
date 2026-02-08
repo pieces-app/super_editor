@@ -154,6 +154,7 @@ class _KeyboardEditingToolbarState extends State<KeyboardEditingToolbar> with Wi
   Widget _buildTheming({
     required Widget child,
   }) {
+    // ignore: deprecated_member_use_from_same_package
     final brightness = widget.brightness ?? MediaQuery.of(context).platformBrightness;
 
     return Theme(

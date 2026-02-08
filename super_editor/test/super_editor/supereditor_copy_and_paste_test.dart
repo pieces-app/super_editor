@@ -81,7 +81,7 @@ This is the third paragraph''');
       if (defaultTargetPlatform == TargetPlatform.macOS) {
         await tester.pressCmdV();
       } else {
-        await tester.pressCtlV();
+        await tester.pressCtrlV();
       }
 
       // Ensure three paragraphs were created.
@@ -114,7 +114,7 @@ This is the third paragraph''');
       if (defaultTargetPlatform == TargetPlatform.macOS) {
         await tester.pressCmdV();
       } else {
-        await tester.pressCtlV();
+        await tester.pressCtrlV();
       }
 
       // Gather the current node IDs in the document.
@@ -159,7 +159,7 @@ This is the third paragraph''');
       if (defaultTargetPlatform == TargetPlatform.macOS) {
         await tester.pressCmdV();
       } else {
-        await tester.pressCtlV();
+        await tester.pressCtrlV();
       }
 
       // Pump enough time to separate the next text entry from the paste action.

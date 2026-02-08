@@ -69,7 +69,7 @@ void main() {
   });
 }
 
-Widget _chatItemScaffold(tester, content) {
+Widget _chatItemScaffold(WidgetTester tester, Widget content) {
   return GoldenSceneBounds(
     child: MaterialApp(
       theme: ThemeData(

@@ -97,7 +97,7 @@ DocumentNode? getDownstreamSelectableNodeAfter(
   DocumentNode prevNode = startingNode;
   DocumentNode? selectableNode;
   do {
-    selectableNode = document.getNodeAfter(prevNode);
+    selectableNode = document.getNodeAfterById(prevNode.id);
 
     if (selectableNode != null) {
       final nextComponent = documentLayoutResolver().getComponentByNodeId(selectableNode.id);
@@ -122,7 +122,7 @@ DocumentNode? getUpstreamSelectableNodeBefore(
   DocumentNode prevNode = startingNode;
   DocumentNode? selectableNode;
   do {
-    selectableNode = document.getNodeBefore(prevNode);
+    selectableNode = document.getNodeBeforeById(prevNode.id);
 
     if (selectableNode != null) {
       final nextComponent = documentLayoutResolver().getComponentByNodeId(selectableNode.id);

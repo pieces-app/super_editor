@@ -357,7 +357,7 @@ class _SuperReaderIosDocumentTouchInteractorState extends State<SuperReaderIosDo
     return viewportBox.globalToLocal(globalOffset);
   }
 
-  void _onDocumentChange(_) {
+  void _onDocumentChange(Object _) {
     _controlsController!.hideToolbar();
 
     onNextFrame((_) {

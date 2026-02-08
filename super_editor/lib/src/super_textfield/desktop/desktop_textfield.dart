@@ -449,6 +449,7 @@ class SuperDesktopTextFieldState extends State<SuperDesktopTextField> implements
             textKey: _textKey,
             textScrollKey: _textScrollKey,
             isMultiline: isMultiline,
+            // ignore: deprecated_member_use_from_same_package
             onRightClick: widget.onRightClick,
             tapHandlers: widget.tapHandlers,
             child: MultiListenableBuilder(
@@ -511,6 +512,7 @@ class SuperDesktopTextFieldState extends State<SuperDesktopTextField> implements
                 textFieldContext: _textFieldContext,
                 isMultiline: isMultiline,
                 selectorHandlers: widget.selectorHandlers ?? defaultTextFieldSelectorHandlers,
+                // ignore: deprecated_member_use_from_same_package
                 textInputAction: widget.textInputAction,
                 imeConfiguration: widget.imeConfiguration,
                 textStyleBuilder: widget.textStyleBuilder,
@@ -944,6 +946,7 @@ class _SuperTextFieldGestureInteractorState extends State<SuperTextFieldGestureI
         return;
       }
     }
+    // ignore: deprecated_member_use_from_same_package
     widget.onRightClick?.call(context, widget.textController, details.localPosition);
   }
 
@@ -2049,7 +2052,7 @@ class SuperTextFieldScrollviewState extends State<SuperTextFieldScrollview> with
     }
   }
 
-  void _onTick(elapsedTime) {
+  void _onTick(Duration elapsedTime) {
     if (_scrollToStartOnTick) {
       scrollToStart();
     }

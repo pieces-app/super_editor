@@ -11,9 +11,11 @@ import 'package:super_editor/super_editor.dart';
 /// from the main content in the blog post, so that readers can skip the aside,
 /// if desired.
 class CalloutBlockSyntax extends md.BlockSyntax {
+  // ignore: deprecated_member_use
   static final _endLinePattern = RegExp(r'^@@@\s*$');
 
   @override
+  // ignore: deprecated_member_use
   RegExp get pattern => RegExp(r'^@@@\s*callout\s*$');
 
   const CalloutBlockSyntax();

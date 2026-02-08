@@ -36,12 +36,23 @@ class IOSSystemContextMenu extends StatefulWidget {
   const IOSSystemContextMenu({
     super.key,
     required this.leaderLink,
+    this.items = const <IOSSystemContextMenuItemData>[
+      IOSSystemContextMenuItemDataCut(),
+      IOSSystemContextMenuItemDataCopy(),
+      IOSSystemContextMenuItemDataPaste(),
+      IOSSystemContextMenuItemDataSelectAll(),
+    ],
     this.onSystemHide,
   });
 
   /// A [LeaderLink] attached to the widget that determines the position
   /// of the system context menu.
   final LeaderLink leaderLink;
+
+  /// The items to display in the system context menu.
+  ///
+  /// Defaults to Cut, Copy, Paste, and Select All.
+  final List<IOSSystemContextMenuItemData> items;
 
   /// Called when the system hides this context menu.
   ///
@@ -97,7 +108,10 @@ class _IOSSystemContextMenuState extends State<IOSSystemContextMenu> {
   }
 
   void _positionSystemMenu() {
-    _systemContextMenuController.show(widget.leaderLink.offset! & widget.leaderLink.leaderSize!);
+    _systemContextMenuController.showWithItems(
+      widget.leaderLink.offset! & widget.leaderLink.leaderSize!,
+      widget.items,
+    );
   }
 
   @override

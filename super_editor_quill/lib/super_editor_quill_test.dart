@@ -1,3 +1,3 @@
-library super_editor_quill_test;
+library;
 
 export 'src/testing/quill_delta_comparison.dart';

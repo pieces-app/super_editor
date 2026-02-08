@@ -676,7 +676,7 @@ class _AndroidDocumentTouchInteractorState extends State<AndroidDocumentTouchInt
     widget.dragHandleAutoScroller.value!.ensureOffsetIsVisible(extentOffsetInViewport);
   }
 
-  void _onDocumentChange(_) {
+  void _onDocumentChange(Object _) {
     // The user might start typing when the toolbar is visible. Hide it.
     _controlsController!.hideToolbar();
 
@@ -716,6 +716,7 @@ class _AndroidDocumentTouchInteractorState extends State<AndroidDocumentTouchInt
 
     _globalTapDownOffset = details.globalPosition;
     _tapDownLongPressTimer?.cancel();
+    // ignore: deprecated_member_use_from_same_package
     if (!disableLongPressSelectionForSuperlist) {
       _tapDownLongPressTimer = Timer(kLongPressTimeout, _onLongPressDown);
     }

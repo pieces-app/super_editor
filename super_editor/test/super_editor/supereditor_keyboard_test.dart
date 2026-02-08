@@ -155,7 +155,7 @@ void main() {
         }) async {
           final nodeId = await _pumpSingleLineWithCaret(tester, offset: 10, inputSource: inputSource);
 
-          await tester.pressCtlLeftArrow();
+          await tester.pressCtrlLeftArrow();
 
           expect(SuperEditorInspector.findDocumentSelection(), _caretInParagraph(nodeId, 8));
         });
@@ -166,7 +166,7 @@ void main() {
         }) async {
           final nodeId = await _pumpSingleLineWithCaret(tester, offset: 10, inputSource: inputSource);
 
-          await tester.pressShiftCtlLeftArrow();
+          await tester.pressShiftCtrlLeftArrow();
 
           expect(SuperEditorInspector.findDocumentSelection(), _selectionInParagraph(nodeId, from: 10, to: 8));
         });
@@ -177,7 +177,7 @@ void main() {
         }) async {
           final nodeId = await _pumpSingleLineWithCaret(tester, offset: 10, inputSource: inputSource);
 
-          await tester.pressCtlRightArrow();
+          await tester.pressCtrlRightArrow();
 
           expect(SuperEditorInspector.findDocumentSelection(), _caretInParagraph(nodeId, 12));
         });
@@ -188,7 +188,7 @@ void main() {
         }) async {
           final nodeId = await _pumpSingleLineWithCaret(tester, offset: 10, inputSource: inputSource);
 
-          await tester.pressShiftCtlRightArrow();
+          await tester.pressShiftCtrlRightArrow();
 
           expect(SuperEditorInspector.findDocumentSelection(), _selectionInParagraph(nodeId, from: 10, to: 12));
         });

@@ -284,7 +284,7 @@ class _SuperMessageIosTouchInteractorState extends State<SuperMessageIosTouchInt
     super.dispose();
   }
 
-  void _onDocumentChange(_) {
+  void _onDocumentChange(Object _) {
     _controlsController!.hideToolbar();
 
     onNextFrame((_) {

@@ -122,9 +122,6 @@ void main() {
         });
 
         testWidgetsOnIos("does nothing with hack global property", (tester) async {
-          disableLongPressSelectionForSuperlist = true;
-          addTearDown(() => disableLongPressSelectionForSuperlist = false);
-
           await _pumpAppWithLongText(tester);
 
           // Long press down on the middle of "conse|ctetur".

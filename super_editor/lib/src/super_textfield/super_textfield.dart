@@ -306,6 +306,7 @@ class SuperTextFieldState extends State<SuperTextField> implements ImeInputOwner
   bool get _isMultiline => (widget.minLines ?? 1) != 1 || widget.maxLines != 1;
 
   TextInputAction get _textInputAction =>
+      // ignore: deprecated_member_use_from_same_package
       widget.textInputAction ?? (_isMultiline ? TextInputAction.newline : TextInputAction.done);
 
   SuperTextFieldPlatformConfiguration get _configuration {

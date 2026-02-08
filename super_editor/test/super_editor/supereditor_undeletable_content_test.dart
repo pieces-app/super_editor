@@ -721,7 +721,7 @@ void main() {
           if (CurrentPlatform.isApple) {
             await tester.pressCmdA();
           } else {
-            await tester.pressCtlA();
+            await tester.pressCtrlA();
           }
 
           // Ensure everything is selected.
@@ -787,7 +787,7 @@ void main() {
           if (CurrentPlatform.isApple) {
             await tester.pressCmdA();
           } else {
-            await tester.pressCtlA();
+            await tester.pressCtrlA();
           }
 
           // Ensure everything is selected.
@@ -857,7 +857,7 @@ void main() {
           if (CurrentPlatform.isApple) {
             await tester.pressCmdA();
           } else {
-            await tester.pressCtlA();
+            await tester.pressCtrlA();
           }
 
           // Ensure everything is selected.
@@ -932,7 +932,7 @@ void main() {
           if (CurrentPlatform.isApple) {
             await tester.pressCmdA();
           } else {
-            await tester.pressCtlA();
+            await tester.pressCtrlA();
           }
 
           // Ensure everything is selected.
@@ -1549,7 +1549,7 @@ void main() {
           if (CurrentPlatform.isApple) {
             await tester.pressCmdA();
           } else {
-            await tester.pressCtlA();
+            await tester.pressCtrlA();
           }
 
           // Ensure everything is selected.
@@ -1615,7 +1615,7 @@ void main() {
           if (CurrentPlatform.isApple) {
             await tester.pressCmdA();
           } else {
-            await tester.pressCtlA();
+            await tester.pressCtrlA();
           }
 
           // Ensure everything is selected.
@@ -1685,7 +1685,7 @@ void main() {
           if (CurrentPlatform.isApple) {
             await tester.pressCmdA();
           } else {
-            await tester.pressCtlA();
+            await tester.pressCtrlA();
           }
 
           // Ensure everything is selected.
@@ -1760,7 +1760,7 @@ void main() {
           if (CurrentPlatform.isApple) {
             await tester.pressCmdA();
           } else {
-            await tester.pressCtlA();
+            await tester.pressCtrlA();
           }
 
           // Ensure everything is selected.
@@ -2357,7 +2357,7 @@ void main() {
           if (CurrentPlatform.isApple) {
             await tester.pressCmdA();
           } else {
-            await tester.pressCtlA();
+            await tester.pressCtrlA();
           }
 
           // Simulate the user pressing backspace. The IME first generates a
@@ -2423,7 +2423,7 @@ void main() {
           if (CurrentPlatform.isApple) {
             await tester.pressCmdA();
           } else {
-            await tester.pressCtlA();
+            await tester.pressCtrlA();
           }
           await tester.pump();
 
@@ -2493,7 +2493,7 @@ void main() {
           if (CurrentPlatform.isApple) {
             await tester.pressCmdA();
           } else {
-            await tester.pressCtlA();
+            await tester.pressCtrlA();
           }
 
           // Ensure everything is selected.
@@ -2582,7 +2582,7 @@ void main() {
           if (CurrentPlatform.isApple) {
             await tester.pressCmdA();
           } else {
-            await tester.pressCtlA();
+            await tester.pressCtrlA();
           }
 
           // Simulate the user pressing backspace. The IME first generates a

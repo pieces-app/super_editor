@@ -529,6 +529,7 @@ class SuperEditorImeInteractorState extends State<SuperEditorImeInteractor> impl
     if (selectedComponent is ProxyDocumentComponent) {
       // The selected component is a proxy.
       // If this component displays text, the text component is bounded to childDocumentComponentKey.
+      // ignore: invalid_use_of_protected_member
       selectedComponent = selectedComponent.childDocumentComponentKey.currentState as DocumentComponent?;
     }
 
@@ -598,6 +599,7 @@ class SuperEditorImeInteractorState extends State<SuperEditorImeInteractor> impl
     if (selectedComponent is ProxyDocumentComponent) {
       // The selected componente is a proxy.
       // If this component displays text, the text component is bounded to childDocumentComponentKey.
+      // ignore: invalid_use_of_protected_member
       selectedComponent = selectedComponent.childDocumentComponentKey.currentState as DocumentComponent;
     }
 

@@ -369,7 +369,7 @@ class _SuperMessageAndroidTouchInteractorState extends State<SuperMessageAndroid
   /// Returns the render box for the interactor gesture detector.
   RenderBox get interactorBox => _interactor.currentContext!.findRenderObject() as RenderBox;
 
-  void _onDocumentChange(_) {
+  void _onDocumentChange(Object _) {
     // The user might start typing when the toolbar is visible. Hide it.
     _controlsController!.hideToolbar();
   }

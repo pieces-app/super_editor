@@ -265,11 +265,14 @@ class SuperAndroidTextFieldState extends State<SuperAndroidTextField>
       _focusNode = (widget.focusNode ?? FocusNode())..addListener(_updateSelectionAndImeConnectionOnFocusChange);
     }
 
+    // ignore: deprecated_member_use_from_same_package
     if (widget.textInputAction != oldWidget.textInputAction &&
+        // ignore: deprecated_member_use_from_same_package
         widget.textInputAction != null &&
         _textEditingController.isAttachedToIme) {
       _textEditingController.updateTextInputConfiguration(
         viewId: View.of(context).viewId,
+        // ignore: deprecated_member_use_from_same_package
         textInputAction: widget.textInputAction!,
         textInputType: _isMultiline ? TextInputType.multiline : TextInputType.text,
       );
@@ -435,6 +438,7 @@ class SuperAndroidTextFieldState extends State<SuperAndroidTextField>
             } else {
               _textEditingController.attachToIme(
                 viewId: View.of(context).viewId,
+                // ignore: deprecated_member_use_from_same_package
                 textInputAction: widget.textInputAction ?? TextInputAction.done,
                 textInputType: _isMultiline ? TextInputType.multiline : TextInputType.text,
               );

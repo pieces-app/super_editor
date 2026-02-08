@@ -99,15 +99,17 @@ class MagnifyingGlass extends StatelessWidget {
       // The width increases by 66.5px in total. Since the growth is symmetric,
       // we shift the content left by half the increase (66.5px / 2 = 33.25px)
       // to re-center it under the magnifier after the scaling.
-      ..translate(
+      ..translateByDouble(
         -(size.width * magnificationScale - size.width) / 2,
         -(size.height * magnificationScale - size.height) / 2,
+        0,
+        1,
       )
       // Apply the scaling transformation to magnify the content.
-      ..scale(magnificationScale, magnificationScale)
+      ..scaleByDouble(magnificationScale, magnificationScale, 1, 1)
       // Move the content to the center of where the app wants to
       // display the magnifier.
-      ..translate(offsetFromFocalPoint.dx, offsetFromFocalPoint.dy);
+      ..translateByDouble(offsetFromFocalPoint.dx, offsetFromFocalPoint.dy, 0, 1);
     return ImageFilter.matrix(magnifierMatrix.storage);
   }
 }

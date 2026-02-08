@@ -456,7 +456,7 @@ ExecutionInstruction mergeNodeWithNextWhenDeleteIsPressed({
     return ExecutionInstruction.continueExecution;
   }
 
-  final nextNode = editContext.document.getNodeAfter(node);
+  final nextNode = editContext.document.getNodeAfterById(node.id);
   if (nextNode == null) {
     return ExecutionInstruction.continueExecution;
   }

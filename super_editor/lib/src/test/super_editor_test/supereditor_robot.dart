@@ -508,6 +508,7 @@ extension SuperEditorRobot on WidgetTester {
 
     final componentState = documentLayout.getComponentByNodeId(nodeId) as State;
     if (componentState is ProxyDocumentComponent) {
+      // ignore: invalid_use_of_protected_member
       return componentState.childDocumentComponentKey;
     } else {
       return componentState.widget.key as GlobalKey;

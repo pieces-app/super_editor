@@ -96,11 +96,11 @@ class SuperTextFieldInspector {
     final match = fieldFinder.evaluate().single.widget;
 
     switch (match.runtimeType) {
-      case SuperDesktopTextField:
+      case SuperDesktopTextField _:
         return (match as SuperDesktopTextField).maxLines == 1;
-      case SuperAndroidTextField:
+      case SuperAndroidTextField _:
         return (match as SuperAndroidTextField).maxLines == 1;
-      case SuperIOSTextField:
+      case SuperIOSTextField _:
         return (match as SuperIOSTextField).maxLines == 1;
       default:
         throw Exception("Found unknown SuperTextField platform widget: $match");

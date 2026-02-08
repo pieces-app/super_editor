@@ -184,7 +184,7 @@ class BlockSelector {
     }
 
     if (_precedingBlockType != null) {
-      final nodeBefore = document.getNodeBefore(node);
+      final nodeBefore = document.getNodeBeforeById(node.id);
       if (nodeBefore == null ||
           (nodeBefore.getMetadataValue("blockType") as NamedAttribution?)?.name != _precedingBlockType) {
         return false;
@@ -192,7 +192,7 @@ class BlockSelector {
     }
 
     if (_followingBlockType != null) {
-      final nodeAfter = document.getNodeAfter(node);
+      final nodeAfter = document.getNodeAfterById(node.id);
       if (nodeAfter == null ||
           (nodeAfter.getMetadataValue("blockType") as NamedAttribution?)?.name != _followingBlockType) {
         return false;

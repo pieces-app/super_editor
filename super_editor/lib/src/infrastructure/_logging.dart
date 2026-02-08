@@ -166,7 +166,7 @@ class Logger {
   }
 
   Logger({
-    required scope,
+    required String scope,
   }) : _scope = scope;
 
   final String _scope;

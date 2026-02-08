@@ -1200,7 +1200,7 @@ void main() {
         if (debugDefaultTargetPlatformOverride == TargetPlatform.macOS) {
           await tester.pressCmdV();
         } else {
-          await tester.pressCtlV();
+          await tester.pressCtrlV();
         }
 
         // Ensure the URL is linkified.
@@ -1235,7 +1235,7 @@ void main() {
         if (debugDefaultTargetPlatformOverride == TargetPlatform.macOS) {
           await tester.pressCmdV();
         } else {
-          await tester.pressCtlV();
+          await tester.pressCtrlV();
         }
 
         // Ensure it's linkified with a URL schema.
@@ -1271,7 +1271,7 @@ void main() {
         if (debugDefaultTargetPlatformOverride == TargetPlatform.macOS) {
           await tester.pressCmdV();
         } else {
-          await tester.pressCtlV();
+          await tester.pressCtrlV();
         }
 
         // Ensure the URL is linkified.
@@ -1308,7 +1308,7 @@ void main() {
         if (debugDefaultTargetPlatformOverride == TargetPlatform.macOS) {
           await tester.pressCmdV();
         } else {
-          await tester.pressCtlV();
+          await tester.pressCtrlV();
         }
 
         // Ensure all URLs were linkified.

@@ -14,6 +14,7 @@ import 'package:super_editor/src/default_editor/image.dart';
 ///
 /// This class was modified from a copy of [md.LinkSyntax].
 class SuperEditorImageSyntax extends md.LinkSyntax {
+  // ignore: deprecated_member_use
   static final _entirelyWhitespacePattern = RegExp(r'^\s*$.');
 
   SuperEditorImageSyntax({super.linkResolver})
@@ -526,6 +527,7 @@ class SuperEditorImageSyntax extends md.LinkSyntax {
 }
 
 /// One or more whitespace, for compressing.
+// ignore: deprecated_member_use
 final _oneOrMoreWhitespacePattern = RegExp('[ \n\r\t]+');
 
 /// "Normalizes" a link label, according to the [CommonMark spec].

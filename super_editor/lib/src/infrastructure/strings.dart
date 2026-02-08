@@ -6,6 +6,7 @@ import 'package:characters/characters.dart';
 // - Separator (Z), such as " " (space), and "　" (ideographic space)
 // See http://www.unicode.org/reports/tr44/#GC_Values_Table for details on
 // on the Unicode General_Category property.
+// ignore: deprecated_member_use
 final _separatorRegex = RegExp(r'^[\p{Z}\p{P}]$', unicode: true);
 
 extension CharacterMovement on String {

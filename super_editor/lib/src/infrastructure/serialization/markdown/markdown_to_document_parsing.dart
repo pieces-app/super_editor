@@ -545,6 +545,7 @@ class _ParagraphWithAlignmentSyntax extends _EmptyLinePreservingParagraphSyntax 
   /// This pattern matches the text aligment notation.
   ///
   /// Possible values are `:---`, `:---:`, `---:` and `-::-`.
+  // ignore: deprecated_member_use
   static final _alignmentNotationPattern = RegExp(r'^:-{3}|:-{3}:|-{3}:|-::-$');
 
   const _ParagraphWithAlignmentSyntax();
@@ -621,6 +622,7 @@ class _EmptyLinePreservingParagraphSyntax extends md.BlockSyntax {
   const _EmptyLinePreservingParagraphSyntax();
 
   @override
+  // ignore: deprecated_member_use
   RegExp get pattern => RegExp('');
 
   @override
@@ -734,6 +736,7 @@ class _EmptyLinePreservingParagraphSyntax extends md.BlockSyntax {
 
   /// Removes all whitespace characters except `"\n"`.
   String _removeTrailingSpaces(String text) {
+    // ignore: deprecated_member_use
     final pattern = RegExp(r'[\t ]+$');
     return text.replaceAll(pattern, '');
   }
@@ -771,12 +774,14 @@ class _HeaderWithAlignmentSyntax extends md.BlockSyntax {
   /// This pattern matches the text alignment notation.
   ///
   /// Possible values are `:---`, `:---:`, `---:` and `-::-`.
+  // ignore: deprecated_member_use
   static final _alignmentNotationPattern = RegExp(r'^:-{3}|:-{3}:|-{3}:|-::-$');
 
   /// Use internal HeaderSyntax.
   final _headerSyntax = const md.HeaderSyntax();
 
   @override
+  // ignore: deprecated_member_use
   RegExp get pattern => RegExp('');
 
   @override
@@ -960,6 +965,7 @@ class _InlineMarkdownImageVisitor implements md.NodeVisitor {
 }
 
 /// Matches empty lines or lines containing only whitespace.
+// ignore: deprecated_member_use
 final _blankLinePattern = RegExp(r'^(?:[ \t]*)$');
 
 const List<md.BlockSyntax> _standardNonParagraphBlockSyntaxes = [

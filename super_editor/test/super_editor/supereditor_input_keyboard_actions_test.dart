@@ -426,7 +426,7 @@ void main() {
           await tester.placeCaretInParagraph("1", 11);
 
           // Press control + backspace
-          await tester.pressCtlBackspace();
+          await tester.pressCtrlBackspace();
 
           // Ensure that a character was deleted.
           final paragraphNode = testContext.findEditContext().document.first as ParagraphNode;
@@ -744,7 +744,7 @@ void main() {
             // Start the user's selection somewhere in the middle of a word.
             await _pumpCaretMovementTestSetup(tester, textOffsetInFirstNode: 8);
 
-            await tester.pressCtlLeftArrow();
+            await tester.pressCtrlLeftArrow();
 
             // Ensure that the caret moved to the beginning of the word.
             expect(
@@ -762,7 +762,7 @@ void main() {
             // Start the user's selection somewhere in the middle of a word.
             await _pumpCaretMovementTestSetup(tester, textOffsetInFirstNode: 8);
 
-            await tester.pressCtlRightArrow();
+            await tester.pressCtrlRightArrow();
 
             // Ensure that the caret moved to the beginning of the word.
             expect(
@@ -788,7 +788,7 @@ void main() {
           await tester.placeCaretInParagraph("1", 11);
 
           // Press control + backspace
-          await tester.pressCtlBackspace();
+          await tester.pressCtrlBackspace();
 
           // Ensure that the whole word was deleted.
           final paragraphNode = testContext.findEditContext().document.first as ParagraphNode;
@@ -815,7 +815,7 @@ void main() {
           await tester.placeCaretInParagraph("1", 12);
 
           // Press control + backspace
-          await tester.pressCtlBackspace();
+          await tester.pressCtrlBackspace();
 
           // Ensure that the whole word was deleted.
           final paragraphNode = testContext.findEditContext().document.first as ParagraphNode;
@@ -1834,7 +1834,7 @@ This is a paragraph
         // Start the user's selection somewhere in the middle of a word.
         await _pumpCaretMovementTestSetup(tester, textOffsetInFirstNode: 8);
 
-        await tester.pressCtlLeftArrow();
+        await tester.pressCtrlLeftArrow();
 
         // Ensure that the caret moved only one character to the left
         expect(
@@ -1852,7 +1852,7 @@ This is a paragraph
         // Start the user's selection somewhere in the middle of a word.
         await _pumpCaretMovementTestSetup(tester, textOffsetInFirstNode: 8);
 
-        await tester.pressCtlRightArrow();
+        await tester.pressCtrlRightArrow();
 
         // Ensure that the caret moved only one character to the right
         expect(

@@ -26,7 +26,7 @@ void main() {
       if (defaultTargetPlatform == TargetPlatform.macOS) {
         await tester.pressCmdC();
       } else {
-        await tester.pressCtlC();
+        await tester.pressCtrlC();
       }
 
       // Ensure that "This" was copied.
@@ -171,8 +171,8 @@ void main() {
         // an expanded upstream selection, but we don't currently have tools to drag a
         // text selection on all platforms.
         await tester.sendKeyDownEvent(LogicalKeyboardKey.shift);
-        await tester.pressCtlLeftArrow();
-        await tester.pressCtlLeftArrow();
+        await tester.pressCtrlLeftArrow();
+        await tester.pressCtrlLeftArrow();
         await tester.sendKeyUpEvent(LogicalKeyboardKey.shift);
 
         // Ensure that we jumped upstream by two words.
@@ -189,7 +189,7 @@ void main() {
         final nodeId = await _pumpSingleLineAndSelectAWord(tester, offset: 10, inputSource: inputSource);
         expect(SuperReaderInspector.findDocumentSelection(), _selectionInParagraph(nodeId, from: 8, to: 12));
 
-        await tester.pressShiftCtlRightArrow();
+        await tester.pressShiftCtrlRightArrow();
 
         expect(SuperReaderInspector.findDocumentSelection(), _selectionInParagraph(nodeId, from: 8, to: 20));
       });
@@ -275,7 +275,7 @@ void main() {
       // collapses the selection. Release the shift key pressed, which should check
       // the selection, see that it's collapsed, and then remove it.
       await tester.pressKeyDown(LogicalKeyboardKey.shift);
-      await tester.pressCtlLeftArrow();
+      await tester.pressCtrlLeftArrow();
       await tester.releaseKeyUp(LogicalKeyboardKey.shift);
 
       // Ensure that the selection is gone.
@@ -316,7 +316,7 @@ void main() {
       // collapses the selection. Keep the shift key pressed, which should retain
       // the selection while collapsed.
       await tester.sendKeyDownEvent(LogicalKeyboardKey.shift);
-      await tester.pressCtlLeftArrow();
+      await tester.pressCtrlLeftArrow();
 
       // Ensure that the collapsed selection is retained.
       expect(

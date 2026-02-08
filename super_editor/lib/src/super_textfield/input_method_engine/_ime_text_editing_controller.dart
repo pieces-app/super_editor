@@ -635,7 +635,9 @@ class ImeAttributedTextEditingController extends AttributedTextEditingController
   }
 
   @override
+  // ignore: deprecated_member_use_from_same_package
   TextSpan buildTextSpan(AttributionStyleBuilder styleBuilder) {
+    // ignore: deprecated_member_use_from_same_package
     return _realController.buildTextSpan(styleBuilder);
   }
 

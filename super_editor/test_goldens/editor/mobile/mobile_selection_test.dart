@@ -716,7 +716,7 @@ Widget _buildScaffold({
   );
 }
 
-TextStyle _textStyleBuilder(attributions) {
+TextStyle _textStyleBuilder(Set<Attribution> attributions) {
   return const TextStyle(
     color: Colors.black,
     fontFamily: 'Roboto',

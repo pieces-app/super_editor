@@ -170,7 +170,7 @@ class _RenderSliverHybridStack extends RenderSliver
   @override
   void applyPaintTransform(covariant RenderObject child, Matrix4 transform) {
     final childParentData = child.parentData! as SliverLogicalParentData;
-    transform.translate(0.0, childParentData.layoutOffset!);
+    transform.translateByDouble(0.0, childParentData.layoutOffset!, 0, 1);
   }
 
   @override

@@ -506,7 +506,7 @@ ExecutionInstruction tabToIndentTask({
     return ExecutionInstruction.continueExecution;
   }
 
-  final taskAbove = editContext.document.getNodeBefore(node);
+  final taskAbove = editContext.document.getNodeBeforeById(node.id);
   if (taskAbove == null) {
     // No task above us, so we can't indent.
     return ExecutionInstruction.continueExecution;
