@@ -844,7 +844,9 @@ class _IOSSuperTextFieldSystemContextMenuState extends State<IOSSuperTextFieldSy
     // The size reported by the controller's toolbarFocalPoint is one frame behind. Query the information
     // overlayController instead.
     final topAnchor = widget.controller.overlayController.toolbarTopAnchor;
-    final bottomAnchor = widget.controller.overlayController.toolbarTopAnchor;
+    // BUG FIX: was toolbarTopAnchor (copy-paste bug from upstream), should be toolbarBottomAnchor
+    // to produce a correctly-sized Rect for the iOS system context menu.
+    final bottomAnchor = widget.controller.overlayController.toolbarBottomAnchor;
 
     if (topAnchor == null || bottomAnchor == null) {
       // We don't expect the toolbar builder to be called without having the anchors
