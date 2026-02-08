@@ -27,7 +27,7 @@ void main() {
       expect(SuperEditorInspector.findTextInComponent("1").toPlainText(), "a");
 
       // Try to run undo.
-      await tester.pressCmdZ(tester);
+      await tester.pressCmdZ();
 
       // Ensure that the text was unchanged.
       expect(SuperEditorInspector.findTextInComponent("1").toPlainText(), "a");
@@ -128,35 +128,35 @@ void main() {
         );
 
         // --- Undo character insertions ---
-        await tester.pressCmdZ(tester);
+        await tester.pressCmdZ();
         _expectDocumentWithCaret("Hell", "1", 4);
 
-        await tester.pressCmdZ(tester);
+        await tester.pressCmdZ();
         _expectDocumentWithCaret("Hel", "1", 3);
 
-        await tester.pressCmdZ(tester);
+        await tester.pressCmdZ();
         _expectDocumentWithCaret("He", "1", 2);
 
-        await tester.pressCmdZ(tester);
+        await tester.pressCmdZ();
         _expectDocumentWithCaret("H", "1", 1);
 
-        await tester.pressCmdZ(tester);
+        await tester.pressCmdZ();
         _expectDocumentWithCaret("", "1", 0);
 
         //----- Redo Changes ----
-        await tester.pressCmdShiftZ(tester);
+        await tester.pressCmdShiftZ();
         _expectDocumentWithCaret("H", "1", 1);
 
-        await tester.pressCmdShiftZ(tester);
+        await tester.pressCmdShiftZ();
         _expectDocumentWithCaret("He", "1", 2);
 
-        await tester.pressCmdShiftZ(tester);
+        await tester.pressCmdShiftZ();
         _expectDocumentWithCaret("Hel", "1", 3);
 
-        await tester.pressCmdShiftZ(tester);
+        await tester.pressCmdShiftZ();
         _expectDocumentWithCaret("Hell", "1", 4);
 
-        await tester.pressCmdShiftZ(tester);
+        await tester.pressCmdShiftZ();
         _expectDocumentWithCaret("Hello", "1", 5);
       });
 
@@ -206,7 +206,7 @@ void main() {
 
         // Undo the text insertion.
         // TODO: remove `tester` reference after updating flutter_test_robots
-        await tester.pressCmdZ(tester);
+        await tester.pressCmdZ();
 
         // Ensure that the paragraph removed the last entered character.
         expect((testContext.document.getNodeAt(1) as TextNode).text.toPlainText(), "a");
@@ -232,7 +232,7 @@ void main() {
         expect(paragraph.metadata['blockType'], header1Attribution);
         expect(SuperEditorInspector.findTextInComponent(document.first.id).toPlainText(), "");
 
-        await tester.pressCmdZ(tester);
+        await tester.pressCmdZ();
         await tester.pump();
 
         // Ensure that the header attribution is gone.
@@ -256,7 +256,7 @@ void main() {
         // Ensure that the double dashes are now an "em" dash.
         expect(SuperEditorInspector.findTextInComponent("1").toPlainText(), "—");
 
-        await tester.pressCmdZ(tester);
+        await tester.pressCmdZ();
         await tester.pump();
 
         // Ensure that the em dash was reverted to the regular dashes.
@@ -287,7 +287,7 @@ void main() {
         expect(node, isA<ListItemNode>());
         expect(SuperEditorInspector.findTextInComponent(document.first.id).toPlainText(), "");
 
-        await tester.pressCmdZ(tester);
+        await tester.pressCmdZ();
         await tester.pump();
 
         // Ensure that the node is back to a paragraph.
@@ -320,7 +320,7 @@ void main() {
           },
         );
 
-        await tester.pressCmdZ(tester);
+        await tester.pressCmdZ();
         await tester.pump();
 
         // Ensure that the URL is no longer linkified.
@@ -342,7 +342,7 @@ void main() {
         await tester.typeImeText("--- ");
         expect(editContext.document.first, isA<HorizontalRuleNode>());
 
-        await tester.pressCmdZ(tester);
+        await tester.pressCmdZ();
         await tester.pump();
 
         expect(editContext.document.first, isA<ParagraphNode>());
@@ -375,7 +375,7 @@ This is paragraph 3''');
       expect(SuperEditorInspector.findTextInComponent(document.getNodeAt(2)!.id).toPlainText(), "This is paragraph 3");
 
       // Undo the paste.
-      await tester.pressCmdZ(tester);
+      await tester.pressCmdZ();
       await tester.pump();
 
       // Ensure we're back to a single empty paragraph.
@@ -384,7 +384,7 @@ This is paragraph 3''');
 
       // Redo the paste
       // TODO: remove WidgetTester as required argument to this robot method
-      await tester.pressCmdShiftZ(tester);
+      await tester.pressCmdShiftZ();
       await tester.pump();
 
       // Ensure the pasted content was applied as expected.
@@ -413,7 +413,7 @@ This is paragraph 3''');
           expect(SuperEditorInspector.findTextInComponent("1").toPlainText(), "Hello");
 
           // Undo the typing.
-          await tester.pressCmdZ(tester);
+          await tester.pressCmdZ();
           await tester.pump();
 
           // Ensure that the whole word was undone.
@@ -451,7 +451,7 @@ This is paragraph 3''');
           expect(SuperEditorInspector.findTextInComponent("1").toPlainText(), "Hello World!");
 
           // Undo the typing.
-          await tester.pressCmdZ(tester);
+          await tester.pressCmdZ();
           await tester.pump();
 
           // Ensure that the text typed later was removed, but the text typed earlier

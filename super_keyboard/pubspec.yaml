@@ -33,12 +33,12 @@ dependencies:
   # So that we can expose test tools to apps.
   flutter_test:
     sdk: flutter
-  flutter_test_runners: ^0.0.4
+  flutter_test_runners: ^1.0.0
 
 dev_dependencies:
   flutter_lints: ^6.0.0
 
-  flutter_test_goldens: 0.0.5
+  flutter_test_goldens: ^0.0.7
 
 flutter:
   # This section identifies this Flutter project as a plugin project.

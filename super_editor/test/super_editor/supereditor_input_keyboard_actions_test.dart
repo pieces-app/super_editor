@@ -2450,9 +2450,9 @@ This is a paragraph
           scrollState.position.jumpTo(scrollState.position.maxScrollExtent);
 
           if (defaultTargetPlatform == TargetPlatform.macOS || defaultTargetPlatform == TargetPlatform.iOS) {
-            await tester.pressCmdHome(tester);
+            await tester.pressCmdHome();
           } else {
-            await tester.pressCtrlHome(tester);
+            await tester.pressCtrlHome();
           }
 
           // Ensure we scrolled to the top of the viewport.
@@ -2482,9 +2482,9 @@ This is a paragraph
           scrollState.position.jumpTo(scrollState.position.minScrollExtent + 10);
 
           if (defaultTargetPlatform == TargetPlatform.macOS || defaultTargetPlatform == TargetPlatform.iOS) {
-            await tester.pressCmdHome(tester);
+            await tester.pressCmdHome();
           } else {
-            await tester.pressCtrlHome(tester);
+            await tester.pressCtrlHome();
           }
 
           // Ensure we didn't scroll past the top of the viewport.
@@ -2506,9 +2506,9 @@ This is a paragraph
           final scrollState = tester.state<ScrollableState>(find.byType(Scrollable));
 
           if (defaultTargetPlatform == TargetPlatform.macOS || defaultTargetPlatform == TargetPlatform.iOS) {
-            await tester.pressCmdEnd(tester);
+            await tester.pressCmdEnd();
           } else {
-            await tester.pressCtrlEnd(tester);
+            await tester.pressCtrlEnd();
           }
 
           // Ensure we scrolled to the bottom of the viewport.
@@ -2535,9 +2535,9 @@ This is a paragraph
           scrollState.position.jumpTo(scrollState.position.maxScrollExtent - 10);
 
           if (defaultTargetPlatform == TargetPlatform.macOS || defaultTargetPlatform == TargetPlatform.iOS) {
-            await tester.pressCmdEnd(tester);
+            await tester.pressCmdEnd();
           } else {
-            await tester.pressCtrlEnd(tester);
+            await tester.pressCtrlEnd();
           }
 
           // Ensure we didn't scroll past the bottom of the viewport.
