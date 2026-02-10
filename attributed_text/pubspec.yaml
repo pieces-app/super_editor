@@ -15,6 +15,8 @@ topics:
 environment:
   sdk: ">=3.6.0 <4.0.0"
 
+resolution: workspace
+
 dependencies:
   characters: ^1.2.0
   collection: ^1.15.0
