@@ -23,9 +23,9 @@ class ScrollingMinimaps extends StatefulWidget {
   }
 
   const ScrollingMinimaps({
-    Key? key,
+    super.key,
     required this.child,
-  }) : super(key: key);
+  });
 
   final Widget child;
 
@@ -60,18 +60,16 @@ abstract mixin class ScrollingMinimapsRepository {
 /// of its content, which helps to diagnose scrolling bugs.
 class ScrollingMinimap extends StatefulWidget {
   const ScrollingMinimap.fromRepository({
-    Key? key,
+    super.key,
     required this.minimapId,
     this.minimapScale = 0.1,
-  })  : instrumentation = null,
-        super(key: key);
+  })  : instrumentation = null;
 
   const ScrollingMinimap({
-    Key? key,
+    super.key,
     required this.instrumentation,
     this.minimapScale = 0.1,
-  })  : minimapId = null,
-        super(key: key);
+  })  : minimapId = null;
 
   final String? minimapId;
   final ScrollableInstrumentation? instrumentation;

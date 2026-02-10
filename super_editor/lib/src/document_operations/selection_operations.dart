@@ -7,8 +7,8 @@ import 'package:super_editor/src/default_editor/selection_upstream_downstream.da
 import 'package:super_editor/src/default_editor/text_tools.dart';
 import 'package:super_editor/src/infrastructure/_logging.dart';
 
-import '../core/document.dart';
-import '../core/document_selection.dart';
+import 'package:super_editor/src/core/document.dart';
+import 'package:super_editor/src/core/document_selection.dart';
 
 /// Moves the [DocumentComposer]'s selection to the nearest node to [startingNode],
 /// whose [DocumentComponent] is visually selectable.
@@ -97,7 +97,7 @@ DocumentNode? getDownstreamSelectableNodeAfter(
   DocumentNode prevNode = startingNode;
   DocumentNode? selectableNode;
   do {
-    selectableNode = document.getNodeAfter(prevNode);
+    selectableNode = document.getNodeAfterById(prevNode.id);
 
     if (selectableNode != null) {
       final nextComponent = documentLayoutResolver().getComponentByNodeId(selectableNode.id);
@@ -122,7 +122,7 @@ DocumentNode? getUpstreamSelectableNodeBefore(
   DocumentNode prevNode = startingNode;
   DocumentNode? selectableNode;
   do {
-    selectableNode = document.getNodeBefore(prevNode);
+    selectableNode = document.getNodeBeforeById(prevNode.id);
 
     if (selectableNode != null) {
       final nextComponent = documentLayoutResolver().getComponentByNodeId(selectableNode.id);

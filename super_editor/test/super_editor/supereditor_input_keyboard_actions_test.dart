@@ -6,11 +6,10 @@ import 'package:flutter_test_robots/flutter_test_robots.dart';
 import 'package:flutter_test_runners/flutter_test_runners.dart';
 import 'package:super_editor/super_editor.dart';
 import 'package:super_editor/super_editor_test.dart';
+import 'package:super_editor/super_test.dart';
 
 import '../test_runners.dart';
 import '../test_tools.dart';
-import '../test_tools_user_input.dart';
-import 'supereditor_test_tools.dart';
 
 void main() {
   group('Super Editor keyboard actions', () {
@@ -427,7 +426,7 @@ void main() {
           await tester.placeCaretInParagraph("1", 11);
 
           // Press control + backspace
-          await tester.pressCtlBackspace();
+          await tester.pressCtrlBackspace();
 
           // Ensure that a character was deleted.
           final paragraphNode = testContext.findEditContext().document.first as ParagraphNode;
@@ -745,7 +744,7 @@ void main() {
             // Start the user's selection somewhere in the middle of a word.
             await _pumpCaretMovementTestSetup(tester, textOffsetInFirstNode: 8);
 
-            await tester.pressCtlLeftArrow();
+            await tester.pressCtrlLeftArrow();
 
             // Ensure that the caret moved to the beginning of the word.
             expect(
@@ -763,7 +762,7 @@ void main() {
             // Start the user's selection somewhere in the middle of a word.
             await _pumpCaretMovementTestSetup(tester, textOffsetInFirstNode: 8);
 
-            await tester.pressCtlRightArrow();
+            await tester.pressCtrlRightArrow();
 
             // Ensure that the caret moved to the beginning of the word.
             expect(
@@ -789,7 +788,7 @@ void main() {
           await tester.placeCaretInParagraph("1", 11);
 
           // Press control + backspace
-          await tester.pressCtlBackspace();
+          await tester.pressCtrlBackspace();
 
           // Ensure that the whole word was deleted.
           final paragraphNode = testContext.findEditContext().document.first as ParagraphNode;
@@ -816,7 +815,7 @@ void main() {
           await tester.placeCaretInParagraph("1", 12);
 
           // Press control + backspace
-          await tester.pressCtlBackspace();
+          await tester.pressCtrlBackspace();
 
           // Ensure that the whole word was deleted.
           final paragraphNode = testContext.findEditContext().document.first as ParagraphNode;
@@ -1835,7 +1834,7 @@ This is a paragraph
         // Start the user's selection somewhere in the middle of a word.
         await _pumpCaretMovementTestSetup(tester, textOffsetInFirstNode: 8);
 
-        await tester.pressCtlLeftArrow();
+        await tester.pressCtrlLeftArrow();
 
         // Ensure that the caret moved only one character to the left
         expect(
@@ -1853,7 +1852,7 @@ This is a paragraph
         // Start the user's selection somewhere in the middle of a word.
         await _pumpCaretMovementTestSetup(tester, textOffsetInFirstNode: 8);
 
-        await tester.pressCtlRightArrow();
+        await tester.pressCtrlRightArrow();
 
         // Ensure that the caret moved only one character to the right
         expect(
@@ -2450,9 +2449,9 @@ This is a paragraph
           scrollState.position.jumpTo(scrollState.position.maxScrollExtent);
 
           if (defaultTargetPlatform == TargetPlatform.macOS || defaultTargetPlatform == TargetPlatform.iOS) {
-            await tester.pressCmdHome(tester);
+            await tester.pressCmdHome();
           } else {
-            await tester.pressCtrlHome(tester);
+            await tester.pressCtrlHome();
           }
 
           // Ensure we scrolled to the top of the viewport.
@@ -2482,9 +2481,9 @@ This is a paragraph
           scrollState.position.jumpTo(scrollState.position.minScrollExtent + 10);
 
           if (defaultTargetPlatform == TargetPlatform.macOS || defaultTargetPlatform == TargetPlatform.iOS) {
-            await tester.pressCmdHome(tester);
+            await tester.pressCmdHome();
           } else {
-            await tester.pressCtrlHome(tester);
+            await tester.pressCtrlHome();
           }
 
           // Ensure we didn't scroll past the top of the viewport.
@@ -2506,9 +2505,9 @@ This is a paragraph
           final scrollState = tester.state<ScrollableState>(find.byType(Scrollable));
 
           if (defaultTargetPlatform == TargetPlatform.macOS || defaultTargetPlatform == TargetPlatform.iOS) {
-            await tester.pressCmdEnd(tester);
+            await tester.pressCmdEnd();
           } else {
-            await tester.pressCtrlEnd(tester);
+            await tester.pressCtrlEnd();
           }
 
           // Ensure we scrolled to the bottom of the viewport.
@@ -2535,9 +2534,9 @@ This is a paragraph
           scrollState.position.jumpTo(scrollState.position.maxScrollExtent - 10);
 
           if (defaultTargetPlatform == TargetPlatform.macOS || defaultTargetPlatform == TargetPlatform.iOS) {
-            await tester.pressCmdEnd(tester);
+            await tester.pressCmdEnd();
           } else {
-            await tester.pressCtrlEnd(tester);
+            await tester.pressCtrlEnd();
           }
 
           // Ensure we didn't scroll past the bottom of the viewport.

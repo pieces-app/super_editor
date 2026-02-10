@@ -4,7 +4,6 @@ import 'package:flutter_test_runners/flutter_test_runners.dart';
 import 'package:super_editor/super_editor.dart';
 import 'package:super_editor/super_editor_test.dart';
 
-import '../../supereditor_test_tools.dart';
 import '../../test_documents.dart';
 
 void main() {
@@ -97,7 +96,7 @@ void main() {
 
         // Ensure that "@john" was attributed.
         final text = SuperEditorInspector.findTextInComponent("1");
-        expect(text.text, "before @john after");
+        expect(text.toPlainText(), "before @john after");
         expect(
           text.getAttributedRange({stableTagComposingAttribution}, 7),
           const SpanRange(7, 11),
@@ -491,7 +490,7 @@ void main() {
 
         // Ensure that "@john" was attributed.
         final text = SuperEditorInspector.findTextInComponent("1");
-        expect(text.text, "before @john after");
+        expect(text.toPlainText(), "before @john after");
         expect(
           text.getAttributedRange({const CommittedStableTagAttribution("john")}, 7),
           const SpanRange(7, 11),

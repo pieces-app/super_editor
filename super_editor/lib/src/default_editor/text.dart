@@ -26,11 +26,11 @@ import 'package:super_editor/src/infrastructure/keyboard.dart';
 import 'package:super_editor/src/infrastructure/strings.dart';
 import 'package:super_text_layout/super_text_layout.dart';
 
-import 'layout_single_column/layout_single_column.dart';
-import 'multi_node_editing.dart';
-import 'paragraph.dart';
-import 'selection_upstream_downstream.dart';
-import 'text_tools.dart';
+import 'package:super_editor/src/default_editor/layout_single_column/layout_single_column.dart';
+import 'package:super_editor/src/default_editor/multi_node_editing.dart';
+import 'package:super_editor/src/default_editor/paragraph.dart';
+import 'package:super_editor/src/default_editor/selection_upstream_downstream.dart';
+import 'package:super_editor/src/default_editor/text_tools.dart';
 
 @immutable
 class TextNode extends DocumentNode {
@@ -426,24 +426,18 @@ class TextNodeSelection extends TextSelection implements NodeSelection {
 
   const TextNodeSelection.collapsed({
     required int offset,
-    TextAffinity affinity = TextAffinity.downstream,
+    super.affinity,
   }) : super(
           baseOffset: offset,
           extentOffset: offset,
-          affinity: affinity,
         );
 
   const TextNodeSelection({
-    required int baseOffset,
-    required int extentOffset,
-    TextAffinity affinity = TextAffinity.downstream,
-    bool isDirectional = false,
-  }) : super(
-          baseOffset: baseOffset,
-          extentOffset: extentOffset,
-          affinity: affinity,
-          isDirectional: isDirectional,
-        );
+    required super.baseOffset,
+    required super.extentOffset,
+    super.affinity,
+    super.isDirectional,
+  });
 
   @override
   TextNodePosition get base => TextNodePosition(offset: baseOffset, affinity: affinity);
@@ -458,9 +452,9 @@ class TextNodePosition extends TextPosition implements NodePosition {
       : super(offset: position.offset, affinity: position.affinity);
 
   const TextNodePosition({
-    required int offset,
-    TextAffinity affinity = TextAffinity.downstream,
-  }) : super(offset: offset, affinity: affinity);
+    required super.offset,
+    super.affinity,
+  });
 
   @override
   bool isEquivalentTo(NodePosition other) {
@@ -685,14 +679,21 @@ mixin TextComponentViewModel on SingleColumnLayoutComponentViewModel {
       showComposingRegionUnderline.hashCode;
 }
 
+/// Keys to access metadata that are specific to a [TextNode].
+class TextNodeMetadata {
+  /// The [TextAlign] of the [TextNode].
+  static const String textAlign = 'textAlign';
+}
+
 /// Document component that displays hint text when its content text
 /// is empty.
 ///
 /// Internally uses a [TextComponent] to display the content text.
 class TextWithHintComponent extends StatefulWidget {
   const TextWithHintComponent({
-    Key? key,
+    super.key,
     required this.text,
+    this.inlineWidgetBuilders = const [],
     this.hintText,
     this.hintStyleBuilder,
     this.textAlign,
@@ -704,9 +705,13 @@ class TextWithHintComponent extends StatefulWidget {
     this.highlightWhenEmpty = false,
     this.underlines = const [],
     this.showDebugPaint = false,
-  }) : super(key: key);
+  });
 
   final AttributedText text;
+
+  /// {@macro text_component_inline_widget_builders}
+  final InlineWidgetBuilderChain inlineWidgetBuilders;
+
   final AttributedText? hintText;
   final AttributionStyleBuilder? hintStyleBuilder;
   final TextAlign? textAlign;
@@ -753,12 +758,14 @@ class _TextWithHintComponentState extends State<TextWithHintComponent>
         if (widget.text.isEmpty)
           IgnorePointer(
             child: Text.rich(
+              // ignore: deprecated_member_use_from_same_package
               widget.hintText?.computeTextSpan(_styleBuilder) ?? const TextSpan(text: ''),
             ),
           ),
         TextComponent(
           key: _childTextComponentKey,
           text: widget.text,
+          inlineWidgetBuilders: widget.inlineWidgetBuilders,
           textAlign: widget.textAlign,
           textDirection: widget.textDirection,
           textStyleBuilder: widget.textStyleBuilder,
@@ -779,7 +786,7 @@ class _TextWithHintComponentState extends State<TextWithHintComponent>
 /// This is the standard component for text display.
 class TextComponent extends StatefulWidget {
   const TextComponent({
-    Key? key,
+    super.key,
     required this.text,
     this.textAlign,
     this.textDirection,
@@ -792,7 +799,7 @@ class TextComponent extends StatefulWidget {
     this.highlightWhenEmpty = false,
     this.underlines = const [],
     this.showDebugPaint = false,
-  }) : super(key: key);
+  });
 
   final AttributedText text;
 
@@ -807,10 +814,12 @@ class TextComponent extends StatefulWidget {
 
   final AttributionStyleBuilder textStyleBuilder;
 
+  /// {@template text_component_inline_widget_builders}
   /// A Chain of Responsibility that's used to build inline widgets.
   ///
   /// The first builder in the chain to return a non-null `Widget` will be
   /// used for a given inline placeholder.
+  /// {@endtemplate}
   final InlineWidgetBuilderChain inlineWidgetBuilders;
 
   final Map<String, dynamic> metadata;
@@ -1590,7 +1599,11 @@ class AddTextAttributionsCommand extends EditCommand {
           node.id,
           node.copyTextNodeWith(
             text: AttributedText(
-              node.text.toPlainText(),
+              node.text.toPlainText(
+                // Don't include placeholder characters, because we're providing
+                // actual placeholders down below.
+                includePlaceholders: false,
+              ),
               node.text.spans.copy()
                 ..addAttribution(
                   newAttribution: attribution,
@@ -1718,13 +1731,18 @@ class RemoveTextAttributionsCommand extends EditCommand {
         // see that we made a change, and re-renders the text in the document.
         node = node.copyTextNodeWith(
           text: AttributedText(
-            node.text.toPlainText(),
+            node.text.toPlainText(
+              // Don't include placeholder characters, because we're providing
+              // actual placeholders down below.
+              includePlaceholders: false,
+            ),
             node.text.spans.copy()
               ..removeAttribution(
                 attributionToRemove: attribution,
                 start: range.start,
                 end: range.end,
               ),
+            Map.from(node.text.placeholders),
           ),
         );
 
@@ -2219,10 +2237,10 @@ class TextInsertionEvent extends NodeChangeEvent {
 
 class TextDeletedEvent extends NodeChangeEvent {
   const TextDeletedEvent(
-    String nodeId, {
+    super.nodeId, {
     required this.offset,
     required this.deletedText,
-  }) : super(nodeId);
+  });
 
   final int offset;
   final AttributedText deletedText;

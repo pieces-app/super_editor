@@ -7,9 +7,9 @@ import 'package:super_editor/src/infrastructure/_logging.dart';
 import 'package:super_editor/src/infrastructure/platforms/ios/ios_document_controls.dart';
 import 'package:super_editor/src/infrastructure/platforms/mac/mac_ime.dart';
 
-import 'document_delta_editing.dart';
-import 'document_serialization.dart';
-import 'ime_decoration.dart';
+import 'package:super_editor/src/default_editor/document_ime/document_delta_editing.dart';
+import 'package:super_editor/src/default_editor/document_ime/document_serialization.dart';
+import 'package:super_editor/src/default_editor/document_ime/ime_decoration.dart';
 
 /// Sends messages to, and receives messages from, the platform Input Method Engine (IME),
 /// for the purpose of document editing.
@@ -27,7 +27,7 @@ class DocumentImeInputClient extends TextInputConnectionDecorator with TextInput
     required this.imeConnection,
     required this.onPerformSelector,
     this.floatingCursorController,
-  }) {
+  }) : super(imeConnection.value) {
     // Note: we don't listen to document changes because we expect that any change during IME
     // editing will also include a selection change. If we listen to documents and selections, then
     // we'll attempt to serialize the document change before the selection change is made. This
@@ -168,6 +168,7 @@ class DocumentImeInputClient extends TextInputConnectionDecorator with TextInput
 
   @override
   TextEditingValue get currentTextEditingValue => _currentTextEditingValue;
+
   TextEditingValue _currentTextEditingValue = const TextEditingValue();
 
   // What the platform IME *thinks* the current value is.

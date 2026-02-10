@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:super_editor/super_editor.dart';
 
-import '../../super_reader/reader_test_tools.dart';
+import 'package:super_editor/src/test/super_reader_test/reader_test_tools.dart';
 
 void main() {
   group('MutableDocument', () {
@@ -128,7 +128,7 @@ void main() {
       );
 
       final newNode = ParagraphNode(id: 'new', text: AttributedText());
-      document.replaceNode(oldNode: oldNode, newNode: newNode);
+      document.replaceNodeById(oldNode.id, newNode);
 
       // oldNode does not exist
       expect(document.contains(oldNode), false);

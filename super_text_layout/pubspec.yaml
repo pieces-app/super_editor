@@ -22,7 +22,7 @@ screenshots:
     path: doc/pub/screenshots/multiple-user-selections.png
 
 environment:
-  sdk: ">=3.0.0 <4.0.0"
+  sdk: ">=3.6.0 <4.0.0"
   flutter: ">=1.17.0"
 
 dependencies:
@@ -44,7 +44,7 @@ dependencies:
 #    path: ../attributed_text
 
 dev_dependencies:
-  flutter_lints: ^2.0.1
+  flutter_lints: ^6.0.0
   golden_toolkit: ^0.15.0
   args: ^2.3.1
   meta: ^1.8.0

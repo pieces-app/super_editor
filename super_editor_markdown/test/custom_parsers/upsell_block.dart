@@ -1,6 +1,5 @@
 import 'package:markdown/markdown.dart' as md;
 import 'package:super_editor/super_editor.dart';
-import 'package:super_editor_markdown/super_editor_markdown.dart';
 
 /// A [DocumentNode] that represents a placeholder for an "upsell message".
 ///
@@ -69,7 +68,7 @@ class UpsellElementToNodeConverter implements ElementToNodeConverter {
 
 class UpsellSerializer extends NodeTypedDocumentNodeMarkdownSerializer<UpsellNode> {
   @override
-  String doSerialization(Document document, UpsellNode node) {
+  String doSerialization(Document document, UpsellNode node, {NodeSelection? selection}) {
     return "@@@ upsell\n";
   }
 }

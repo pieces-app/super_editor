@@ -8,7 +8,6 @@ import 'package:super_editor/super_editor_test.dart';
 
 import '../test_runners.dart';
 import '../test_tools.dart';
-import 'supereditor_test_tools.dart';
 import 'test_documents.dart';
 
 void main() {
@@ -156,7 +155,7 @@ void main() {
         }) async {
           final nodeId = await _pumpSingleLineWithCaret(tester, offset: 10, inputSource: inputSource);
 
-          await tester.pressCtlLeftArrow();
+          await tester.pressCtrlLeftArrow();
 
           expect(SuperEditorInspector.findDocumentSelection(), _caretInParagraph(nodeId, 8));
         });
@@ -167,7 +166,7 @@ void main() {
         }) async {
           final nodeId = await _pumpSingleLineWithCaret(tester, offset: 10, inputSource: inputSource);
 
-          await tester.pressShiftCtlLeftArrow();
+          await tester.pressShiftCtrlLeftArrow();
 
           expect(SuperEditorInspector.findDocumentSelection(), _selectionInParagraph(nodeId, from: 10, to: 8));
         });
@@ -178,7 +177,7 @@ void main() {
         }) async {
           final nodeId = await _pumpSingleLineWithCaret(tester, offset: 10, inputSource: inputSource);
 
-          await tester.pressCtlRightArrow();
+          await tester.pressCtrlRightArrow();
 
           expect(SuperEditorInspector.findDocumentSelection(), _caretInParagraph(nodeId, 12));
         });
@@ -189,7 +188,7 @@ void main() {
         }) async {
           final nodeId = await _pumpSingleLineWithCaret(tester, offset: 10, inputSource: inputSource);
 
-          await tester.pressShiftCtlRightArrow();
+          await tester.pressShiftCtrlRightArrow();
 
           expect(SuperEditorInspector.findDocumentSelection(), _selectionInParagraph(nodeId, from: 10, to: 12));
         });
@@ -954,10 +953,9 @@ DocumentSelection _selectionInParagraph(
 /// Super Editor experience goes out of existence, such as navigation.
 class _CloseKeyboardOnDispose extends StatefulWidget {
   const _CloseKeyboardOnDispose({
-    Key? key,
     required this.keyboardController,
     required this.child,
-  }) : super(key: key);
+  });
 
   final SoftwareKeyboardController keyboardController;
   final Widget child;

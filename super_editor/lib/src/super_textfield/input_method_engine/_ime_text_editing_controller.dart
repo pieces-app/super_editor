@@ -9,7 +9,7 @@ import 'package:super_editor/src/infrastructure/attributed_text_styles.dart';
 import 'package:super_editor/src/super_textfield/super_textfield.dart';
 import 'package:super_text_layout/super_text_layout.dart';
 
-import '../../infrastructure/_logging.dart';
+import 'package:super_editor/src/infrastructure/_logging.dart';
 
 final _log = imeTextFieldLog;
 
@@ -635,7 +635,9 @@ class ImeAttributedTextEditingController extends AttributedTextEditingController
   }
 
   @override
+  // ignore: deprecated_member_use_from_same_package
   TextSpan buildTextSpan(AttributionStyleBuilder styleBuilder) {
+    // ignore: deprecated_member_use_from_same_package
     return _realController.buildTextSpan(styleBuilder);
   }
 

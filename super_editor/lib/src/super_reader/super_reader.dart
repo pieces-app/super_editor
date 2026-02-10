@@ -47,7 +47,7 @@ import 'package:super_editor/src/super_reader/tasks.dart';
 
 class SuperReader extends StatefulWidget {
   SuperReader({
-    Key? key,
+    super.key,
     this.focusNode,
     this.autofocus = false,
     this.tapRegionGroupId,
@@ -60,7 +60,7 @@ class SuperReader extends StatefulWidget {
     this.documentUnderlayBuilders = const [],
     this.documentOverlayBuilders = defaultSuperReaderDocumentOverlayBuilders,
     List<ComponentBuilder>? componentBuilders,
-    List<ReadOnlyDocumentKeyboardAction>? keyboardActions,
+    List<SuperReaderKeyboardAction>? keyboardActions,
     SelectionStyles? selectionStyle,
     this.gestureMode,
     this.contentTapDelegateFactory = superReaderLaunchLinkTapHandlerFactory,
@@ -75,11 +75,10 @@ class SuperReader extends StatefulWidget {
     this.scrollingEnabled = true,
   })  : stylesheet = stylesheet ?? readOnlyDefaultStylesheet,
         selectionStyles = selectionStyle ?? readOnlyDefaultSelectionStyle,
-        keyboardActions = keyboardActions ?? readOnlyDefaultKeyboardActions,
+        keyboardActions = keyboardActions ?? superReaderDefaultKeyboardActions,
         componentBuilders = componentBuilders != null
             ? [...componentBuilders, const UnknownComponentBuilder()]
-            : [...readOnlyDefaultComponentBuilders, const UnknownComponentBuilder()],
-        super(key: key);
+            : [...readOnlyDefaultComponentBuilders, const UnknownComponentBuilder()];
 
   final FocusNode? focusNode;
 
@@ -168,7 +167,7 @@ class SuperReader extends StatefulWidget {
   ///
   /// These actions are only used when in [TextInputSource.keyboard]
   /// mode.
-  final List<ReadOnlyDocumentKeyboardAction> keyboardActions;
+  final List<SuperReaderKeyboardAction> keyboardActions;
 
   /// The [SuperReader] gesture mode, e.g., mouse or touch.
   final DocumentGestureMode? gestureMode;
@@ -496,8 +495,8 @@ class SuperReaderState extends State<SuperReader> {
           autoScroller: _autoScrollController,
           fillViewport: fillViewport,
           showDebugPaint: widget.debugPaint.gestures,
-          child: child,
           scrollingEnabled: widget.scrollingEnabled,
+          child: child,
         );
       case DocumentGestureMode.android:
         return ReadOnlyAndroidDocumentTouchInteractor(
@@ -515,8 +514,8 @@ class SuperReaderState extends State<SuperReader> {
           showDebugPaint: widget.debugPaint.gestures,
           overlayController: widget.overlayController,
           fillViewport: fillViewport,
-          child: child,
           scrollingEnabled: widget.scrollingEnabled,
+          child: child,
         );
       case DocumentGestureMode.iOS:
         return SuperReaderIosDocumentTouchInteractor(
@@ -528,8 +527,8 @@ class SuperReaderState extends State<SuperReader> {
           scrollController: _scrollController,
           fillViewport: fillViewport,
           showDebugPaint: widget.debugPaint.gestures,
-          child: child,
           scrollingEnabled: widget.scrollingEnabled,
+          child: child,
         );
     }
   }

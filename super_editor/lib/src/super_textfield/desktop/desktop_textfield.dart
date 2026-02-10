@@ -27,7 +27,7 @@ import 'package:super_editor/src/super_textfield/infrastructure/text_field_scrol
 import 'package:super_editor/src/super_textfield/super_textfield.dart';
 import 'package:super_text_layout/super_text_layout.dart';
 
-import '../infrastructure/fill_width_if_constrained.dart';
+import 'package:super_editor/src/super_textfield/infrastructure/fill_width_if_constrained.dart';
 
 final _log = textFieldLog;
 
@@ -46,7 +46,7 @@ final _log = textFieldLog;
 /// flavor of a text field.
 class SuperDesktopTextField extends StatefulWidget {
   const SuperDesktopTextField({
-    Key? key,
+    super.key,
     this.focusNode,
     this.tapRegionGroupId,
     this.textController,
@@ -79,8 +79,7 @@ class SuperDesktopTextField extends StatefulWidget {
   })  : keyboardHandlers = keyboardHandlers ??
             (inputSource == TextInputSource.keyboard
                 ? defaultTextFieldKeyboardHandlers
-                : defaultTextFieldImeKeyboardHandlers),
-        super(key: key);
+                : defaultTextFieldImeKeyboardHandlers);
 
   final FocusNode? focusNode;
 
@@ -450,6 +449,7 @@ class SuperDesktopTextFieldState extends State<SuperDesktopTextField> implements
             textKey: _textKey,
             textScrollKey: _textScrollKey,
             isMultiline: isMultiline,
+            // ignore: deprecated_member_use_from_same_package
             onRightClick: widget.onRightClick,
             tapHandlers: widget.tapHandlers,
             child: MultiListenableBuilder(
@@ -512,6 +512,7 @@ class SuperDesktopTextFieldState extends State<SuperDesktopTextField> implements
                 textFieldContext: _textFieldContext,
                 isMultiline: isMultiline,
                 selectorHandlers: widget.selectorHandlers ?? defaultTextFieldSelectorHandlers,
+                // ignore: deprecated_member_use_from_same_package
                 textInputAction: widget.textInputAction,
                 imeConfiguration: widget.imeConfiguration,
                 textStyleBuilder: widget.textStyleBuilder,
@@ -604,7 +605,7 @@ typedef DecorationBuilder = Widget Function(BuildContext, Widget child);
 /// be tied to [textScrollKey].
 class SuperTextFieldGestureInteractor extends StatefulWidget {
   const SuperTextFieldGestureInteractor({
-    Key? key,
+    super.key,
     required this.focusNode,
     required this.textController,
     required this.textKey,
@@ -613,7 +614,7 @@ class SuperTextFieldGestureInteractor extends StatefulWidget {
     this.onRightClick,
     this.tapHandlers = const [],
     required this.child,
-  }) : super(key: key);
+  });
 
   /// [FocusNode] for this text field.
   final FocusNode focusNode;
@@ -945,6 +946,7 @@ class _SuperTextFieldGestureInteractorState extends State<SuperTextFieldGestureI
         return;
       }
     }
+    // ignore: deprecated_member_use_from_same_package
     widget.onRightClick?.call(context, widget.textController, details.localPosition);
   }
 
@@ -1298,13 +1300,13 @@ class _SuperTextFieldGestureInteractorState extends State<SuperTextFieldGestureI
 /// of a line.
 class SuperTextFieldKeyboardInteractor extends StatefulWidget {
   const SuperTextFieldKeyboardInteractor({
-    Key? key,
+    super.key,
     required this.focusNode,
     required this.textFieldContext,
     required this.textKey,
     required this.keyboardActions,
     required this.child,
-  }) : super(key: key);
+  });
 
   /// [FocusNode] for this text field.
   final FocusNode focusNode;
@@ -1428,7 +1430,7 @@ class _SuperTextFieldKeyboardInteractorState extends State<SuperTextFieldKeyboar
 /// When [focusNode] loses focus, the [textController]'s selection is cleared.
 class SuperTextFieldImeInteractor extends StatefulWidget {
   const SuperTextFieldImeInteractor({
-    Key? key,
+    super.key,
     required this.textKey,
     required this.focusNode,
     required this.textFieldContext,
@@ -1440,7 +1442,7 @@ class SuperTextFieldImeInteractor extends StatefulWidget {
     this.textAlign,
     this.textDirection,
     required this.child,
-  }) : super(key: key);
+  });
 
   /// [FocusNode] for this text field.
   final FocusNode focusNode;
@@ -1762,7 +1764,7 @@ class _SuperTextFieldImeInteractorState extends State<SuperTextFieldImeInteracto
 /// with a corresponding [SuperSelectableText] widget that is tied to [textKey].
 class SuperTextFieldScrollview extends StatefulWidget {
   const SuperTextFieldScrollview({
-    Key? key,
+    super.key,
     required this.textKey,
     required this.textController,
     required this.scrollController,
@@ -1771,7 +1773,7 @@ class SuperTextFieldScrollview extends StatefulWidget {
     required this.isMultiline,
     this.textAlign = TextAlign.left,
     required this.child,
-  }) : super(key: key);
+  });
 
   /// [TextController] for the text/selection within this text field.
   final AttributedTextEditingController textController;
@@ -2050,7 +2052,7 @@ class SuperTextFieldScrollviewState extends State<SuperTextFieldScrollview> with
     }
   }
 
-  void _onTick(elapsedTime) {
+  void _onTick(Duration elapsedTime) {
     if (_scrollToStartOnTick) {
       scrollToStart();
     }

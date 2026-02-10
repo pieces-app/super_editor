@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_test_runners/flutter_test_runners.dart';
-import 'package:super_editor/src/test/super_editor_test/supereditor_robot.dart';
 import 'package:super_editor/super_editor.dart';
-
-import '../super_editor/supereditor_test_tools.dart';
+import 'package:super_editor/super_editor_test.dart';
 
 void main() {
   group('Keyboard panel scaffold >', () {
@@ -549,7 +547,7 @@ void main() {
         final contentHeightWithNoKeyboard = tester.getSize(find.byKey(_chatPageKey)).height;
 
         // Show the keyboard.
-        keyboardPanelController.showSoftwareKeyboard();
+        await tester.placeCaretInParagraph("1", 0);
         await tester.pumpAndSettle();
 
         // Record the height of the content now that the keyboard is open.
@@ -640,7 +638,7 @@ void main() {
 
         // Show the keyboard. Don't show the toolbar because it's irrelevant for this test.
         controller.toolbarVisibility = KeyboardToolbarVisibility.hidden;
-        controller.showSoftwareKeyboard();
+        await tester.placeCaretInParagraph("1", 0);
         await tester.pumpAndSettle();
 
         // Record the height of the content now that the keyboard is open.
@@ -1221,6 +1219,5 @@ const _aboveKeyboardToolbarKey = ValueKey('toolbar');
 const _keyboardPanelKey = ValueKey('keyboardPanel');
 
 enum _Panel {
-  panel1,
-  panel2;
+  panel1;
 }

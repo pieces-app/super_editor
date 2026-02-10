@@ -12,7 +12,7 @@ import 'package:super_editor/src/default_editor/text.dart';
 import 'package:super_editor/src/infrastructure/flutter/flutter_scheduler.dart';
 import 'package:super_editor/src/infrastructure/flutter/overlay_with_groups.dart';
 
-import '../attributions.dart';
+import 'package:super_editor/src/default_editor/attributions.dart';
 
 /// A mobile document editing toolbar, which is displayed in the application
 /// [Overlay], and is mounted just above the software keyboard.
@@ -25,14 +25,14 @@ import '../attributions.dart';
 /// and list items, and inserting horizontal rules.
 class KeyboardEditingToolbar extends StatefulWidget {
   const KeyboardEditingToolbar({
-    Key? key,
+    super.key,
     required this.editor,
     required this.document,
     required this.composer,
     required this.commonOps,
     this.brightness,
     this.takeUpSameSpaceAsToolbar = false,
-  }) : super(key: key);
+  });
 
   final Editor editor;
   final Document document;
@@ -154,6 +154,7 @@ class _KeyboardEditingToolbarState extends State<KeyboardEditingToolbar> with Wi
   Widget _buildTheming({
     required Widget child,
   }) {
+    // ignore: deprecated_member_use_from_same_package
     final brightness = widget.brightness ?? MediaQuery.of(context).platformBrightness;
 
     return Theme(

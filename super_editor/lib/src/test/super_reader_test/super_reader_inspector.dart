@@ -102,6 +102,7 @@ class SuperReaderInspector {
     }
 
     if (component is ProxyDocumentComponent) {
+      // ignore: invalid_use_of_protected_member
       return (component.childDocumentComponentKey.currentState as TextComponentState).widget.text;
     }
 

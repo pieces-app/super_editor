@@ -7,7 +7,7 @@ import 'package:super_editor/src/core/document_layout.dart';
 import 'package:super_editor/src/core/document_selection.dart';
 import 'package:super_editor/src/infrastructure/_logging.dart';
 
-import '_presenter.dart';
+import 'package:super_editor/src/default_editor/layout_single_column/_presenter.dart';
 
 /// Displays a document in a single-column layout.
 ///
@@ -26,12 +26,13 @@ import '_presenter.dart';
 /// cast that `State` object to a [DocumentLayout].
 class SingleColumnDocumentLayout extends StatefulWidget {
   const SingleColumnDocumentLayout({
-    Key? key,
+    super.key,
     required this.presenter,
     required this.componentBuilders,
     this.onBuildScheduled,
+    this.wrapWithSliverAdapter = true,
     this.showDebugPaint = false,
-  }) : super(key: key);
+  });
 
   /// Presenter that provides a view model for a complete single-column
   /// document layout.
@@ -54,6 +55,10 @@ class SingleColumnDocumentLayout extends StatefulWidget {
   /// TODO: Get rid of this as soon as Flutter makes it possible to monitor
   ///       dirty subtrees.
   final VoidCallback? onBuildScheduled;
+
+  /// Whether to wrap this layout with a [SliverToBoxAdapter] so that this layout
+  /// can be displayed within a `Sliver`.
+  final bool wrapWithSliverAdapter;
 
   /// Adds a debugging UI to the document layout, when true.
   final bool showDebugPaint;
@@ -710,17 +715,21 @@ class _SingleColumnDocumentLayoutState extends State<SingleColumnDocumentLayout>
   @override
   Widget build(BuildContext context) {
     editorLayoutLog.fine("Building document layout");
-    final result = SliverToBoxAdapter(
-      child: Padding(
-        key: _boxKey,
-        padding: widget.presenter.viewModel.padding,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: _buildDocComponents(),
-        ),
+    Widget result = Padding(
+      key: _boxKey,
+      padding: widget.presenter.viewModel.padding,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: _buildDocComponents(),
       ),
     );
+
+    if (widget.wrapWithSliverAdapter) {
+      result = SliverToBoxAdapter(
+        child: result,
+      );
+    }
 
     editorLayoutLog.fine("Done building document");
     return result;
@@ -863,11 +872,10 @@ class _SingleColumnDocumentLayoutState extends State<SingleColumnDocumentLayout>
 
 class _PresenterComponentBuilder extends StatefulWidget {
   const _PresenterComponentBuilder({
-    Key? key,
     required this.presenter,
     required this.watchNode,
     required this.builder,
-  }) : super(key: key);
+  });
 
   final SingleColumnLayoutPresenter presenter;
   final String watchNode;
@@ -940,7 +948,6 @@ class _PresenterComponentBuilderState extends State<_PresenterComponentBuilder> 
 /// given [presenter] reports that the
 class _Component extends StatelessWidget {
   const _Component({
-    Key? key,
     required this.componentBuilders,
     required this.componentViewModel,
     required this.componentKey,
@@ -949,7 +956,7 @@ class _Component extends StatelessWidget {
     // constraint is >= 3.6.0, just ignore `unused_element_parameter`.
     // ignore: unused_element, unused_element_parameter
     this.showDebugPaint = false,
-  }) : super(key: key);
+  });
 
   /// Builders for every type of component that this layout displays.
   ///

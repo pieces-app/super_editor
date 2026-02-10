@@ -1,4 +1,4 @@
-library super_text_field;
+library;
 
 // The whole text field.
 export 'src/super_textfield/super_textfield.dart';

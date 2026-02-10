@@ -4,7 +4,7 @@ version: 0.0.1
 homepage:
 
 environment:
-  sdk: ">=3.0.0 <4.0.0"
+  sdk: ">=3.6.0 <4.0.0"
   flutter: ">=3.3.0"
 
 dependencies:
@@ -12,11 +12,11 @@ dependencies:
   collection: ^1.18.0
   flutter:
     sdk: flutter
-  follow_the_leader: ^0.0.4+8
-  overlord: ^0.0.3+5
+  follow_the_leader: ^0.5.1
+  overlord: ^0.4.2
   plugin_platform_interface: ^2.0.2
 
-  super_editor: ^0.3.0-dev.15
+  super_editor: ^0.3.0-dev.38
   super_text_layout: ^0.1.12
 
 dependency_overrides:
@@ -28,14 +28,11 @@ dependency_overrides:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^3.0.0
-  pigeon: ^21.1.0
-  flutter_test_goldens:
-    git:
-      url: https://github.com/flutter-bounty-hunters/flutter_test_goldens
-      ref: e35c5d0ebb0cbf24bf33090199ec576671ebed26
-  flutter_test_runners: ^0.0.4
-  flutter_test_robots: ^0.0.24
+  flutter_lints: ^6.0.0
+  pigeon: ^26.1.2
+  flutter_test_goldens: ^0.0.7
+  flutter_test_runners: ^1.0.0
+  flutter_test_robots: ^1.0.0
   golden_bricks: ^1.0.0
 
 # For information on the generic Dart part of this file, see the

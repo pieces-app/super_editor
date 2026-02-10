@@ -6,9 +6,9 @@ import 'package:flutter_test_robots/flutter_test_robots.dart';
 import 'package:flutter_test_runners/flutter_test_runners.dart';
 import 'package:meta/meta.dart';
 import 'package:super_editor/super_editor.dart';
+import 'package:super_editor/super_text_field_test.dart';
 
 import '../test_runners.dart';
-import 'super_textfield_robot.dart';
 
 void main() {
   group("SuperTextField", () {
@@ -192,9 +192,9 @@ void main() {
 
               // Scroll to viewport's top.
               if (defaultTargetPlatform == TargetPlatform.macOS) {
-                await tester.pressCmdHome(tester);
+                await tester.pressCmdHome();
               } else {
-                await tester.pressCtrlHome(tester);
+                await tester.pressCtrlHome();
               }
 
               // Ensure we scrolled to the viewport's top.
@@ -274,9 +274,9 @@ void main() {
 
               // Scroll to viewport's top.
               if (defaultTargetPlatform == TargetPlatform.macOS) {
-                await tester.pressCmdHome(tester);
+                await tester.pressCmdHome();
               } else {
-                await tester.pressCtrlHome(tester);
+                await tester.pressCtrlHome();
               }
 
               // Ensure we didn't scroll past the viewport's top.
@@ -346,9 +346,9 @@ void main() {
 
               // Scroll to viewport's bottom.
               if (defaultTargetPlatform == TargetPlatform.macOS) {
-                await tester.pressCmdEnd(tester);
+                await tester.pressCmdEnd();
               } else {
-                await tester.pressCtrlEnd(tester);
+                await tester.pressCtrlEnd();
               }
 
               // Ensure we scrolled to the viewport's bottom.
@@ -418,9 +418,9 @@ void main() {
 
               // Scroll to viewport's bottom.
               if (defaultTargetPlatform == TargetPlatform.macOS) {
-                await tester.pressCmdEnd(tester);
+                await tester.pressCmdEnd();
               } else {
-                await tester.pressCtrlEnd(tester);
+                await tester.pressCtrlEnd();
               }
               // Ensure we didn't scroll past the viewport's bottom.
               expect(scrollState.position.pixels, equals(scrollState.position.maxScrollExtent));
@@ -645,9 +645,9 @@ void main() {
 
               // Scroll to viewport's top.
               if (defaultTargetPlatform == TargetPlatform.macOS) {
-                await tester.pressCmdHome(tester);
+                await tester.pressCmdHome();
               } else {
-                await tester.pressCtrlHome(tester);
+                await tester.pressCtrlHome();
               }
 
               // Ensure we scrolled to the viewport's top.
@@ -727,9 +727,9 @@ void main() {
 
               // Scroll to viewport's top.
               if (defaultTargetPlatform == TargetPlatform.macOS) {
-                await tester.pressCmdHome(tester);
+                await tester.pressCmdHome();
               } else {
-                await tester.pressCtrlHome(tester);
+                await tester.pressCtrlHome();
               }
 
               // Ensure we didn't scroll past the viewport's top.
@@ -799,9 +799,9 @@ void main() {
 
               // Scroll to viewport's bottom.
               if (defaultTargetPlatform == TargetPlatform.macOS) {
-                await tester.pressCmdEnd(tester);
+                await tester.pressCmdEnd();
               } else {
-                await tester.pressCtrlEnd(tester);
+                await tester.pressCtrlEnd();
               }
 
               // Ensure we scrolled to the viewport's bottom.
@@ -871,9 +871,9 @@ void main() {
 
               // Scroll to viewport's bottom.
               if (defaultTargetPlatform == TargetPlatform.macOS) {
-                await tester.pressCmdEnd(tester);
+                await tester.pressCmdEnd();
               } else {
-                await tester.pressCtrlEnd(tester);
+                await tester.pressCtrlEnd();
               }
               // Ensure we didn't scroll past the viewport's bottom.
               expect(scrollState.position.pixels, equals(scrollState.position.maxScrollExtent));
@@ -952,9 +952,9 @@ void main() {
             // Scrolls to text field's bottom.
 
             if (defaultTargetPlatform == TargetPlatform.macOS) {
-              await tester.pressCmdEnd(tester);
+              await tester.pressCmdEnd();
             } else {
-              await tester.pressCtrlEnd(tester);
+              await tester.pressCtrlEnd();
             }
 
             // Ensure we scrolled to text field's bottom.
@@ -965,9 +965,9 @@ void main() {
 
             // Scrolls to ancestor scrollable's bottom.
             if (defaultTargetPlatform == TargetPlatform.macOS) {
-              await tester.pressCmdEnd(tester);
+              await tester.pressCmdEnd();
             } else {
-              await tester.pressCtrlEnd(tester);
+              await tester.pressCtrlEnd();
             }
             // Ensure we scrolled to ancestor scrollable's bottom.
             expect(
@@ -978,9 +978,9 @@ void main() {
             // Scrolls to text field's top.
 
             if (defaultTargetPlatform == TargetPlatform.macOS) {
-              await tester.pressCmdHome(tester);
+              await tester.pressCmdHome();
             } else {
-              await tester.pressCtrlHome(tester);
+              await tester.pressCtrlHome();
             }
 
             // Ensure we scrolled to text field's top.
@@ -991,9 +991,9 @@ void main() {
 
             // Scrolls to ancestor scrollable's top.
             if (defaultTargetPlatform == TargetPlatform.macOS) {
-              await tester.pressCmdHome(tester);
+              await tester.pressCmdHome();
             } else {
-              await tester.pressCtrlHome(tester);
+              await tester.pressCtrlHome();
             }
 
             // Ensure we scrolled to ancestor scrollable's top.
@@ -1112,9 +1112,9 @@ void main() {
 
             // Scroll all the way to the text field's bottom.
             if (defaultTargetPlatform == TargetPlatform.macOS) {
-              await tester.pressCmdEnd(tester);
+              await tester.pressCmdEnd();
             } else {
-              await tester.pressCtrlEnd(tester);
+              await tester.pressCtrlEnd();
             }
 
             expect(
@@ -1124,9 +1124,9 @@ void main() {
 
             // Scrolls to text field's top.
             if (defaultTargetPlatform == TargetPlatform.macOS) {
-              await tester.pressCmdHome(tester);
+              await tester.pressCmdHome();
             } else {
-              await tester.pressCtrlHome(tester);
+              await tester.pressCtrlHome();
             }
 
             // Ensure we scrolled to text field's top.
@@ -1137,9 +1137,9 @@ void main() {
 
             // Scrolls to ancestor scrollable's top.
             if (defaultTargetPlatform == TargetPlatform.macOS) {
-              await tester.pressCmdHome(tester);
+              await tester.pressCmdHome();
             } else {
-              await tester.pressCtrlHome(tester);
+              await tester.pressCtrlHome();
             }
 
             // Ensure we scrolled to ancestor scrollable's top.
@@ -1257,9 +1257,9 @@ void main() {
 
             // Scrolls to text field's bottom.
             if (defaultTargetPlatform == TargetPlatform.macOS) {
-              await tester.pressCmdEnd(tester);
+              await tester.pressCmdEnd();
             } else {
-              await tester.pressCtrlEnd(tester);
+              await tester.pressCtrlEnd();
             }
 
             // Ensure we scrolled to text field's bottom.
@@ -1270,9 +1270,9 @@ void main() {
 
             // Scrolls to ancestor scrollable's bottom.
             if (defaultTargetPlatform == TargetPlatform.macOS) {
-              await tester.pressCmdEnd(tester);
+              await tester.pressCmdEnd();
             } else {
-              await tester.pressCtrlEnd(tester);
+              await tester.pressCtrlEnd();
             }
 
             // Ensure we scrolled to ancestor scrollable's bottom.
@@ -1283,9 +1283,9 @@ void main() {
 
             // Scrolls to text field's top.
             if (defaultTargetPlatform == TargetPlatform.macOS) {
-              await tester.pressCmdHome(tester);
+              await tester.pressCmdHome();
             } else {
-              await tester.pressCtrlHome(tester);
+              await tester.pressCtrlHome();
             }
 
             // Ensure we scrolled to text field's top.
@@ -1296,9 +1296,9 @@ void main() {
 
             // Scrolls to ancestor scrollable's top.
             if (defaultTargetPlatform == TargetPlatform.macOS) {
-              await tester.pressCmdHome(tester);
+              await tester.pressCmdHome();
             } else {
-              await tester.pressCtrlHome(tester);
+              await tester.pressCtrlHome();
             }
 
             // Ensure we scrolled to ancestor scrollable's top.

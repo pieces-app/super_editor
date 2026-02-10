@@ -1,4 +1,4 @@
-name: example_chat
+name: super_editor_example_chat
 description: "An example of Super Editor chat UI"
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
@@ -17,12 +17,12 @@ dependencies:
 
   super_editor:
     path: ../
-  super_keyboard: ^0.2.0
+  super_keyboard: ^0.3.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^5.0.0
+  flutter_lints: ^6.0.0
 
 flutter:
   # The following line ensures that the Material Icons font is

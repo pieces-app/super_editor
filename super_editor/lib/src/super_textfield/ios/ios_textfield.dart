@@ -1,4 +1,3 @@
-import 'package:attributed_text/attributed_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:follow_the_leader/follow_the_leader.dart';
@@ -20,11 +19,11 @@ import 'package:super_editor/src/super_textfield/input_method_engine/_ime_text_e
 import 'package:super_editor/src/super_textfield/ios/editing_controls.dart';
 import 'package:super_text_layout/super_text_layout.dart';
 
-import '../metrics.dart';
-import '../styles.dart';
-import 'floating_cursor.dart';
-import '../../infrastructure/platforms/ios/ios_system_context_menu.dart';
-import 'user_interaction.dart';
+import 'package:super_editor/src/super_textfield/metrics.dart';
+import 'package:super_editor/src/super_textfield/styles.dart';
+import 'package:super_editor/src/super_textfield/ios/floating_cursor.dart';
+import 'package:super_editor/src/infrastructure/platforms/ios/ios_system_context_menu.dart';
+import 'package:super_editor/src/super_textfield/ios/user_interaction.dart';
 
 export '../infrastructure/magnifier.dart';
 export 'caret.dart';
@@ -36,7 +35,7 @@ final _log = iosTextFieldLog;
 
 class SuperIOSTextField extends StatefulWidget {
   const SuperIOSTextField({
-    Key? key,
+    super.key,
     this.focusNode,
     this.tapRegionGroupId,
     this.tapHandlers = const [],
@@ -59,7 +58,7 @@ class SuperIOSTextField extends StatefulWidget {
     this.showComposingUnderline = true,
     this.popoverToolbarBuilder = defaultIosPopoverToolbarBuilder,
     this.showDebugPaint = false,
-  }) : super(key: key);
+  });
 
   /// [FocusNode] attached to this text field.
   final FocusNode? focusNode;
@@ -454,6 +453,7 @@ class SuperIOSTextFieldState extends State<SuperIOSTextField>
             } else {
               _textEditingController.attachToIme(
                 viewId: View.of(context).viewId,
+                // ignore: deprecated_member_use_from_same_package
                 textInputAction: widget.textInputAction ?? TextInputAction.done,
                 textInputType: _isMultiline ? TextInputType.multiline : TextInputType.text,
               );
@@ -844,7 +844,9 @@ class _IOSSuperTextFieldSystemContextMenuState extends State<IOSSuperTextFieldSy
     // The size reported by the controller's toolbarFocalPoint is one frame behind. Query the information
     // overlayController instead.
     final topAnchor = widget.controller.overlayController.toolbarTopAnchor;
-    final bottomAnchor = widget.controller.overlayController.toolbarTopAnchor;
+    // BUG FIX: was toolbarTopAnchor (copy-paste bug from upstream), should be toolbarBottomAnchor
+    // to produce a correctly-sized Rect for the iOS system context menu.
+    final bottomAnchor = widget.controller.overlayController.toolbarBottomAnchor;
 
     if (topAnchor == null || bottomAnchor == null) {
       // We don't expect the toolbar builder to be called without having the anchors
@@ -852,7 +854,15 @@ class _IOSSuperTextFieldSystemContextMenuState extends State<IOSSuperTextFieldSy
       return;
     }
 
-    _systemContextMenuController.show(Rect.fromLTRB(topAnchor.dx, topAnchor.dy, bottomAnchor.dx, bottomAnchor.dy));
+    _systemContextMenuController.showWithItems(
+      Rect.fromLTRB(topAnchor.dx, topAnchor.dy, bottomAnchor.dx, bottomAnchor.dy),
+      const <IOSSystemContextMenuItemData>[
+        IOSSystemContextMenuItemDataCut(),
+        IOSSystemContextMenuItemDataCopy(),
+        IOSSystemContextMenuItemDataPaste(),
+        IOSSystemContextMenuItemDataSelectAll(),
+      ],
+    );
   }
 
   @override

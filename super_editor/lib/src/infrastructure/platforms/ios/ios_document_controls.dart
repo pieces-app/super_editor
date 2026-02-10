@@ -23,13 +23,13 @@ import 'package:super_text_layout/super_text_layout.dart';
 /// An application overlay that displays an iOS-style toolbar.
 class IosFloatingToolbarOverlay extends StatefulWidget {
   const IosFloatingToolbarOverlay({
-    Key? key,
+    super.key,
     required this.shouldShowToolbar,
     required this.toolbarFocalPoint,
     required this.floatingToolbarBuilder,
     this.createOverlayControlsClipper,
     this.showDebugPaint = false,
-  }) : super(key: key);
+  });
 
   final ValueListenable<bool> shouldShowToolbar;
 
@@ -104,14 +104,12 @@ class _IosFloatingToolbarOverlayState extends State<IosFloatingToolbarOverlay> w
       link: widget.toolbarFocalPoint,
       boundary: WidgetFollowerBoundary(
         boundaryKey: _boundsKey,
-        devicePixelRatio: MediaQuery.devicePixelRatioOf(context),
       ),
       child: Follower.withAligner(
         link: widget.toolbarFocalPoint,
-        aligner: CupertinoPopoverToolbarAligner(_boundsKey),
+        aligner: CupertinoPopoverToolbarAligner(),
         boundary: WidgetFollowerBoundary(
           boundaryKey: _boundsKey,
-          devicePixelRatio: MediaQuery.devicePixelRatioOf(context),
         ),
         child: widget.floatingToolbarBuilder(context, DocumentKeys.mobileToolbar, widget.toolbarFocalPoint),
       ),
@@ -363,12 +361,12 @@ class FloatingCursorListener {
 /// [SuperEditorIosControlsScope].
 class IosToolbarFocalPointDocumentLayer extends DocumentLayoutLayerStatefulWidget {
   const IosToolbarFocalPointDocumentLayer({
-    Key? key,
+    super.key,
     required this.document,
     required this.selection,
     required this.toolbarFocalPointLink,
     this.showDebugLeaderBounds = false,
-  }) : super(key: key);
+  });
 
   /// The editor's [Document], which is used to find the start and end of
   /// the user's expanded selection.
@@ -707,11 +705,7 @@ class IosControlsDocumentLayerState extends DocumentLayoutLayerState<IosHandlesD
     NodePosition? extentNodePosition = component.movePositionRight(position.nodePosition);
     bool isExtentDownstream = extentNodePosition != null;
 
-    if (extentNodePosition == null) {
-      // Couldn't find a valid position to the right. Look for a position to the left
-      // of the current position within the same node.
-      extentNodePosition = component.movePositionLeft(position.nodePosition);
-    }
+    extentNodePosition ??= component.movePositionLeft(position.nodePosition);
 
     if (extentNodePosition == null) {
       // We couldn't expand the selection neither to the left of the right. Fallback
@@ -768,17 +762,28 @@ class IosControlsDocumentLayerState extends DocumentLayoutLayerState<IosHandlesD
       // The computeLayoutData method is called during the layer's build, which means that the
       // layer's RenderBox is outdated, because it wasn't laid out yet for the current frame.
       // Use the content's RenderBox, which was already laid out for the current frame.
-      final contentBox = documentContext.findRenderObject() as RenderSliver?;
-      if (contentBox != null && contentBox.hasSize && caretRect.left + caretWidth >= contentBox.size.width) {
-        // Ajust the caret position to make it entirely visible because it's currently placed
-        // partially or entirely outside of the layers' bounds. This can happen for downstream selections
-        // of block components that take all the available width.
-        caretRect = Rect.fromLTWH(
-          contentBox.size.width - caretWidth,
-          caretRect.top,
-          caretRect.width,
-          caretRect.height,
-        );
+      final contentBox = documentContext.findRenderObject();
+      if (contentBox != null) {
+        double? contentWidth;
+        if (contentBox is RenderSliver && contentBox.hasSize && caretRect.left + caretWidth >= contentBox.size.width) {
+          contentWidth = contentBox.size.width;
+        } else if (contentBox is RenderBox &&
+            contentBox.hasSize &&
+            caretRect.left + caretWidth >= contentBox.size.width) {
+          contentWidth = contentBox.size.width;
+        }
+
+        if (contentWidth != null) {
+          // Adjust the caret position to make it entirely visible because it's currently placed
+          // partially or entirely outside of the layers' bounds. This can happen for downstream selections
+          // of block components that take all the available width.
+          caretRect = Rect.fromLTWH(
+            contentWidth - caretWidth,
+            caretRect.top,
+            caretRect.width,
+            caretRect.height,
+          );
+        }
       }
 
       return DocumentSelectionLayout(

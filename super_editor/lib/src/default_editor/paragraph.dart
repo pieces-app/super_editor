@@ -21,8 +21,8 @@ import 'package:super_editor/src/infrastructure/keyboard.dart';
 import 'package:super_editor/src/infrastructure/platforms/platform.dart';
 import 'package:super_text_layout/super_text_layout.dart';
 
-import 'layout_single_column/layout_single_column.dart';
-import 'text_tools.dart';
+import 'package:super_editor/src/default_editor/layout_single_column/layout_single_column.dart';
+import 'package:super_editor/src/default_editor/text_tools.dart';
 
 @immutable
 class ParagraphNode extends TextNode {
@@ -331,6 +331,7 @@ class HintComponentBuilder extends ParagraphComponentBuilder {
     return TextWithHintComponent(
       key: componentContext.componentKey,
       text: componentViewModel.text,
+      inlineWidgetBuilders: componentViewModel.inlineWidgetBuilders,
       textStyleBuilder: componentViewModel.textStyleBuilder,
       hintText: AttributedText(componentViewModel.hintText),
       hintStyleBuilder: (attributions) => hintStyleBuilder(componentContext.context),
@@ -422,6 +423,7 @@ class HintComponentViewModel extends SingleColumnLayoutComponentViewModel with T
         createdAt: createdAt,
         padding: padding,
         text: text.copy(),
+        inlineWidgetBuilders: inlineWidgetBuilders,
         textStyleBuilder: textStyleBuilder,
         opacity: opacity,
         selectionColor: selectionColor,
@@ -465,10 +467,10 @@ double defaultParagraphIndentCalculator(TextStyle textStyle, int indent) {
 /// A document component that displays a paragraph.
 class ParagraphComponent extends StatefulWidget {
   const ParagraphComponent({
-    Key? key,
+    super.key,
     required this.viewModel,
     this.showDebugPaint = false,
-  }) : super(key: key);
+  });
 
   final ParagraphComponentViewModel viewModel;
   final bool showDebugPaint;

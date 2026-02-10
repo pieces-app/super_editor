@@ -5,9 +5,7 @@ import 'package:flutter_test_robots/flutter_test_robots.dart';
 import 'package:flutter_test_runners/flutter_test_runners.dart';
 import 'package:super_editor/super_editor.dart';
 import 'package:super_editor/super_editor_test.dart';
-
-import 'super_textfield_inspector.dart';
-import 'super_textfield_robot.dart';
+import 'package:super_editor/super_text_field_test.dart';
 
 void main() {
   group('SuperTextField', () {
@@ -982,9 +980,7 @@ Widget _buildScaffold({
 /// Used to modify the text when we receive deltas from the IME, causing us to send the editing value
 /// back to the IME.
 class _ObscuringTextController extends AttributedTextEditingController {
-  _ObscuringTextController({
-    AttributedText? text,
-  }) : super(text: text);
+  _ObscuringTextController();
 
   @override
   void insertAtCaret({

@@ -29,14 +29,15 @@ import 'package:super_editor/src/infrastructure/platforms/android/magnifier.dart
 import 'package:super_editor/src/infrastructure/platforms/android/selection_handles.dart';
 import 'package:super_editor/src/infrastructure/platforms/mobile_documents.dart';
 import 'package:super_editor/src/infrastructure/platforms/platform.dart';
+import 'package:super_editor/src/infrastructure/document_context.dart';
 import 'package:super_editor/src/infrastructure/render_sliver_ext.dart';
 import 'package:super_editor/src/infrastructure/signal_notifier.dart';
 import 'package:super_editor/src/infrastructure/sliver_hybrid_stack.dart';
 import 'package:super_editor/src/infrastructure/toolbar_position_delegate.dart';
 import 'package:super_editor/src/infrastructure/touch_controls.dart';
-import 'package:super_editor/src/super_reader/reader_context.dart';
 import 'package:super_editor/src/super_textfield/metrics.dart';
 import 'package:super_text_layout/super_text_layout.dart';
+
 import 'package:super_editor/src/default_editor/text_tools.dart';
 
 /// Read-only document gesture interactor that's designed for Android touch input, e.g.,
@@ -49,7 +50,7 @@ import 'package:super_editor/src/default_editor/text_tools.dart';
 /// selection, or double/triple tap to select content.
 class ReadOnlyAndroidDocumentTouchInteractor extends StatefulWidget {
   const ReadOnlyAndroidDocumentTouchInteractor({
-    Key? key,
+    super.key,
     required this.focusNode,
     this.tapRegionGroupId,
     required this.readerContext,
@@ -67,14 +68,14 @@ class ReadOnlyAndroidDocumentTouchInteractor extends StatefulWidget {
     this.overlayController,
     required this.child,
     this.scrollingEnabled = true,
-  }) : super(key: key);
+  });
 
   final FocusNode focusNode;
 
   /// {@macro super_reader_tap_region_group_id}
   final String? tapRegionGroupId;
 
-  final SuperReaderContext readerContext;
+  final DocumentContext readerContext;
 
   final GlobalKey documentKey;
   final DocumentLayout Function() getDocumentLayout;
@@ -358,7 +359,7 @@ class _ReadOnlyAndroidDocumentTouchInteractorState extends State<ReadOnlyAndroid
     }
   }
 
-  void _onDocumentChange(_) {
+  void _onDocumentChange(Object _) {
     _editingController.hideToolbar();
 
     onNextFrame((_) {
@@ -463,7 +464,7 @@ class _ReadOnlyAndroidDocumentTouchInteractorState extends State<ReadOnlyAndroid
     );
   }
 
-  bool _wasScrollingOnTapDown = false;
+  final bool _wasScrollingOnTapDown = false;
   void _onTapDown(TapDownDetails details) {
     final position = scrollPosition;
     if (position is ScrollPositionWithSingleContext) {
@@ -1134,7 +1135,7 @@ typedef SelectionChanger = void Function(DocumentSelection? newSelection);
 // TODO: This was moved here from the SuperEditor side. We've removed the need for this from SuperEditor, remove it from SuperReader, too.
 class AndroidDocumentTouchEditingControls extends StatefulWidget {
   const AndroidDocumentTouchEditingControls({
-    Key? key,
+    super.key,
     required this.editingController,
     required this.documentKey,
     required this.documentLayout,
@@ -1146,7 +1147,7 @@ class AndroidDocumentTouchEditingControls extends StatefulWidget {
     this.createOverlayControlsClipper,
     required this.longPressMagnifierGlobalOffset,
     this.showDebugPaint = false,
-  }) : super(key: key);
+  });
 
   final AndroidDocumentGestureEditingController editingController;
 
@@ -1475,12 +1476,17 @@ class _AndroidDocumentTouchEditingControlsState extends State<AndroidDocumentTou
     required Color debugColor,
     required void Function(DragStartDetails) onPanStart,
   }) {
+    // Use the offset to account for the invisible expanded touch region around the handle.
+    final expandedTapRegionOffset = AndroidSelectionHandle.defaultTouchRegionExpansion.topRight *
+        MediaQuery.devicePixelRatioOf(context) *
+        (handleType == HandleType.upstream ? -1 : 1);
+
     return Follower.withOffset(
       key: handleKey,
       link: handleLink,
       leaderAnchor: leaderAnchor,
       followerAnchor: followerAnchor,
-      offset: handleOffset ?? Offset.zero,
+      offset: (handleOffset ?? Offset.zero) + expandedTapRegionOffset,
       showWhenUnlinked: false,
       child: FractionalTranslation(
         translation: handleFractionalTranslation,

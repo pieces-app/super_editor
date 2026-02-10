@@ -21,7 +21,7 @@ import 'package:flutter/foundation.dart';
 /// as it runs the pipeline, and then re-enable notifications when all commands and
 /// reactions are done executing.
 class PausableValueNotifier<T> extends ValueNotifier<T> {
-  PausableValueNotifier(T value) : super(value);
+  PausableValueNotifier(super.value);
 
   bool _isPaused = false;
 

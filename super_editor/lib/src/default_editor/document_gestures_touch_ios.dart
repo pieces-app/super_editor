@@ -1,5 +1,5 @@
-import 'dart:ui';
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
@@ -17,9 +17,9 @@ import 'package:super_editor/src/default_editor/text_tools.dart';
 import 'package:super_editor/src/document_operations/selection_operations.dart';
 import 'package:super_editor/src/infrastructure/_logging.dart';
 import 'package:super_editor/src/infrastructure/content_layers.dart';
-import 'package:super_editor/src/infrastructure/flutter/empty_box.dart';
-import 'package:super_editor/src/infrastructure/flutter/eager_pan_gesture_recognizer.dart';
 import 'package:super_editor/src/infrastructure/flutter/build_context.dart';
+import 'package:super_editor/src/infrastructure/flutter/eager_pan_gesture_recognizer.dart';
+import 'package:super_editor/src/infrastructure/flutter/empty_box.dart';
 import 'package:super_editor/src/infrastructure/flutter/flutter_scheduler.dart';
 import 'package:super_editor/src/infrastructure/multi_tap_gesture.dart';
 import 'package:super_editor/src/infrastructure/platforms/ios/floating_cursor.dart';
@@ -32,10 +32,11 @@ import 'package:super_editor/src/infrastructure/platforms/platform.dart';
 import 'package:super_editor/src/infrastructure/signal_notifier.dart';
 import 'package:super_editor/src/infrastructure/sliver_hybrid_stack.dart';
 import 'package:super_editor/src/infrastructure/touch_controls.dart';
+import 'package:super_keyboard/super_keyboard.dart';
 
-import '../infrastructure/document_gestures.dart';
-import '../infrastructure/document_gestures_interaction_overrides.dart';
-import 'selection_upstream_downstream.dart';
+import 'package:super_editor/src/infrastructure/document_gestures.dart';
+import 'package:super_editor/src/infrastructure/document_gestures_interaction_overrides.dart';
+import 'package:super_editor/src/default_editor/selection_upstream_downstream.dart';
 
 /// An [InheritedWidget] that provides shared access to a [SuperEditorIosControlsController],
 /// which coordinates the state of iOS controls like the caret, handles, magnifier, etc.
@@ -259,7 +260,7 @@ class SuperEditorIosControlsController {
 /// other widgets.
 class IosDocumentTouchInteractor extends StatefulWidget {
   const IosDocumentTouchInteractor({
-    Key? key,
+    super.key,
     required this.focusNode,
     required this.editor,
     required this.document,
@@ -268,7 +269,6 @@ class IosDocumentTouchInteractor extends StatefulWidget {
     this.openKeyboardWhenTappingExistingSelection = true,
     this.openKeyboardOnSelectionChange = true,
     required this.openSoftwareKeyboard,
-    required this.isImeConnected,
     required this.scrollController,
     required this.dragHandleAutoScroller,
     required this.fillViewport,
@@ -276,7 +276,7 @@ class IosDocumentTouchInteractor extends StatefulWidget {
     this.dragAutoScrollBoundary = const AxisOffset.symmetric(54),
     this.showDebugPaint = false,
     required this.child,
-  }) : super(key: key);
+  });
 
   final FocusNode focusNode;
 
@@ -293,10 +293,6 @@ class IosDocumentTouchInteractor extends StatefulWidget {
 
   /// A callback that should open the software keyboard when invoked.
   final VoidCallback openSoftwareKeyboard;
-
-  /// A [ValueListenable] that should notify this widget when the IME connects
-  /// and disconnects.
-  final ValueListenable<bool> isImeConnected;
 
   /// Optional list of handlers that respond to taps on content, e.g., opening
   /// a link when the user taps on text with a link attribution.
@@ -472,7 +468,7 @@ class _IosDocumentTouchInteractorState extends State<IosDocumentTouchInteractor>
     widget.dragHandleAutoScroller.value?.ensureOffsetIsVisible(extentOffsetInViewport);
   }
 
-  void _onDocumentChange(_) {
+  void _onDocumentChange(Object _) {
     _controlsController!.hideToolbar();
 
     onNextFrame((_) {
@@ -543,6 +539,7 @@ class _IosDocumentTouchInteractorState extends State<IosDocumentTouchInteractor>
   void _onTapDown(TapDownDetails details) {
     _globalTapDownOffset = details.globalPosition;
     _tapDownLongPressTimer?.cancel();
+    // ignore: deprecated_member_use_from_same_package
     if (!disableLongPressSelectionForSuperlist) {
       _tapDownLongPressTimer = Timer(kLongPressTimeout, _onLongPressDown);
     }
@@ -666,7 +663,8 @@ class _IosDocumentTouchInteractorState extends State<IosDocumentTouchInteractor>
           selection.extent.nodeId == docPosition.nodeId &&
           selection.extent.nodePosition.isEquivalentTo(docPosition.nodePosition);
 
-      if (didTapOnExistingSelection && widget.isImeConnected.value) {
+      if (didTapOnExistingSelection &&
+          SuperKeyboard.instance.mobileGeometry.value.keyboardState == KeyboardState.open) {
         // Toggle the toolbar display when the user taps on the collapsed caret,
         // or on top of an existing selection.
         //
@@ -1519,7 +1517,13 @@ class SuperEditorIosToolbarOverlayManagerState extends State<SuperEditorIosToolb
     super.didChangeDependencies();
 
     _controlsController = SuperEditorIosControlsScope.rootOf(context);
-    _overlayPortalController.show();
+
+    // It's possible that `didChangeDependencies` is called during build when pushing a route
+    // that has a delegated transition. We need to wait until the next frame to show the overlay,
+    // otherwise this widget crashes, since we can't call `OverlayPortalController.show()` during build.
+    onNextFrame((timeStamp) {
+      _overlayPortalController.show();
+    });
   }
 
   @visibleForTesting
@@ -1581,7 +1585,13 @@ class SuperEditorIosMagnifierOverlayManagerState extends State<SuperEditorIosMag
   void didChangeDependencies() {
     super.didChangeDependencies();
     _controlsController = SuperEditorIosControlsScope.rootOf(context);
-    _overlayPortalController.show();
+
+    // It's possible that `didChangeDependencies` is called during build when pushing a route
+    // that has a delegated transition. We need to wait until the next frame to show the overlay,
+    // otherwise this widget crashes, since we can't call `OverlayPortalController.show` during build.
+    onNextFrame((timeStamp) {
+      _overlayPortalController.show();
+    });
   }
 
   @override

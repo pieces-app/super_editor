@@ -5,10 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:super_editor/super_editor.dart';
 import 'package:super_editor/super_editor_test.dart';
-
-import '../../../test/super_editor/supereditor_test_tools.dart';
-import '../../../test/test_flutter_extensions.dart';
-import '../../test_tools_goldens.dart';
+import 'package:super_editor/super_test.dart';
 
 void main() {
   group('SuperEditor', () {
@@ -719,7 +716,7 @@ Widget _buildScaffold({
   );
 }
 
-TextStyle _textStyleBuilder(attributions) {
+TextStyle _textStyleBuilder(Set<Attribution> attributions) {
   return const TextStyle(
     color: Colors.black,
     fontFamily: 'Roboto',
@@ -743,10 +740,9 @@ MutableDocument _createSingleParagraphDoc() {
 
 class _DragLinePaint extends StatelessWidget {
   const _DragLinePaint({
-    Key? key,
     required this.line,
     required this.child,
-  }) : super(key: key);
+  });
 
   final ValueNotifier<_Line?> line;
   final Widget child;

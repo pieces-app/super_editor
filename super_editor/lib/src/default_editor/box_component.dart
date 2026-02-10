@@ -17,8 +17,8 @@ final _log = Logger(scope: 'box_component.dart');
 @immutable
 abstract class BlockNode extends DocumentNode {
   BlockNode({
-    Map<String, dynamic>? metadata,
-  }) : super(metadata: metadata);
+    super.metadata,
+  });
 
   @override
   UpstreamDownstreamNodePosition get beginningPosition => const UpstreamDownstreamNodePosition.upstream();
@@ -86,11 +86,11 @@ abstract class BlockNode extends DocumentNode {
 /// horizontal rule.
 class BoxComponent extends StatefulWidget {
   const BoxComponent({
-    Key? key,
+    super.key,
     this.isVisuallySelectable = true,
     this.opacity = 1.0,
     required this.child,
-  }) : super(key: key);
+  });
 
   final bool isVisuallySelectable;
   final double opacity;
@@ -293,12 +293,12 @@ class _BoxComponentState extends State<BoxComponent> with DocumentComponent {
 
 class SelectableBox extends StatelessWidget {
   const SelectableBox({
-    Key? key,
+    super.key,
     this.selection,
     required this.selectionColor,
     required this.child,
     this.enableIgnorePointer = true,
-  }) : super(key: key);
+  });
 
   final UpstreamDownstreamNodeSelection? selection;
   final Color selectionColor;

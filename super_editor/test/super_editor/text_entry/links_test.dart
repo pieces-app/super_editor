@@ -6,8 +6,6 @@ import 'package:flutter_test_runners/flutter_test_runners.dart';
 import 'package:super_editor/super_editor.dart';
 import 'package:super_editor/super_editor_test.dart';
 
-import '../supereditor_test_tools.dart';
-
 void main() {
   group('SuperEditor link editing >', () {
     group('recognizes a URL with https and www and converts it to a link', () {
@@ -1202,7 +1200,7 @@ void main() {
         if (debugDefaultTargetPlatformOverride == TargetPlatform.macOS) {
           await tester.pressCmdV();
         } else {
-          await tester.pressCtlV();
+          await tester.pressCtrlV();
         }
 
         // Ensure the URL is linkified.
@@ -1237,7 +1235,7 @@ void main() {
         if (debugDefaultTargetPlatformOverride == TargetPlatform.macOS) {
           await tester.pressCmdV();
         } else {
-          await tester.pressCtlV();
+          await tester.pressCtrlV();
         }
 
         // Ensure it's linkified with a URL schema.
@@ -1273,7 +1271,7 @@ void main() {
         if (debugDefaultTargetPlatformOverride == TargetPlatform.macOS) {
           await tester.pressCmdV();
         } else {
-          await tester.pressCtlV();
+          await tester.pressCtrlV();
         }
 
         // Ensure the URL is linkified.
@@ -1310,7 +1308,7 @@ void main() {
         if (debugDefaultTargetPlatformOverride == TargetPlatform.macOS) {
           await tester.pressCmdV();
         } else {
-          await tester.pressCtlV();
+          await tester.pressCtrlV();
         }
 
         // Ensure all URLs were linkified.

@@ -1,6 +1,5 @@
 import 'package:markdown/markdown.dart' as md;
 import 'package:super_editor/super_editor.dart';
-import 'package:super_editor_markdown/super_editor_markdown.dart';
 
 /// Markdown block-parser for callouts.
 ///
@@ -192,7 +191,7 @@ class _InlineMarkdownToDocument implements md.NodeVisitor {
 
 class CalloutSerializer implements DocumentNodeMarkdownSerializer {
   @override
-  String? serialize(Document document, DocumentNode node) {
+  String? serialize(Document document, DocumentNode node, {NodeSelection? selection}) {
     if (node is! ParagraphNode) {
       return null;
     }

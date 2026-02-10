@@ -33,6 +33,7 @@ class StyledHintBuilder {
 
   Widget build(BuildContext context) {
     return Text.rich(
+      // ignore: deprecated_member_use_from_same_package
       hintText?.computeTextSpan(hintTextStyleBuilder) ?? TextSpan(text: "", style: hintTextStyleBuilder({})),
     );
   }

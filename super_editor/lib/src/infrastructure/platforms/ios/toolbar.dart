@@ -6,13 +6,13 @@ import 'package:super_editor/src/infrastructure/platforms/ios/colors.dart';
 
 class IOSTextEditingFloatingToolbar extends StatelessWidget {
   const IOSTextEditingFloatingToolbar({
-    Key? key,
+    super.key,
     this.floatingToolbarKey,
     required this.focalPoint,
     this.onCutPressed,
     this.onCopyPressed,
     this.onPastePressed,
-  }) : super(key: key);
+  });
 
   final Key? floatingToolbarKey;
 

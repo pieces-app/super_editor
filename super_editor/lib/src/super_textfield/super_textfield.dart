@@ -14,7 +14,7 @@ import 'package:super_editor/src/super_textfield/ios/ios_textfield.dart';
 import 'package:super_editor/src/infrastructure/text_input.dart';
 import 'package:super_text_layout/super_text_layout.dart';
 
-import 'styles.dart';
+import 'package:super_editor/src/super_textfield/styles.dart';
 
 export 'android/android_textfield.dart';
 export 'desktop/desktop_textfield.dart';
@@ -55,7 +55,7 @@ export "super_text_field_keys.dart";
 ///  - [SuperIOSTextField], configured for a typical iOS experience.
 class SuperTextField extends StatefulWidget {
   const SuperTextField({
-    Key? key,
+    super.key,
     this.focusNode,
     this.tapRegionGroupId,
     this.configuration,
@@ -80,7 +80,7 @@ class SuperTextField extends StatefulWidget {
     this.textInputAction,
     this.imeConfiguration,
     this.showComposingUnderline,
-  }) : super(key: key);
+  });
 
   final FocusNode? focusNode;
 
@@ -306,6 +306,7 @@ class SuperTextFieldState extends State<SuperTextField> implements ImeInputOwner
   bool get _isMultiline => (widget.minLines ?? 1) != 1 || widget.maxLines != 1;
 
   TextInputAction get _textInputAction =>
+      // ignore: deprecated_member_use_from_same_package
       widget.textInputAction ?? (_isMultiline ? TextInputAction.newline : TextInputAction.done);
 
   SuperTextFieldPlatformConfiguration get _configuration {

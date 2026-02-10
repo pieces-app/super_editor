@@ -4,9 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_test_runners/flutter_test_runners.dart';
 import 'package:super_editor/super_editor.dart';
+import 'package:super_editor/super_text_field_test.dart';
 import 'package:super_text_layout/super_text_layout.dart';
-
-import 'super_textfield_robot.dart';
 
 void main() {
   group("SuperTextField", () {
@@ -112,6 +111,7 @@ void main() {
 
         // Ensure inner textfield action is configured to newline
         // so we are able to receive new lines
+        // ignore: deprecated_member_use_from_same_package
         expect(innerTextField.textInputAction, TextInputAction.newline);
       });
 
@@ -129,6 +129,7 @@ void main() {
 
         // Ensure inner textfield action is configured to newline
         // so we are able to receive new lines
+        // ignore: deprecated_member_use_from_same_package
         expect(innerTextField.textInputAction, TextInputAction.newline);
       });
 
@@ -146,6 +147,7 @@ void main() {
 
         // Ensure inner textfield action is configured to done
         // because we should NOT receive new lines
+        // ignore: deprecated_member_use_from_same_package
         expect(innerTextField.textInputAction, TextInputAction.done);
       });
 
@@ -163,6 +165,7 @@ void main() {
 
         // Ensure inner textfield action is configured to done
         // because we should NOT receive new lines
+        // ignore: deprecated_member_use_from_same_package
         expect(innerTextField.textInputAction, TextInputAction.done);
       });
 

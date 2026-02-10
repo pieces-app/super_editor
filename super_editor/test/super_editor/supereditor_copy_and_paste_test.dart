@@ -7,7 +7,6 @@ import 'package:super_editor/super_editor.dart';
 import 'package:super_editor/super_editor_test.dart';
 
 import '../test_runners.dart';
-import 'supereditor_test_tools.dart';
 
 void main() {
   group('SuperEditor copy and paste > ', () {
@@ -82,7 +81,7 @@ This is the third paragraph''');
       if (defaultTargetPlatform == TargetPlatform.macOS) {
         await tester.pressCmdV();
       } else {
-        await tester.pressCtlV();
+        await tester.pressCtrlV();
       }
 
       // Ensure three paragraphs were created.
@@ -115,7 +114,7 @@ This is the third paragraph''');
       if (defaultTargetPlatform == TargetPlatform.macOS) {
         await tester.pressCmdV();
       } else {
-        await tester.pressCtlV();
+        await tester.pressCtrlV();
       }
 
       // Gather the current node IDs in the document.
@@ -160,7 +159,7 @@ This is the third paragraph''');
       if (defaultTargetPlatform == TargetPlatform.macOS) {
         await tester.pressCmdV();
       } else {
-        await tester.pressCtlV();
+        await tester.pressCtrlV();
       }
 
       // Pump enough time to separate the next text entry from the paste action.

@@ -19,9 +19,9 @@ import 'package:super_editor/src/super_textfield/infrastructure/text_scrollview.
 import 'package:super_editor/src/super_textfield/input_method_engine/_ime_text_editing_controller.dart';
 import 'package:super_text_layout/super_text_layout.dart';
 
-import '../../infrastructure/_logging.dart';
-import '../metrics.dart';
-import '../styles.dart';
+import 'package:super_editor/src/infrastructure/_logging.dart';
+import 'package:super_editor/src/super_textfield/metrics.dart';
+import 'package:super_editor/src/super_textfield/styles.dart';
 
 export '_caret.dart';
 
@@ -29,7 +29,7 @@ final _log = androidTextFieldLog;
 
 class SuperAndroidTextField extends StatefulWidget {
   const SuperAndroidTextField({
-    Key? key,
+    super.key,
     this.focusNode,
     this.tapRegionGroupId,
     this.textController,
@@ -52,7 +52,7 @@ class SuperAndroidTextField extends StatefulWidget {
     this.popoverToolbarBuilder = _defaultAndroidToolbarBuilder,
     this.showDebugPaint = false,
     this.padding,
-  }) : super(key: key);
+  });
 
   /// [FocusNode] attached to this text field.
   final FocusNode? focusNode;
@@ -265,11 +265,14 @@ class SuperAndroidTextFieldState extends State<SuperAndroidTextField>
       _focusNode = (widget.focusNode ?? FocusNode())..addListener(_updateSelectionAndImeConnectionOnFocusChange);
     }
 
+    // ignore: deprecated_member_use_from_same_package
     if (widget.textInputAction != oldWidget.textInputAction &&
+        // ignore: deprecated_member_use_from_same_package
         widget.textInputAction != null &&
         _textEditingController.isAttachedToIme) {
       _textEditingController.updateTextInputConfiguration(
         viewId: View.of(context).viewId,
+        // ignore: deprecated_member_use_from_same_package
         textInputAction: widget.textInputAction!,
         textInputType: _isMultiline ? TextInputType.multiline : TextInputType.text,
       );
@@ -435,6 +438,7 @@ class SuperAndroidTextFieldState extends State<SuperAndroidTextField>
             } else {
               _textEditingController.attachToIme(
                 viewId: View.of(context).viewId,
+                // ignore: deprecated_member_use_from_same_package
                 textInputAction: widget.textInputAction ?? TextInputAction.done,
                 textInputType: _isMultiline ? TextInputType.multiline : TextInputType.text,
               );

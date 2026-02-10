@@ -142,6 +142,7 @@ TextSelection expandPositionToParagraph({
 // copied from: flutter/lib/src/widgets/editable_text.dart
 // RTL covers Arabic, Hebrew, and other RTL languages such as Urdu,
 // Aramic, Farsi, Dhivehi.
+// ignore: deprecated_member_use
 final RegExp _rtlRegExp = RegExp(r'[\u0591-\u07FF\uFB1D-\uFDFD\uFE70-\uFEFC]');
 
 /// Returns the [TextDirection] of the text based on its first non-whitespace character.

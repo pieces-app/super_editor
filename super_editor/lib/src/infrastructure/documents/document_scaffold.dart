@@ -4,6 +4,7 @@ import 'package:super_editor/src/default_editor/document_scrollable.dart';
 import 'package:super_editor/src/default_editor/layout_single_column/_layout.dart';
 import 'package:super_editor/src/default_editor/layout_single_column/_presenter.dart';
 import 'package:super_editor/src/infrastructure/content_layers.dart';
+import 'package:super_editor/src/infrastructure/content_layers_for_slivers.dart';
 import 'package:super_editor/src/infrastructure/documents/document_scroller.dart';
 
 /// A scaffold that combines pieces to create a scrolling single-column document, with
@@ -137,7 +138,7 @@ class _DocumentScaffoldState extends State<DocumentScaffold> {
   }
 
   Widget _buildDocumentLayout() {
-    return ContentLayers(
+    return SliverContentLayers(
       content: (onBuildScheduled) => SingleColumnDocumentLayout(
         key: widget.documentLayoutKey,
         presenter: widget.presenter,
