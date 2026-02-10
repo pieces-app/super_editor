@@ -19,8 +19,6 @@ environment:
   sdk: ">=3.6.0 <4.0.0"
   flutter: ">=1.17.0"
 
-resolution: workspace
-
 # resolution: workspace  # Removed — quill serialization consolidated into super_editor core (v0.3.0-dev.41)
 
 dependencies:
