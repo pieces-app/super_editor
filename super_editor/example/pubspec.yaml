@@ -44,8 +44,6 @@ dependencies:
   # super_editor_markdown removed — markdown serialization consolidated into super_editor core (v0.3.0-dev.40)
   super_editor:
     path: ../
-  super_text_layout:
-    path: ../../super_text_layout
   super_keyboard: ^0.3.0
   follow_the_leader: ^0.5.1
   overlord: ^0.4.2
