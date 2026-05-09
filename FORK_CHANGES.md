@@ -61,6 +61,27 @@ git rev-list --left-right --count upstream/main...origin/main
 - **Reason**: Fix for gesture detection not working on text elements
 - **Re-asserted on each upstream merge** -- upstream periodically reintroduces `IgnorePointer` here. The 2026-05 merge required preserving this divergence again.
 
+### 6. Flutter 3.35-3.40 compat: skip `TextInputConnection.updateStyle` override (TEMPORARY)
+- **Status**: ⏳ **Temporary** — to be reverted once this monorepo's pinned Flutter SDK has `TextInputStyle` in stable.
+- **Location**: `super_editor/lib/src/default_editor/document_ime/ime_decoration.dart` (around line 49, in `class TextInputConnectionDecorator`)
+- **What we drop**: upstream's 3-line override added by [super_editor #2950](https://github.com/Flutter-Bounty-Hunters/super_editor/pull/2950) (commits `47036438` / `b422c326`):
+  ```dart
+  @override
+  void updateStyle(TextInputStyle style) => client?.updateStyle(style);
+  ```
+- **Why we drop it**:
+  - Upstream's PR #2950 was authored against Flutter master immediately after [`flutter/flutter#180436`](https://github.com/flutter/flutter/pull/180436) added `TextInputConnection.updateStyle(TextInputStyle)` and deprecated `setStyle(...)`.
+  - As of May 2026 the [Flutter breaking-change page](https://docs.flutter.dev/release/breaking-changes/deprecate-text-input-connection-set-style) still says **"In stable release: Not yet"**.
+  - Our pinned Flutter is **3.35.7** (`flutter --version`) and our SDK at `flutter-sdk-3.35.5/packages/flutter/lib/src/services/text_input.dart` defines `setStyle(...)` only — `class TextInputStyle` and `void updateStyle(TextInputStyle)` are absent.
+  - `TextInputConnectionDecorator implements TextInputConnection`, so the override would be marking `@override` on a method that doesn't exist on the parent → compile error: *"`TextInputStyle` isn't defined"* and *"`updateStyle` isn't defined for the type `TextInputConnection`"*.
+  - There is no Dart conditional-imports trick to selectively include an interface override — conditional imports switch libraries, not class members.
+- **Why this is safe**: `setStyle(...)` immediately above the dropped block is still in the framework and still in the parent interface — it covers the entire surviving public API on stable Flutter. Removing the would-be-override is functionally a no-op (the framework can't call a method that doesn't exist on the parent class).
+- **Restore criteria** (in priority order):
+  1. The Flutter breaking-changes page lists this change under "Released in Flutter X.Y" with "In stable release: Yes."
+  2. This monorepo's pinned Flutter SDK is upgraded to ≥ that release.
+  3. Then revert this divergence by uncommenting the override.
+- **Re-asserted on each upstream merge** -- as long as upstream is ahead of stable Flutter on this API, we'll have to drop the override on every sync. The block has a clear comment + RESTORE checklist in `ime_decoration.dart` to make the intent obvious.
+
 ## Upstream Sync History
 
 ### 2026-05-09 -- Upstream Merge ("2026-05 sync")
@@ -90,7 +111,8 @@ git rev-list --left-right --count upstream/main...origin/main
   - `super_editor_markdown/**`, `super_editor_quill/**` -- accepted upstream deletions (35+ files removed)
   - `super_*/example/pubspec.lock` -- kept fork's policy of not tracking example lockfiles
 - **Workspace-mode pubspec adds**: re-applied `resolution: workspace` to all 14 sub-package pubspecs as part of this merge
-- **Status**: Merge committed; analyzer pass pending
+- **Flutter SDK compat patch layered on top**: upstream's commit `b422c326` ([PR #2950](https://github.com/Flutter-Bounty-Hunters/super_editor/pull/2950)) adds an `@override void updateStyle(TextInputStyle style)` to `TextInputConnectionDecorator`. That API is not yet in stable Flutter (we're on 3.35.7), so the override is dropped. See "Custom Modification 6" above for the full restoration checklist.
+- **Status**: Merge committed; Flutter compat patch follow-up commit added; analyzer pass pending
 
 ### 2026-02-07 -- Upstream Merge & Dependency Unification
 - **Merge Commit**: `de4068f4` -- merged `upstream/main` into `chore/unify-dependencies`
@@ -123,6 +145,7 @@ When syncing from upstream, do these in order:
    - `super_editor/lib/src/default_editor/attributions.dart` (PR #5 -- `displayLatexAttribution`)
    - Gesture/tap pipeline files (PR #3 -- `ContentTapExclusion`)
    - Document scaffold + super_reader (PR #4 -- `scrollingEnabled`)
+   - `super_editor/lib/src/default_editor/document_ime/ime_decoration.dart` (PR #6 above -- Flutter 3.35-3.40 compat; if Flutter pin moves past `TextInputStyle`-shipping stable, restore the upstream override here)
 4. Run `dart analyze` (or `flutter analyze`) on each sub-package after merge. Any failures usually indicate upstream API drift.
 5. Update this document with merge details before merging the PR.
 
@@ -133,6 +156,7 @@ When syncing from upstream, do these in order:
 3. **Scroll Control**: Fine-grained scroll enablement not available upstream
 4. **Tap Exclusion**: Custom inline widget tap handling not available upstream
 5. **Gesture Fixes**: Some gesture detection fixes specific to our usage patterns
+6. **Flutter SDK pinning gap (TEMPORARY)**: Upstream is ahead of stable Flutter on `TextInputConnection.updateStyle(TextInputStyle)`; we drop the override until our pinned Flutter ships the API.
 
 ## Future Considerations
 
