@@ -516,6 +516,12 @@ mixin TextComponentViewModel on SingleColumnLayoutComponentViewModel {
 
   set textAlignment(TextAlign alignment);
 
+  int? get maxLines;
+  set maxLines(int? maxLines);
+
+  TextOverflow get overflow;
+  set overflow(TextOverflow overflow);
+
   TextSelection? get selection;
 
   set selection(TextSelection? selection);
@@ -567,6 +573,8 @@ mixin TextComponentViewModel on SingleColumnLayoutComponentViewModel {
       ..maxWidth = maxWidth
       ..padding = padding
       ..text = text.copy()
+      ..maxLines = maxLines
+      ..overflow = overflow
       ..textStyleBuilder = textStyleBuilder
       ..inlineWidgetBuilders = inlineWidgetBuilders
       ..textDirection = textDirection
@@ -591,6 +599,9 @@ mixin TextComponentViewModel on SingleColumnLayoutComponentViewModel {
     super.applyStyles(styles);
 
     textAlignment = styles[Styles.textAlign] ?? textAlignment;
+
+    maxLines = styles[Styles.maxLines];
+    overflow = styles[Styles.overflow] ?? TextOverflow.clip;
 
     textStyleBuilder = (attributions) {
       final baseStyle = styles[Styles.textStyle] ?? noStyleBuilder({});
@@ -646,6 +657,8 @@ mixin TextComponentViewModel on SingleColumnLayoutComponentViewModel {
           text == other.text &&
           textDirection == other.textDirection &&
           textAlignment == other.textAlignment &&
+          maxLines == other.maxLines &&
+          overflow == other.overflow &&
           selection == other.selection &&
           selectionColor == other.selectionColor &&
           highlightWhenEmpty == other.highlightWhenEmpty &&
@@ -666,6 +679,8 @@ mixin TextComponentViewModel on SingleColumnLayoutComponentViewModel {
       text.hashCode ^
       textDirection.hashCode ^
       textAlignment.hashCode ^
+      maxLines.hashCode ^
+      overflow.hashCode ^
       selection.hashCode ^
       selectionColor.hashCode ^
       highlightWhenEmpty.hashCode ^
@@ -695,9 +710,13 @@ class TextWithHintComponent extends StatefulWidget {
     required this.text,
     this.inlineWidgetBuilders = const [],
     this.hintText,
+    this.hintMaxLines,
+    this.hintOverflow = TextOverflow.ellipsis,
     this.hintStyleBuilder,
     this.textAlign,
     this.textDirection,
+    this.maxLines,
+    this.overflow = TextOverflow.clip,
     required this.textStyleBuilder,
     this.metadata = const {},
     this.textSelection,
@@ -713,9 +732,14 @@ class TextWithHintComponent extends StatefulWidget {
   final InlineWidgetBuilderChain inlineWidgetBuilders;
 
   final AttributedText? hintText;
+  final int? hintMaxLines;
+  final TextOverflow hintOverflow;
   final AttributionStyleBuilder? hintStyleBuilder;
+
   final TextAlign? textAlign;
   final TextDirection? textDirection;
+  final int? maxLines;
+  final TextOverflow overflow;
   final AttributionStyleBuilder textStyleBuilder;
   final Map<String, dynamic> metadata;
   final TextSelection? textSelection;
@@ -758,8 +782,9 @@ class _TextWithHintComponentState extends State<TextWithHintComponent>
         if (widget.text.isEmpty)
           IgnorePointer(
             child: Text.rich(
-              // ignore: deprecated_member_use_from_same_package
-              widget.hintText?.computeTextSpan(_styleBuilder) ?? const TextSpan(text: ''),
+              widget.hintText?.computeInlineSpan(context, _styleBuilder, []) ?? const TextSpan(text: ''),
+              maxLines: widget.hintMaxLines,
+              overflow: widget.hintOverflow,
             ),
           ),
         TextComponent(
@@ -768,6 +793,8 @@ class _TextWithHintComponentState extends State<TextWithHintComponent>
           inlineWidgetBuilders: widget.inlineWidgetBuilders,
           textAlign: widget.textAlign,
           textDirection: widget.textDirection,
+          maxLines: widget.maxLines,
+          overflow: widget.overflow,
           textStyleBuilder: widget.textStyleBuilder,
           metadata: widget.metadata,
           textSelection: widget.textSelection,
@@ -791,6 +818,8 @@ class TextComponent extends StatefulWidget {
     this.textAlign,
     this.textDirection,
     this.textScaler,
+    this.maxLines,
+    this.overflow = TextOverflow.clip,
     required this.textStyleBuilder,
     this.inlineWidgetBuilders = const [],
     this.metadata = const {},
@@ -811,6 +840,10 @@ class TextComponent extends StatefulWidget {
   ///
   /// Defaults to `MediaQuery.textScalerOf()`.
   final TextScaler? textScaler;
+
+  final int? maxLines;
+
+  final TextOverflow overflow;
 
   final AttributionStyleBuilder textStyleBuilder;
 
@@ -1252,6 +1285,10 @@ class TextComponentState extends State<TextComponent> with DocumentComponent imp
   Widget build(BuildContext context) {
     editorLayoutLog.finer('Building a TextComponent with key: ${widget.key}');
 
+    // NOTE (pieces-app fork PR #1, ae7bc908): No IgnorePointer wrapper so gesture
+    // detection works on text elements. Upstream re-introduced IgnorePointer; we
+    // intentionally keep it removed. We still adopt upstream's new maxLines/overflow
+    // SuperText props.
     return SuperText(
       key: _textKey,
       richText: widget.text.computeInlineSpan(
@@ -1262,6 +1299,8 @@ class TextComponentState extends State<TextComponent> with DocumentComponent imp
       textAlign: widget.textAlign ?? TextAlign.left,
       textDirection: widget.textDirection ?? TextDirection.ltr,
       textScaler: widget.textScaler ?? MediaQuery.textScalerOf(context),
+      maxLines: widget.maxLines,
+      overflow: widget.overflow,
       layerBeneathBuilder: (context, textLayout) {
         return Stack(
           children: [
