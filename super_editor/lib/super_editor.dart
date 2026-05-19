@@ -2,6 +2,7 @@ library;
 
 export 'package:attributed_text/attributed_text.dart';
 export 'package:super_text_layout/src/caret_layer.dart';
+export 'package:super_text_layout/super_text_layout.dart' show BlinkController, BlinkTimingMode;
 
 // Fundamental document abstractions
 export 'src/core/document.dart';
@@ -16,6 +17,7 @@ export 'src/core/styles.dart';
 
 // Chat
 export 'src/chat/message_page_scaffold.dart';
+export 'src/chat/plugins/chat_preview_mode_plugin.dart';
 export 'src/chat/super_message.dart';
 export 'src/chat/super_message_android_overlays.dart';
 export 'src/chat/super_message_android_touch_interactor.dart';

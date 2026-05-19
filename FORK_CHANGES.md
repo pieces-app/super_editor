@@ -2,16 +2,25 @@
 
 This document tracks all custom modifications, patches, and deviations from the upstream `Flutter-Bounty-Hunters/super_editor` repository.
 
+> ⚠️ The "Commits Ahead/Behind" numbers below are **not** auto-generated. Re-run the commands in [Verifying Drift](#verifying-drift) before trusting them.
+
 ## Fork Information
 
 - **Fork Repository**: `https://github.com/pieces-app/super_editor`
 - **Upstream Repository**: `https://github.com/Flutter-Bounty-Hunters/super_editor`
-- **Current Branch**: `main`
-- **Fork Version**: `0.3.0-dev.48`
-- **Upstream Latest**: `0.3.0-dev.48` (prerelease), `0.2.7` (stable)
-- **Commits Ahead**: 16 (custom modifications)
-- **Commits Behind**: ~0 (recently merged)
-- **Last Upstream Merge**: February 2026 -- merged `upstream/main` into `chore/unify-dependencies` (commit `de4068f4`)
+- **Tracking Branch**: `chore/align-runtime-version-pins` (sync target: `upstream/main`)
+- **Last Upstream Merge**: **2026-05-09** -- merged `upstream/main` (40 commits) into `chore/align-runtime-version-pins`
+- **Drift as of last merge**: 0 commits behind upstream/main, 34 commits ahead (33 fork-only + 1 merge commit)
+
+### Verifying Drift
+
+```bash
+cd frontend/super_editor
+git fetch origin --tags
+git fetch upstream --tags
+# left = behind (in upstream not in fork), right = ahead (in fork not in upstream)
+git rev-list --left-right --count upstream/main...origin/main
+```
 
 ## Custom Modifications
 
@@ -27,38 +36,89 @@ This document tracks all custom modifications, patches, and deviations from the 
 ### 2. LaTeX Attribution Support (PR #5)
 - **Commits**: `ed1dfaf0`, `555518fa`
 - **Changes**:
-  - Added `displayLatex` attribution for rendering LaTeX content in the editor
-  - Fixed typo in displayLatex attribution variable
+  - Added `displayLatexAttribution` (`NamedAttribution('display-latex')`) for rendering LaTeX content in the editor
+- **Location**: `super_editor/lib/src/default_editor/attributions.dart`
 - **Reason**: Required for rendering mathematical/code content in Pieces Copilot
 
 ### 3. Scroll Enablement Flag (PR #4)
 - **Commit**: `7a6b2e52`
-- **Changes**:
-  - Added `scrollingEnabled` flag to document widgets
-  - Allows programmatic control over scroll behavior
+- **Changes**: Added `scrollingEnabled` flag to document widgets (allows programmatic control over scroll behavior)
 - **Reason**: Needed to manage scroll behavior in embedded editor contexts
 
 ### 4. Content Tap Exclusion (PR #3)
 - **Commits**: `b5619720`, `a004dfa2`, `bb68f4c6`
 - **Changes**:
-  - Enabled tap exclusion for inline widgets in SuperReader
-  - Centralized tap exclusion logic for inline placeholders
-  - Added documentation for inline tap exclusion
+  - `ContentTapExclusion` widget for inline-widget tap bypass in `SuperReader`
+  - Updated gesture recognizers in `multi_tap_gesture.dart` to consult a pointer predicate
+  - Refactored hit testing in `sliver_hybrid_stack`
+- **Location**: `super_editor/lib/src/infrastructure/content_tap_exclusion.dart` (+ touch interactors)
 - **Reason**: Prevents interference between inline widget taps and editor selection
 
 ### 5. Gesture Detection Fix (PR #1)
 - **Commit**: `ae7bc908`
-- **Changes**:
-  - Removed `IgnorePointer` wrapper so gesture detection works on super text elements
+- **Changes**: Removed `IgnorePointer` wrapper in `TextComponent.build()` so gesture detection works on text elements.
+- **Location**: `super_editor/lib/src/default_editor/text.dart` (around `class TextComponentState`)
 - **Reason**: Fix for gesture detection not working on text elements
+- **Re-asserted on each upstream merge** -- upstream periodically reintroduces `IgnorePointer` here. The 2026-05 merge required preserving this divergence again.
+
+### 6. Flutter 3.35-3.40 compat: skip `TextInputConnection.updateStyle` override (TEMPORARY)
+- **Status**: ⏳ **Temporary** — to be reverted once this monorepo's pinned Flutter SDK has `TextInputStyle` in stable.
+- **Location**: `super_editor/lib/src/default_editor/document_ime/ime_decoration.dart` (around line 49, in `class TextInputConnectionDecorator`)
+- **What we drop**: upstream's 3-line override added by [super_editor #2950](https://github.com/Flutter-Bounty-Hunters/super_editor/pull/2950) (commits `47036438` / `b422c326`):
+  ```dart
+  @override
+  void updateStyle(TextInputStyle style) => client?.updateStyle(style);
+  ```
+- **Why we drop it**:
+  - Upstream's PR #2950 was authored against Flutter master immediately after [`flutter/flutter#180436`](https://github.com/flutter/flutter/pull/180436) added `TextInputConnection.updateStyle(TextInputStyle)` and deprecated `setStyle(...)`.
+  - As of May 2026 the [Flutter breaking-change page](https://docs.flutter.dev/release/breaking-changes/deprecate-text-input-connection-set-style) still says **"In stable release: Not yet"**.
+  - Our pinned Flutter is **3.35.7** (`flutter --version`) and our SDK at `flutter-sdk-3.35.5/packages/flutter/lib/src/services/text_input.dart` defines `setStyle(...)` only — `class TextInputStyle` and `void updateStyle(TextInputStyle)` are absent.
+  - `TextInputConnectionDecorator implements TextInputConnection`, so the override would be marking `@override` on a method that doesn't exist on the parent → compile error: *"`TextInputStyle` isn't defined"* and *"`updateStyle` isn't defined for the type `TextInputConnection`"*.
+  - There is no Dart conditional-imports trick to selectively include an interface override — conditional imports switch libraries, not class members.
+- **Why this is safe**: `setStyle(...)` immediately above the dropped block is still in the framework and still in the parent interface — it covers the entire surviving public API on stable Flutter. Removing the would-be-override is functionally a no-op (the framework can't call a method that doesn't exist on the parent class).
+- **Restore criteria** (in priority order):
+  1. The Flutter breaking-changes page lists this change under "Released in Flutter X.Y" with "In stable release: Yes."
+  2. This monorepo's pinned Flutter SDK is upgraded to ≥ that release.
+  3. Then revert this divergence by uncommenting the override.
+- **Re-asserted on each upstream merge** -- as long as upstream is ahead of stable Flutter on this API, we'll have to drop the override on every sync. The block has a clear comment + RESTORE checklist in `ime_decoration.dart` to make the intent obvious.
 
 ## Upstream Sync History
 
-### February 2026 -- Upstream Merge & Dependency Unification
+### 2026-05-09 -- Upstream Merge ("2026-05 sync")
+- **Merge Commit**: chronologically the merge of `upstream/main` into `chore/align-runtime-version-pins`
+- **Range Merged**: 40 commits (`068a20d3..13e7538a`), spanning **2026-02-16 -> 2026-05-07**
+- **Version Bumps Adopted**:
+  - `super_editor`: `0.3.0-dev.48` -> `0.3.0-dev.51`
+  - `super_editor_clipboard`: `0.2.5` -> `0.2.10`
+  - `super_text_layout`: `0.1.19` -> `0.1.20`
+  - `super_keyboard`: `0.3.1` -> `0.4.0` (minor bump)
+  - `attributed_text`: `0.4.5` -> `0.4.7`
+- **What We Gained (themes)**:
+  - **IME stability**: 5 fixes for SuperEditor IME bugs across Samsung/SwiftKey/GBoard, including the "zombie IME client when one SuperEditor replaces another" bug (#2962, #2965, #2970, #2975, #2979/#2981)
+  - **Clipboard**: paste fixes/improvements, native paste corrections, per-format custom pasting from iOS, Markdown paste, ignore `<script>`/`<style>` HTML on paste (#2919, #2926-#2929, #2933, #2935)
+  - **Editor UX**: pattern/stable/action tags now support multiple triggers, auto-convert list items when a prefix is added before existing text (#2984), configurable "continue existing list" behavior (#2987), popover toolbars on tablets / non-software-keyboard situations (#2994)
+  - **iOS bugfix**: backspacing empty text nodes (#2989)
+  - **Flutter SDK adaptation**: `TextInputConnectionDecorator.updateStyle` for an upstream Flutter breaking change (#2950)
+  - **`super_text`**: `SuperText` now supports `maxLines` + `overflow` indicator (#2922)
+  - **Chat editor**: SuperMessage popover toolbars dismiss after tapping a button; "Preview Mode" plugin (#2937, #2921)
+  - **`attributed_text` perf**: rewrote `getAttributionSpansInRange` for performance (#3010)
+  - **Package cleanup**: `super_editor_markdown` and `super_editor_quill` deleted (consolidated into `super_editor` core in dev.40/dev.41); we removed the orphaned directories during this merge
+- **Conflict Zones Resolved**:
+  - `super_editor/lib/src/default_editor/text.dart` -- preserved PR #1's no-`IgnorePointer` while adopting upstream's new `maxLines`/`overflow` `SuperText` props and migrating `hintText` to `computeInlineSpan`
+  - `super_editor/lib/src/default_editor/default_document_editor_reactions.dart` -- accepted upstream's two-pattern (empty/non-empty) list-item conversion logic from #2984
+  - `super_editor/lib/src/default_editor/document_ime/document_delta_editing.dart` -- removed duplicate `document_serialization.dart` import (already present)
+  - `super_editor/pubspec.yaml` + `super_editor/example/pubspec.yaml` -- adopted upstream version bumps; example pubspec keeps fork's monorepo-friendly `path:` deps instead of upstream's `git:` deps
+  - `super_editor_markdown/**`, `super_editor_quill/**` -- accepted upstream deletions (35+ files removed)
+  - `super_*/example/pubspec.lock` -- kept fork's policy of not tracking example lockfiles
+- **Workspace-mode pubspec adds**: re-applied `resolution: workspace` to all 14 sub-package pubspecs as part of this merge
+- **Flutter SDK compat patch layered on top**: upstream's commit `b422c326` ([PR #2950](https://github.com/Flutter-Bounty-Hunters/super_editor/pull/2950)) adds an `@override void updateStyle(TextInputStyle style)` to `TextInputConnectionDecorator`. That API is not yet in stable Flutter (we're on 3.35.7), so the override is dropped. See "Custom Modification 6" above for the full restoration checklist.
+- **Status**: Merge committed; Flutter compat patch follow-up commit added; analyzer pass pending
+
+### 2026-02-07 -- Upstream Merge & Dependency Unification
 - **Merge Commit**: `de4068f4` -- merged `upstream/main` into `chore/unify-dependencies`
 - **Version Jump**: `0.3.0-dev.29` -> `0.3.0-dev.48`
 - **What We Gained**:
-  - 78+ upstream commits merged, bringing us to current upstream HEAD
+  - 78+ upstream commits merged, bringing us to upstream HEAD at the time
   - `super_editor_markdown` consolidated into `super_editor` core (v0.3.0-dev.40)
   - `super_editor_quill` consolidated into `super_editor` core (v0.3.0-dev.41)
   - SDK constraint bumps and deprecation fixes (`7cb95bad`)
@@ -66,26 +126,28 @@ This document tracks all custom modifications, patches, and deviations from the 
   - Test imports and warnings fixed after serialization consolidation (`1a65912d`)
   - Sub-package fixes after upstream merge (`1d9588a1`)
 - **Issues Encountered**:
-  - `super_editor_markdown` and `super_editor_quill` no longer exist as separate packages (removed from workspace)
+  - `super_editor_markdown` and `super_editor_quill` no longer exist as separate packages (removed from workspace pubspec; directories left in tree until 2026-05 sync removed them)
   - Image builder callback signature changed to use named parameters -- required updating our custom imageBuilder usage
   - Test imports needed fixing after the serialization consolidation
-- **Status**: Successfully merged and stabilized
 
 ### Previous Merges
 - Merged from `superlistapp:main` (commit `244f0f34`)
 
-## Upstream Sync Status
+## Pre-Merge Checklist
 
-- **Current Gap**: ~0 commits behind upstream/main (recently merged February 2026)
-- **Status**: Up to date with upstream
-- **Next Sync Target**: Monitor upstream for new dev releases past `0.3.0-dev.48`
+When syncing from upstream, do these in order:
 
-### Before Merging Upstream Changes
-1. Review upstream changelog for breaking API changes
-2. Check if any of our custom modifications conflict
-3. Pay special attention to changes in `image.dart` and gesture handling
-4. Run full test suite after merge
-5. Update this document with merge details
+1. Run [Verifying Drift](#verifying-drift) and capture before/after counts.
+2. Review upstream changelog (`git log --reverse origin/main..upstream/main`) for breaking API changes.
+3. Pay special attention to any new touches in:
+   - `super_editor/lib/src/default_editor/image.dart` (PR #6)
+   - `super_editor/lib/src/default_editor/text.dart` (PR #1 -- `IgnorePointer` likely re-introduced)
+   - `super_editor/lib/src/default_editor/attributions.dart` (PR #5 -- `displayLatexAttribution`)
+   - Gesture/tap pipeline files (PR #3 -- `ContentTapExclusion`)
+   - Document scaffold + super_reader (PR #4 -- `scrollingEnabled`)
+   - `super_editor/lib/src/default_editor/document_ime/ime_decoration.dart` (PR #6 above -- Flutter 3.35-3.40 compat; if Flutter pin moves past `TextInputStyle`-shipping stable, restore the upstream override here)
+4. Run `dart analyze` (or `flutter analyze`) on each sub-package after merge. Any failures usually indicate upstream API drift.
+5. Update this document with merge details before merging the PR.
 
 ## Why This Fork Exists
 
@@ -94,13 +156,14 @@ This document tracks all custom modifications, patches, and deviations from the 
 3. **Scroll Control**: Fine-grained scroll enablement not available upstream
 4. **Tap Exclusion**: Custom inline widget tap handling not available upstream
 5. **Gesture Fixes**: Some gesture detection fixes specific to our usage patterns
+6. **Flutter SDK pinning gap (TEMPORARY)**: Upstream is ahead of stable Flutter on `TextInputConnection.updateStyle(TextInputStyle)`; we drop the override until our pinned Flutter ships the API.
 
 ## Future Considerations
 
-1. **Upstream Contribution**: Consider contributing scroll enablement and tap exclusion features back to upstream
-2. **LaTeX Support**: Monitor if upstream adds native LaTeX/math support
-3. **Regular Sync**: Establish cadence for merging upstream dev releases
-4. **Image Builder API**: Propose image builder enhancements to upstream
+1. **Upstream Contribution**: `scrollingEnabled` (PR #4) and `ContentTapExclusion` (PR #3) are good candidates to contribute back -- doing so would let us delete two of the five fork-only changes permanently.
+2. **LaTeX Support**: Monitor whether upstream adds native LaTeX/math support that supersedes `displayLatexAttribution`.
+3. **Regular Sync Cadence**: Aim for an upstream merge each time `super_editor` cuts a new dev release (~4-6 weeks). The 3-month gap before the 2026-05 sync produced 5 conflicting files; a 6-week cadence would likely produce 0-2.
+4. **Image Builder API**: Propose image builder enhancements to upstream (PR #6) -- the upstream API has shifted enough times during merges that contributing it back removes recurring rework.
 
 ## Contact
 

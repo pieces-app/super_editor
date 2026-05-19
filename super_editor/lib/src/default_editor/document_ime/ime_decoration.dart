@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:super_editor/src/infrastructure/_logging.dart';
 
@@ -48,6 +49,32 @@ abstract class TextInputConnectionDecorator implements TextInputConnection {
           textDirection: textDirection,
           textAlign: textAlign);
 
+  // ──────────────────────────────────────────────────────────────────────
+  // TEMPORARILY REMOVED (will re-enable once Flutter ships the change):
+  //
+  //   @override
+  //   void updateStyle(TextInputStyle style) => client?.updateStyle(style);
+  //
+  // Originally added in super_editor PR #2950 (Feb 2026, commit 47036438) in
+  // anticipation of Flutter's "Deprecate TextInputConnection.setStyle"
+  // breaking change [1] which adds an `updateStyle(TextInputStyle)` method
+  // supporting letterSpacing / wordSpacing / lineHeight for proper IME
+  // caret/selection alignment. As of May 2026, the docs page literally
+  // says "In stable release: Not yet" — neither Flutter 3.35.x nor 3.38.x
+  // ship `TextInputStyle` or `TextInputConnection.updateStyle`, so this
+  // override fails to compile against any current stable SDK.
+  //
+  // Removing it is a no-op functionally: the framework can't call a method
+  // that doesn't exist on the parent class. setStyle(...) above already
+  // covers the entirety of the surviving public API.
+  //
+  // RESTORE THIS BLOCK when:
+  //   - Flutter stable ships TextInputStyle + TextInputConnection.updateStyle
+  //   - This monorepo's pinned Flutter SDK is at or above that version
+  //
+  // [1] https://docs.flutter.dev/release/breaking-changes/deprecate-text-input-connection-set-style
+  // ──────────────────────────────────────────────────────────────────────
+
   @override
   void requestAutofill() => client?.requestAutofill();
 
@@ -79,7 +106,10 @@ class DeltaTextInputClientDecorator with TextInputClient, DeltaTextInputClient {
   /// itself as the client, or not.
   bool isCurrentClient(DeltaTextInputClient client) => _client == client;
 
-  set client(DeltaTextInputClient? client) => _client = client;
+  set client(DeltaTextInputClient? client) {
+    _client = client;
+  }
+
   DeltaTextInputClient? _client;
 
   @override

@@ -46,7 +46,9 @@ class FeatherCodeComponentBuilder implements ComponentBuilder {
 
   @override
   Widget? createComponent(
-      SingleColumnDocumentComponentContext componentContext, SingleColumnLayoutComponentViewModel componentViewModel) {
+    SingleColumnDocumentComponentContext componentContext,
+    SingleColumnLayoutComponentViewModel componentViewModel,
+  ) {
     if (componentViewModel is! CodeBlockComponentViewModel) {
       return null;
     }
@@ -77,6 +79,8 @@ class CodeBlockComponentViewModel extends SingleColumnLayoutComponentViewModel w
     this.inlineWidgetBuilders = const [],
     this.textDirection = TextDirection.ltr,
     this.textAlignment = TextAlign.left,
+    this.maxLines,
+    this.overflow = TextOverflow.clip,
     required this.backgroundColor,
     required this.borderRadius,
     this.selection,
@@ -104,6 +108,10 @@ class CodeBlockComponentViewModel extends SingleColumnLayoutComponentViewModel w
   TextDirection textDirection;
   @override
   TextAlign textAlignment;
+  @override
+  int? maxLines;
+  @override
+  TextOverflow overflow;
   @override
   TextSelection? selection;
   @override
@@ -214,10 +222,7 @@ class CodeBlockComponent extends StatelessWidget {
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 16),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(4),
-          color: const Color(0xFF222222),
-        ),
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(4), color: const Color(0xFF222222)),
         child: TextComponent(
           key: textKey,
           text: text,
