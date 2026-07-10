@@ -1,29 +1,10 @@
 import 'dart:math';
 import 'dart:ui';
 
-import 'package:attributed_text/attributed_text.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:super_editor/src/core/document.dart';
-import 'package:super_editor/src/core/document_composer.dart';
-import 'package:super_editor/src/core/document_layout.dart';
-import 'package:super_editor/src/core/document_selection.dart';
-import 'package:super_editor/src/core/editor.dart';
-import 'package:super_editor/src/default_editor/box_component.dart';
-import 'package:super_editor/src/default_editor/default_document_editor_reactions.dart';
-import 'package:super_editor/src/default_editor/list_items.dart';
-import 'package:super_editor/src/default_editor/paragraph.dart';
-import 'package:super_editor/src/default_editor/selection_upstream_downstream.dart';
-import 'package:super_editor/src/default_editor/tasks.dart';
-import 'package:super_editor/src/default_editor/text.dart';
-import 'package:super_editor/src/infrastructure/_logging.dart';
-
-import 'package:super_editor/src/default_editor/attributions.dart';
-import 'package:super_editor/src/default_editor/horizontal_rule.dart';
-import 'package:super_editor/src/default_editor/image.dart';
-import 'package:super_editor/src/default_editor/multi_node_editing.dart';
-import 'package:super_editor/src/default_editor/text_tools.dart';
+import 'package:super_editor/super_editor.dart';
 
 /// Performs common, high-level editing and composition tasks
 /// with a simplified API.
@@ -2492,6 +2473,15 @@ class PasteEditorCommand extends EditCommand {
       );
     }
 
+    if (parsedContent.first is VideoNode || parsedContent.first is ImageNode) {
+      // Paste the first piece of attributed content into the existing selected TextNode.
+      executor.executeCommand(
+        InsertNodeAtCaretCommand(
+          newNode: parsedContent.first,
+        ),
+      );
+    }
+
     // The first line of pasted text was added to the selected paragraph.
     // Now, add all remaining pasted nodes to the document..
     DocumentNode previousNode = document.getNodeById(_pastePosition.nodeId)!;
@@ -2531,6 +2521,15 @@ class PasteEditorCommand extends EditCommand {
   }
 
   List<DocumentNode> _parseContent() {
+    // check if the new content is an image/video link, embed it as an image/video node
+    if (isVideoUrl(_content)) {
+      return [VideoNode(id: Editor.createNodeId(), url: _content, altText: "A Video")];
+    }
+
+    if (isImageUrl(_content)) {
+      return [ImageNode(id: Editor.createNodeId(), imageUrl: _content, altText: "An Image")];
+    }
+
     // Split the pasted content at newlines, and apply attributions based
     // on inspection of the pasted content, e.g., link attributions.
     final attributedLines = _inferAttributionsForLinesOfPastedText(_content);
@@ -2713,3 +2712,83 @@ class DeleteDownstreamCharacterCommand extends EditCommand {
     );
   }
 }
+
+/// Checks if the given URL points to a video file based on its extension or known video hosting patterns.
+bool isVideoUrl(String url) {
+  final lowerUrl = url.toLowerCase();
+
+  // Check file extensions directly on the URL/path string first.
+  // This handles asset paths (e.g., "assets/videos/example.mp4"),
+  // file paths, and any URL that ends with a video extension.
+  for (final ext in _videoExtensions) {
+    if (lowerUrl.endsWith(ext)) {
+      return true;
+    }
+  }
+
+  // Also check the URI path component for URLs with query params
+  // (e.g., "https://example.com/video.mp4?token=abc")
+  final uri = Uri.tryParse(lowerUrl);
+  if (uri != null && uri.path.isNotEmpty) {
+    for (final ext in _videoExtensions) {
+      if (uri.path.endsWith(ext)) {
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+
+/// Common video file extensions used to identify video URLs in markdown.
+const _videoExtensions = {
+  '.mp4',
+  '.webm',
+  '.mov',
+  '.avi',
+  '.mkv',
+  '.m4v',
+  '.wmv',
+  '.flv',
+  '.ogv',
+  '.3gp',
+};
+
+/// Checks if the given URL points to an image file based on its extension.
+bool isImageUrl(String url) {
+  final lowerUrl = url.toLowerCase();
+
+  for (final ext in _imageExtensions) {
+    if (lowerUrl.endsWith(ext)) {
+      return true;
+    }
+  }
+
+  // Also check the URI path component for URLs with query params
+  // (e.g., "https://example.com/photo.png?token=abc")
+  final uri = Uri.tryParse(lowerUrl);
+  if (uri != null && uri.path.isNotEmpty) {
+    for (final ext in _imageExtensions) {
+      if (uri.path.endsWith(ext)) {
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+
+/// Common image file extensions used to identify image URLs.
+const _imageExtensions = {
+  '.png',
+  '.jpg',
+  '.jpeg',
+  '.gif',
+  '.webp',
+  '.svg',
+  '.bmp',
+  '.ico',
+  '.tiff',
+  '.tif',
+  '.avif',
+};
