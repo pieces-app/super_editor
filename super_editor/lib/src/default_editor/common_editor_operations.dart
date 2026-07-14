@@ -1,29 +1,10 @@
 import 'dart:math';
 import 'dart:ui';
 
-import 'package:attributed_text/attributed_text.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:super_editor/src/core/document.dart';
-import 'package:super_editor/src/core/document_composer.dart';
-import 'package:super_editor/src/core/document_layout.dart';
-import 'package:super_editor/src/core/document_selection.dart';
-import 'package:super_editor/src/core/editor.dart';
-import 'package:super_editor/src/default_editor/box_component.dart';
-import 'package:super_editor/src/default_editor/default_document_editor_reactions.dart';
-import 'package:super_editor/src/default_editor/list_items.dart';
-import 'package:super_editor/src/default_editor/paragraph.dart';
-import 'package:super_editor/src/default_editor/selection_upstream_downstream.dart';
-import 'package:super_editor/src/default_editor/tasks.dart';
-import 'package:super_editor/src/default_editor/text.dart';
-import 'package:super_editor/src/infrastructure/_logging.dart';
-
-import 'package:super_editor/src/default_editor/attributions.dart';
-import 'package:super_editor/src/default_editor/horizontal_rule.dart';
-import 'package:super_editor/src/default_editor/image.dart';
-import 'package:super_editor/src/default_editor/multi_node_editing.dart';
-import 'package:super_editor/src/default_editor/text_tools.dart';
+import 'package:super_editor/super_editor.dart';
 
 /// Performs common, high-level editing and composition tasks
 /// with a simplified API.
@@ -2492,6 +2473,39 @@ class PasteEditorCommand extends EditCommand {
       );
     }
 
+    bool blockNodeInserted = false;
+    if (parsedContent.first is VideoNode || parsedContent.first is ImageNode) {
+      if (currentNodeWithSelection is ParagraphNode) {
+        executor.executeCommand(
+          InsertNodeAtCaretCommand(
+            newNode: parsedContent.first,
+          ),
+        );
+        blockNodeInserted = true;
+      } else {
+        // The target node (e.g. ListItemNode, TaskNode) doesn't support
+        // block-level insertion. Fall back to pasting the URL as linked text.
+        final url = parsedContent.first is VideoNode
+            ? (parsedContent.first as VideoNode).url
+            : (parsedContent.first as ImageNode).imageUrl;
+        final uri = Uri.tryParse(url);
+        final linkSpans = AttributedSpans();
+        if (uri != null) {
+          linkSpans.addAttribution(
+            newAttribution: LinkAttribution.fromUri(uri),
+            start: 0,
+            end: url.length - 1,
+          );
+        }
+        executor.executeCommand(
+          InsertAttributedTextCommand(
+            documentPosition: _pastePosition,
+            textToInsert: AttributedText(url, linkSpans),
+          ),
+        );
+      }
+    }
+
     // The first line of pasted text was added to the selected paragraph.
     // Now, add all remaining pasted nodes to the document..
     DocumentNode previousNode = document.getNodeById(_pastePosition.nodeId)!;
@@ -2510,27 +2524,40 @@ class PasteEditorCommand extends EditCommand {
       ]);
     }
 
-    // Place the caret at the end of the pasted content.
-    final pastedNode = document.getNodeById(previousNode.id)!;
-    // ^ re-query the node where we pasted content because nodes are immutable.
+    if (!blockNodeInserted) {
+      // Place the caret at the end of the pasted content. Skip this when
+      // InsertNodeAtCaretCommand handled a block-level insert (image/video)
+      // because that command already sets the correct selection.
+      final pastedNode = document.getNodeById(previousNode.id)!;
+      // ^ re-query the node where we pasted content because nodes are immutable.
 
-    executor.executeCommand(
-      ChangeSelectionCommand(
-        DocumentSelection.collapsed(
-          position: DocumentPosition(
-            nodeId: pastedNode.id,
-            nodePosition: pastedNode.endPosition,
+      executor.executeCommand(
+        ChangeSelectionCommand(
+          DocumentSelection.collapsed(
+            position: DocumentPosition(
+              nodeId: pastedNode.id,
+              nodePosition: pastedNode.endPosition,
+            ),
           ),
+          SelectionChangeType.insertContent,
+          SelectionReason.userInteraction,
         ),
-        SelectionChangeType.insertContent,
-        SelectionReason.userInteraction,
-      ),
-    );
+      );
+    }
     editorOpsLog.fine('New selection after paste operation: ${composer.selection}');
     editorOpsLog.fine('Done with paste command.');
   }
 
   List<DocumentNode> _parseContent() {
+    // check if the new content is an image/video link, embed it as an image/video node
+    if (isVideoUrl(_content)) {
+      return [VideoNode(id: Editor.createNodeId(), url: _content, altText: _content)];
+    }
+
+    if (isImageUrl(_content)) {
+      return [ImageNode(id: Editor.createNodeId(), imageUrl: _content, altText: _content)];
+    }
+
     // Split the pasted content at newlines, and apply attributions based
     // on inspection of the pasted content, e.g., link attributions.
     final attributedLines = _inferAttributionsForLinesOfPastedText(_content);
@@ -2713,3 +2740,83 @@ class DeleteDownstreamCharacterCommand extends EditCommand {
     );
   }
 }
+
+/// Checks if the given URL points to a video file based on its extension or known video hosting patterns.
+bool isVideoUrl(String url) {
+  final lowerUrl = url.toLowerCase();
+
+  // Check file extensions directly on the URL/path string first.
+  // This handles asset paths (e.g., "assets/videos/example.mp4"),
+  // file paths, and any URL that ends with a video extension.
+  for (final ext in _videoExtensions) {
+    if (lowerUrl.endsWith(ext)) {
+      return true;
+    }
+  }
+
+  // Also check the URI path component for URLs with query params
+  // (e.g., "https://example.com/video.mp4?token=abc")
+  final uri = Uri.tryParse(lowerUrl);
+  if (uri != null && uri.path.isNotEmpty) {
+    for (final ext in _videoExtensions) {
+      if (uri.path.endsWith(ext)) {
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+
+/// Common video file extensions used to identify video URLs in markdown.
+const _videoExtensions = {
+  '.mp4',
+  '.webm',
+  '.mov',
+  '.avi',
+  '.mkv',
+  '.m4v',
+  '.wmv',
+  '.flv',
+  '.ogv',
+  '.3gp',
+};
+
+/// Checks if the given URL points to an image file based on its extension.
+bool isImageUrl(String url) {
+  final lowerUrl = url.toLowerCase();
+
+  for (final ext in _imageExtensions) {
+    if (lowerUrl.endsWith(ext)) {
+      return true;
+    }
+  }
+
+  // Also check the URI path component for URLs with query params
+  // (e.g., "https://example.com/photo.png?token=abc")
+  final uri = Uri.tryParse(lowerUrl);
+  if (uri != null && uri.path.isNotEmpty) {
+    for (final ext in _imageExtensions) {
+      if (uri.path.endsWith(ext)) {
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+
+/// Common image file extensions used to identify image URLs.
+const _imageExtensions = {
+  '.png',
+  '.jpg',
+  '.jpeg',
+  '.gif',
+  '.webp',
+  '.svg',
+  '.bmp',
+  '.ico',
+  '.tiff',
+  '.tif',
+  '.avif',
+};
