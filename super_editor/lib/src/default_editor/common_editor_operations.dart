@@ -2523,11 +2523,11 @@ class PasteEditorCommand extends EditCommand {
   List<DocumentNode> _parseContent() {
     // check if the new content is an image/video link, embed it as an image/video node
     if (isVideoUrl(_content)) {
-      return [VideoNode(id: Editor.createNodeId(), url: _content, altText: "A Video")];
+      return [VideoNode(id: Editor.createNodeId(), url: _content, altText: _content)];
     }
 
     if (isImageUrl(_content)) {
-      return [ImageNode(id: Editor.createNodeId(), imageUrl: _content, altText: "An Image")];
+      return [ImageNode(id: Editor.createNodeId(), imageUrl: _content, altText: _content)];
     }
 
     // Split the pasted content at newlines, and apply attributions based
