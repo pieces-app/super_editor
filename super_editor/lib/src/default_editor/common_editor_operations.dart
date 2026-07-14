@@ -2473,6 +2473,7 @@ class PasteEditorCommand extends EditCommand {
       );
     }
 
+    bool blockNodeInserted = false;
     if (parsedContent.first is VideoNode || parsedContent.first is ImageNode) {
       if (currentNodeWithSelection is ParagraphNode) {
         executor.executeCommand(
@@ -2480,6 +2481,7 @@ class PasteEditorCommand extends EditCommand {
             newNode: parsedContent.first,
           ),
         );
+        blockNodeInserted = true;
       } else {
         // The target node (e.g. ListItemNode, TaskNode) doesn't support
         // block-level insertion. Fall back to pasting the URL as linked text.
@@ -2522,22 +2524,26 @@ class PasteEditorCommand extends EditCommand {
       ]);
     }
 
-    // Place the caret at the end of the pasted content.
-    final pastedNode = document.getNodeById(previousNode.id)!;
-    // ^ re-query the node where we pasted content because nodes are immutable.
+    if (!blockNodeInserted) {
+      // Place the caret at the end of the pasted content. Skip this when
+      // InsertNodeAtCaretCommand handled a block-level insert (image/video)
+      // because that command already sets the correct selection.
+      final pastedNode = document.getNodeById(previousNode.id)!;
+      // ^ re-query the node where we pasted content because nodes are immutable.
 
-    executor.executeCommand(
-      ChangeSelectionCommand(
-        DocumentSelection.collapsed(
-          position: DocumentPosition(
-            nodeId: pastedNode.id,
-            nodePosition: pastedNode.endPosition,
+      executor.executeCommand(
+        ChangeSelectionCommand(
+          DocumentSelection.collapsed(
+            position: DocumentPosition(
+              nodeId: pastedNode.id,
+              nodePosition: pastedNode.endPosition,
+            ),
           ),
+          SelectionChangeType.insertContent,
+          SelectionReason.userInteraction,
         ),
-        SelectionChangeType.insertContent,
-        SelectionReason.userInteraction,
-      ),
-    );
+      );
+    }
     editorOpsLog.fine('New selection after paste operation: ${composer.selection}');
     editorOpsLog.fine('Done with paste command.');
   }

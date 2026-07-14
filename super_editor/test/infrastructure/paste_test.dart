@@ -477,6 +477,46 @@ void main() {
         final hasImageNode = editor.document.toList().any((node) => node is ImageNode);
         expect(hasImageNode, isTrue);
       });
+
+      test("paste image URL at end of non-empty paragraph places caret below image", () {
+        final editor = createDefaultDocumentEditor(
+          document: MutableDocument(
+            nodes: [
+              ParagraphNode(id: "p1", text: AttributedText("Hello")),
+            ],
+          ),
+        );
+
+        editor.execute([
+          const ChangeSelectionRequest(
+            DocumentSelection.collapsed(
+              position: DocumentPosition(nodeId: "p1", nodePosition: TextNodePosition(offset: 5)),
+            ),
+            SelectionChangeType.placeCaret,
+            SelectionReason.userInteraction,
+          ),
+        ]);
+
+        editor.execute([
+          PasteEditorRequest(
+            content: "https://example.com/photo.png",
+            pastePosition: const DocumentPosition(nodeId: "p1", nodePosition: TextNodePosition(offset: 5)),
+          ),
+        ]);
+
+        // Document should be: ParagraphNode("Hello"), ImageNode, ParagraphNode("")
+        expect(editor.document.nodeCount, 3);
+        expect(editor.document.getNodeAt(0), isA<ParagraphNode>());
+        expect((editor.document.getNodeAt(0)! as ParagraphNode).text.toPlainText(), "Hello");
+        expect(editor.document.getNodeAt(1), isA<ImageNode>());
+        expect(editor.document.getNodeAt(2), isA<ParagraphNode>());
+
+        // The caret should be in the empty paragraph below the image,
+        // not back at the end of "Hello" above the image.
+        final selection = editor.composer.selection;
+        expect(selection, isNotNull);
+        expect(selection!.extent.nodeId, editor.document.getNodeAt(2)!.id);
+      });
     });
   });
 }
