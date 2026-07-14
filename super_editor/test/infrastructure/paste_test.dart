@@ -276,6 +276,208 @@ void main() {
         );
       });
     });
+
+    group("image/video URL into non-paragraph nodes >", () {
+      test("paste image URL into list item inserts linked text", () {
+        final editor = createDefaultDocumentEditor(
+          document: MutableDocument(
+            nodes: [
+              ListItemNode.unordered(id: "1", text: AttributedText("my bullet")),
+            ],
+          ),
+        );
+
+        editor.execute([
+          const ChangeSelectionRequest(
+            DocumentSelection.collapsed(
+              position: DocumentPosition(nodeId: "1", nodePosition: TextNodePosition(offset: 9)),
+            ),
+            SelectionChangeType.placeCaret,
+            SelectionReason.userInteraction,
+          ),
+        ]);
+
+        editor.execute([
+          PasteEditorRequest(
+            content: "https://example.com/photo.png",
+            pastePosition: const DocumentPosition(nodeId: "1", nodePosition: TextNodePosition(offset: 9)),
+          ),
+        ]);
+
+        // The document should still have exactly one node (the list item).
+        expect(editor.document.nodeCount, 1);
+        final node = editor.document.first;
+        expect(node, isA<ListItemNode>());
+
+        // The URL should be inserted as text.
+        final listItem = node as ListItemNode;
+        expect(listItem.text.toPlainText(), "my bullethttps://example.com/photo.png");
+
+        // The inserted URL should carry a LinkAttribution.
+        final spans = listItem.text.getAttributionSpansInRange(
+          attributionFilter: (a) => a is LinkAttribution,
+          range: SpanRange(0, listItem.text.length - 1),
+        );
+        expect(spans.length, 1);
+        expect(spans.first.start, 9);
+        expect(spans.first.end, 37);
+      });
+
+      test("paste video URL into list item inserts linked text", () {
+        final editor = createDefaultDocumentEditor(
+          document: MutableDocument(
+            nodes: [
+              ListItemNode.ordered(id: "1", text: AttributedText("step one")),
+            ],
+          ),
+        );
+
+        editor.execute([
+          const ChangeSelectionRequest(
+            DocumentSelection.collapsed(
+              position: DocumentPosition(nodeId: "1", nodePosition: TextNodePosition(offset: 8)),
+            ),
+            SelectionChangeType.placeCaret,
+            SelectionReason.userInteraction,
+          ),
+        ]);
+
+        editor.execute([
+          PasteEditorRequest(
+            content: "https://example.com/clip.mp4",
+            pastePosition: const DocumentPosition(nodeId: "1", nodePosition: TextNodePosition(offset: 8)),
+          ),
+        ]);
+
+        expect(editor.document.nodeCount, 1);
+        final node = editor.document.first;
+        expect(node, isA<ListItemNode>());
+
+        final listItem = node as ListItemNode;
+        expect(listItem.text.toPlainText(), "step onehttps://example.com/clip.mp4");
+
+        final spans = listItem.text.getAttributionSpansInRange(
+          attributionFilter: (a) => a is LinkAttribution,
+          range: SpanRange(0, listItem.text.length - 1),
+        );
+        expect(spans.length, 1);
+        expect(spans.first.start, 8);
+        expect(spans.first.end, 35);
+      });
+
+      test("paste image URL into task inserts linked text", () {
+        final editor = createDefaultDocumentEditor(
+          document: MutableDocument(
+            nodes: [
+              TaskNode(id: "1", text: AttributedText("my task"), isComplete: false),
+            ],
+          ),
+        );
+
+        editor.execute([
+          const ChangeSelectionRequest(
+            DocumentSelection.collapsed(
+              position: DocumentPosition(nodeId: "1", nodePosition: TextNodePosition(offset: 7)),
+            ),
+            SelectionChangeType.placeCaret,
+            SelectionReason.userInteraction,
+          ),
+        ]);
+
+        editor.execute([
+          PasteEditorRequest(
+            content: "https://example.com/screenshot.jpg",
+            pastePosition: const DocumentPosition(nodeId: "1", nodePosition: TextNodePosition(offset: 7)),
+          ),
+        ]);
+
+        expect(editor.document.nodeCount, 1);
+        final node = editor.document.first;
+        expect(node, isA<TaskNode>());
+
+        final task = node as TaskNode;
+        expect(task.text.toPlainText(), "my taskhttps://example.com/screenshot.jpg");
+
+        final spans = task.text.getAttributionSpansInRange(
+          attributionFilter: (a) => a is LinkAttribution,
+          range: SpanRange(0, task.text.length - 1),
+        );
+        expect(spans.length, 1);
+        expect(spans.first.start, 7);
+        expect(spans.first.end, 40);
+      });
+
+      test("paste image URL into empty list item inserts linked text", () {
+        final editor = createDefaultDocumentEditor(
+          document: MutableDocument(
+            nodes: [
+              ListItemNode.unordered(id: "1", text: AttributedText()),
+            ],
+          ),
+        );
+
+        editor.execute([
+          const ChangeSelectionRequest(
+            DocumentSelection.collapsed(
+              position: DocumentPosition(nodeId: "1", nodePosition: TextNodePosition(offset: 0)),
+            ),
+            SelectionChangeType.placeCaret,
+            SelectionReason.userInteraction,
+          ),
+        ]);
+
+        editor.execute([
+          PasteEditorRequest(
+            content: "https://example.com/photo.png",
+            pastePosition: const DocumentPosition(nodeId: "1", nodePosition: TextNodePosition(offset: 0)),
+          ),
+        ]);
+
+        expect(editor.document.nodeCount, 1);
+        final node = editor.document.first;
+        expect(node, isA<ListItemNode>());
+
+        final listItem = node as ListItemNode;
+        expect(listItem.text.toPlainText(), "https://example.com/photo.png");
+
+        final spans = listItem.text.getAttributionSpansInRange(
+          attributionFilter: (a) => a is LinkAttribution,
+          range: SpanRange(0, listItem.text.length - 1),
+        );
+        expect(spans.length, 1);
+      });
+
+      test("paste image URL into paragraph still inserts image node", () {
+        final editor = createDefaultDocumentEditor(
+          document: MutableDocument(
+            nodes: [
+              ParagraphNode(id: "1", text: AttributedText()),
+            ],
+          ),
+        );
+
+        editor.execute([
+          const ChangeSelectionRequest(
+            DocumentSelection.collapsed(
+              position: DocumentPosition(nodeId: "1", nodePosition: TextNodePosition(offset: 0)),
+            ),
+            SelectionChangeType.placeCaret,
+            SelectionReason.userInteraction,
+          ),
+        ]);
+
+        editor.execute([
+          PasteEditorRequest(
+            content: "https://example.com/photo.png",
+            pastePosition: const DocumentPosition(nodeId: "1", nodePosition: TextNodePosition(offset: 0)),
+          ),
+        ]);
+
+        // For paragraphs, the image should be inserted as an ImageNode.
+        final hasImageNode = editor.document.toList().any((node) => node is ImageNode);
+        expect(hasImageNode, isTrue);
+      });
+    });
   });
 }
 

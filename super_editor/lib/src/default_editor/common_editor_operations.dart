@@ -2474,12 +2474,34 @@ class PasteEditorCommand extends EditCommand {
     }
 
     if (parsedContent.first is VideoNode || parsedContent.first is ImageNode) {
-      // Paste the first piece of attributed content into the existing selected TextNode.
-      executor.executeCommand(
-        InsertNodeAtCaretCommand(
-          newNode: parsedContent.first,
-        ),
-      );
+      if (currentNodeWithSelection is ParagraphNode) {
+        executor.executeCommand(
+          InsertNodeAtCaretCommand(
+            newNode: parsedContent.first,
+          ),
+        );
+      } else {
+        // The target node (e.g. ListItemNode, TaskNode) doesn't support
+        // block-level insertion. Fall back to pasting the URL as linked text.
+        final url = parsedContent.first is VideoNode
+            ? (parsedContent.first as VideoNode).url
+            : (parsedContent.first as ImageNode).imageUrl;
+        final uri = Uri.tryParse(url);
+        final linkSpans = AttributedSpans();
+        if (uri != null) {
+          linkSpans.addAttribution(
+            newAttribution: LinkAttribution.fromUri(uri),
+            start: 0,
+            end: url.length - 1,
+          );
+        }
+        executor.executeCommand(
+          InsertAttributedTextCommand(
+            documentPosition: _pastePosition,
+            textToInsert: AttributedText(url, linkSpans),
+          ),
+        );
+      }
     }
 
     // The first line of pasted text was added to the selected paragraph.
