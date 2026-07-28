@@ -373,6 +373,7 @@ final defaultEditorReactions = List.unmodifiable([
   const HorizontalRuleConversionReaction(),
   const ImageUrlConversionReaction(),
   const DashConversionReaction(),
+  const TaskConversionReaction(),
   //---- End Content Conversions ---
 
   UpdateSubTaskIndentAfterTaskDeletionReaction(),

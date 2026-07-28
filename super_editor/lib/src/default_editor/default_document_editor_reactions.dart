@@ -170,6 +170,58 @@ class UnorderedListItemConversionReaction extends ParagraphPrefixConversionReact
   }
 }
 
+/// Converts a [ParagraphNode] to a [TaskNode] when the user types
+/// "[] " or "[x] " at the start of the paragraph.
+class TaskConversionReaction extends ParagraphPrefixConversionReaction {
+  static final _taskInEmptyParagraphPattern = RegExp(r'^\s*\[x?\]\s+$');
+  static final _taskInNonEmptyParagraphPattern = RegExp(r'^\s*\[x?\]\s+');
+
+  const TaskConversionReaction({
+    this.allowConversionOfNonEmptyParagraphs = true,
+  });
+
+  final bool allowConversionOfNonEmptyParagraphs;
+
+  @override
+  RegExp get pattern =>
+      allowConversionOfNonEmptyParagraphs ? _taskInNonEmptyParagraphPattern : _taskInEmptyParagraphPattern;
+
+  @override
+  void onPrefixMatched(
+    EditContext editContext,
+    RequestDispatcher requestDispatcher,
+    List<EditEvent> changeList,
+    ParagraphNode paragraph,
+    String match,
+  ) {
+    final isComplete = match.contains('x');
+
+    requestDispatcher.execute([
+      ReplaceNodeRequest(
+        existingNodeId: paragraph.id,
+        newNode: TaskNode(
+          id: paragraph.id,
+          text: paragraph.text.copy().removeRegion(
+                startOffset: 0,
+                endOffset: match.length,
+              ),
+          isComplete: isComplete,
+        ),
+      ),
+      ChangeSelectionRequest(
+        DocumentSelection.collapsed(
+          position: DocumentPosition(
+            nodeId: paragraph.id,
+            nodePosition: const TextNodePosition(offset: 0),
+          ),
+        ),
+        SelectionChangeType.placeCaret,
+        SelectionReason.contentChange,
+      ),
+    ]);
+  }
+}
+
 /// Converts a [ParagraphNode] to an [OrderedListItemNode] when the
 /// user types " 1. " (or similar) at the start of the paragraph.
 class OrderedListItemConversionReaction extends ParagraphPrefixConversionReaction {
